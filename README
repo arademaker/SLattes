@@ -1,0 +1,25 @@
+
+This project is about the construction of tools to process and
+transform XML Brazilian Curriculum Lattes files to RDF data. So that,
+the purpose of this project is to bridging the gap between the
+Brazilian Curriculum Lattes plataform and semantic web technologies.
+
+Authors:
+
+ * Alexandre Rademaekr (EPGE/FGV, PUC-Rio)
+   http://web.me.com/arademaker
+
+ * Edward Hermann Haeusler (PUC-Rio)
+   http://www.inf.puc-rio.br/~hermann
+
+ * Antoanne Pontes (EPGE/FGV)
+   http://antoanne.com
+
+
+More information:
+
+ * http://lattes.cnpq.br/
+ * http://www.w3.org/RDF/
+
+
+
