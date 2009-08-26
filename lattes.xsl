@@ -16,9 +16,20 @@
     </rdf:RDF>
   </xsl:template>
 
-  <xsl:template match="DADOS-BASICOS-DO-ARTIGO">
+  <xsl:template match="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO">
     <dc:title> <xsl:value-of select="@TITULO-DO-ARTIGO" /> </dc:title>
+  </xsl:template>
+
+  <xsl:template match="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO">
     <dc:date>  <xsl:value-of select="@ANO-DO-ARTIGO" /> </dc:date>
+  </xsl:template>
+
+  <xsl:template match="DADOS-BASICOS-DO-ARTIGO">
+    <xsl:apply-templates />
+  </xsl:template>
+
+  <xsl:template match="DETALHAMENTO-DO-ARTIGO">
+    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="AUTORES">
@@ -28,7 +39,6 @@
 	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
 	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
 	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
-	<foaf:unidade>EPGE</foaf:unidade>
       </rdf:Description>
     </dc:creator>
   </xsl:template>
