@@ -23,11 +23,6 @@
     <dc:language> <xsl:value-of select="@IDIOMA"/> </dc:language>
   </xsl:template>
 
-<!--         <DETALHAMENTO-DO-ARTIGO TITULO-DO-PERIODICO-OU-REVISTA="Econometrica" -->
-<!--         ISSN="00129682" VOLUME="53" FASCICULO="2" SERIE="" -->
-<!--         PAGINA-INICIAL="455" PAGINA-FINAL="461" -->
-<!--         LOCAL-DE-PUBLICACAO="Estados Unidos" /> -->
-
   <xsl:template match="DETALHAMENTO-DO-ARTIGO">
     <dcterms:isPartOf>
       <rdf:Description>
