@@ -7,6 +7,7 @@
 		xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
 		xmlns:foaf="http://xmlns.com/foaf/0.1/" 
 		xmlns:dc="http://purl.org/dc/elements/1.1/"
+		xmlns:dcterms="http://purl.org/dc/terms/"
 		xmlns:swrc="http://swrc.ontoware.org/ontology" 
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
@@ -16,20 +17,33 @@
     </rdf:RDF>
   </xsl:template>
 
-  <xsl:template match="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO">
-    <dc:title> <xsl:value-of select="@TITULO-DO-ARTIGO" /> </dc:title>
-  </xsl:template>
-
-  <xsl:template match="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO">
-    <dc:date>  <xsl:value-of select="@ANO-DO-ARTIGO" /> </dc:date>
-  </xsl:template>
-
   <xsl:template match="DADOS-BASICOS-DO-ARTIGO">
-    <xsl:apply-templates />
+    <dc:title> <xsl:value-of select="@TITULO-DO-ARTIGO" /> </dc:title>
+    <dcterms:issued>  <xsl:value-of select="@ANO-DO-ARTIGO" /> </dcterms:issued>
+    <dc:language> <xsl:value-of select="@IDIOMA"/> </dc:language>
   </xsl:template>
+
+<!--         <DETALHAMENTO-DO-ARTIGO TITULO-DO-PERIODICO-OU-REVISTA="Econometrica" -->
+<!--         ISSN="00129682" VOLUME="53" FASCICULO="2" SERIE="" -->
+<!--         PAGINA-INICIAL="455" PAGINA-FINAL="461" -->
+<!--         LOCAL-DE-PUBLICACAO="Estados Unidos" /> -->
 
   <xsl:template match="DETALHAMENTO-DO-ARTIGO">
-    <xsl:apply-templates />
+    <dcterms:isPartOf>
+      <rdf:Description>
+	<xsl:choose>
+	<xsl:when test="string-length(@ISSN)>0">
+	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',@ISSN)"/> </xsl:attribute>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:attribute name="rdf:nodeID"> <xsl:value-of select="generate-id()"/> </xsl:attribute>
+	</xsl:otherwise>
+	</xsl:choose>
+	<dc:title> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </dc:title>
+      </rdf:Description>
+    </dcterms:isPartOf>
+    <swrc:pages> <xsl:value-of select="concat(@PAGINA-INICIAL,'-',@PAGINA-FINAL)"/> </swrc:pages>
+    <swrc:volume> <xsl:value-of select="@VOLUME"/> </swrc:volume>
   </xsl:template>
 
   <xsl:template match="AUTORES">
@@ -43,9 +57,9 @@
     </dc:creator>
   </xsl:template>
 
-  <xsl:template match="ARTIGO-PUBLICADO">
+  <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
     <rdf:Description rdf:about="P{@SEQUENCIA-PRODUCAO}">
-      <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" />
+      <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
       <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Article" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /> </rdfs:label>
