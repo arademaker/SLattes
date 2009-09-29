@@ -53,7 +53,7 @@
   </xsl:template>
 
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
-    <rdf:Description rdf:about="P{@SEQUENCIA-PRODUCAO}">
+    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
       <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Article" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />

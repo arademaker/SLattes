@@ -1,8 +1,9 @@
 
 This project is about the construction of tools to process and
-transform XML Brazilian Curriculum Lattes files to RDF data. So that,
-the purpose of this project is to bridging the gap between the
-Brazilian Curriculum Lattes plataform and semantic web technologies.
+transform XML Brazilian Curriculum Lattes files [1] to RDF data
+[2]. So that, the purpose of this project is to bridging the gap
+between the Brazilian Curriculum Lattes plataform and semantic web
+technologies.
 
 Status:
 =======
@@ -17,6 +18,13 @@ Usage:
 
 $ xsltproc lattes.xsl CURRICULUM.xml > CURRICULUM.rdf 
 
+Reasoning:
+==========
+
+We can use the CWM [1] tool to reasoning over the RDF produced. For
+example, to identify duplicated authors.
+
+cwm --rdf lixo1.rdf --n3 duplicated-authors.n3 --think --data --rdf > lixo2.rdf
 
 Authors:
 ========
@@ -27,15 +35,11 @@ Authors:
  * Edward Hermann Haeusler (PUC-Rio)
    http://www.inf.puc-rio.br/~hermann
 
- * Antoanne Pontes (EPGE/FGV)
-   http://antoanne.com
-
-
 More information:
 =================
 
- * http://lattes.cnpq.br/
- * http://www.w3.org/RDF/
-
+ [1] http://lattes.cnpq.br/
+ [2] http://www.w3.org/RDF/
+ [3] http://www.w3.org/2000/10/swap/doc/cwm.html
 
 
