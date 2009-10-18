@@ -21,7 +21,7 @@ $ xsltproc lattes.xsl CURRICULUM.xml > CURRICULUM.rdf
 Reasoning:
 ==========
 
-We can use the CWM [1] tool to reasoning over the RDF produced. For
+We can use the CWM [3] tool to reasoning over the RDF produced. For
 example, to identify duplicated authors.
 
 cwm --rdf lixo1.rdf --n3 duplicated-authors.n3 --think --data --rdf > lixo2.rdf
@@ -41,5 +41,4 @@ More information:
  [1] http://lattes.cnpq.br/
  [2] http://www.w3.org/RDF/
  [3] http://www.w3.org/2000/10/swap/doc/cwm.html
-
 

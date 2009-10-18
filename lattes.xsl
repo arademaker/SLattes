@@ -41,7 +41,7 @@
     <swrc:volume> <xsl:value-of select="@VOLUME"/> </swrc:volume>
   </xsl:template>
 
-  <xsl:template match="AUTORES">
+  <xsl:template match="ARTIGO-PUBLICADO/AUTORES">
     <dc:creator>
       <rdf:Description rdf:nodeID="{generate-id()}">
 	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
@@ -51,6 +51,18 @@
       </rdf:Description>
     </dc:creator>
   </xsl:template>
+  
+  <xsl:template match="ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES">
+    <dc:creator>
+      <rdf:Description rdf:nodeID="{generate-id()}">
+	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
+	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
+	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
+      </rdf:Description>
+    </dc:creator>
+  </xsl:template>
+
 
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
