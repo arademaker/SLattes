@@ -41,6 +41,17 @@
     <swrc:volume> <xsl:value-of select="@VOLUME"/> </swrc:volume>
   </xsl:template>
 
+  <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
+    <dc:creator>
+      <rdf:Description rdf:nodeID="{generate-id()}">
+	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
+	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
+	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
+      </rdf:Description>
+    </dc:creator>
+  </xsl:template>
+  
   <xsl:template match="ARTIGO-PUBLICADO/AUTORES">
     <dc:creator>
       <rdf:Description rdf:nodeID="{generate-id()}">
@@ -62,6 +73,17 @@
       </rdf:Description>
     </dc:creator>
   </xsl:template>
+  
+  <xsl:template match="LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES">
+    <dc:creator>
+      <rdf:Description rdf:nodeID="{generate-id()}">
+	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
+	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
+	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
+      </rdf:Description>
+    </dc:creator>
+  </xsl:template>
 
 
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
@@ -70,10 +92,42 @@
       <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Article" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /> </rdfs:label>
-
       <xsl:apply-templates />
     </rdf:Description>
   </xsl:template>
+      
+  <xsl:template match="LIVRO-PUBLICADO-OU-ORGANIZADO">
+    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
+      <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
+      <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Book" />
+      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+      <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </rdfs:label>
+      <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </dc:title>
+      <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@ANO" /> </dcterms:issued>
+       <dc:language> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"/> </dc:language>
+       <dc:publisher> <xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /> </dc:publisher>
+      <xsl:apply-templates />
+    </rdf:Description>
+  </xsl:template>
+  
+   <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO">
+    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
+      <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
+      <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#InBook" />
+      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+      <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </rdfs:label>
+      <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </dc:title>
+      <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
+       <dc:language> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"/> </dc:language>
+       <dcterms:isPartOf> 
+         <rdf:Description>
+            <dc:title> <xsl:value-of select="DETALHAMENTO-DO-CAPITULO/@TITULO-DO-LIVRO" /> </dc:title>
+         </rdf:Description>
+       </dcterms:isPartOf>
+      <xsl:apply-templates />
+    </rdf:Description>
+  </xsl:template>
+
 
   <xsl:template match="text()|@*">
   </xsl:template>
