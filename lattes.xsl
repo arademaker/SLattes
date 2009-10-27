@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-
 <xsl:stylesheet version="1.0" 
-		xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  		xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 		xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 		xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
@@ -42,6 +41,17 @@
   </xsl:template>
 
   <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
+    <dc:creator>
+      <rdf:Description rdf:nodeID="{generate-id()}">
+	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
+	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
+	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
+      </rdf:Description>
+    </dc:creator>
+  </xsl:template>
+  
+    <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES">
     <dc:creator>
       <rdf:Description rdf:nodeID="{generate-id()}">
 	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
@@ -124,6 +134,29 @@
             <dc:title> <xsl:value-of select="DETALHAMENTO-DO-CAPITULO/@TITULO-DO-LIVRO" /> </dc:title>
          </rdf:Description>
        </dcterms:isPartOf>
+      <xsl:apply-templates />
+    </rdf:Description>
+  </xsl:template>
+
+  <xsl:template match="TRABALHO-EM-EVENTOS[DADOS-BASICOS-DO-TRABALHO/@NATUREZA='COMPLETO']">
+    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
+      <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
+      <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#InProceedings" />
+      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+      <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /> </rdfs:label>
+      <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /> </dc:title>
+      <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO" /> </dcterms:issued>
+       <dc:language> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@IDIOMA"/> </dc:language>
+       <dcterms:isPartOf> 
+         <rdf:Description>
+            <dc:title> <xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS" /> </dc:title>
+         </rdf:Description>
+       </dcterms:isPartOf>
+       <dcterms:isVersionOf> 
+         <rdf:Description>
+            <dc:title> <xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DO-EVENTO" /> </dc:title>
+         </rdf:Description>
+       </dcterms:isVersionOf>
       <xsl:apply-templates />
     </rdf:Description>
   </xsl:template>
