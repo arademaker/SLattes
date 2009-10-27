@@ -62,18 +62,7 @@
     </dc:creator>
   </xsl:template>
   
-  <xsl:template match="ARTIGO-PUBLICADO/AUTORES">
-    <dc:creator>
-      <rdf:Description rdf:nodeID="{generate-id()}">
-	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
-	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
-	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
-	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
-      </rdf:Description>
-    </dc:creator>
-  </xsl:template>
-  
-  <xsl:template match="ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES">
+  <xsl:template match="ARTIGO-PUBLICADO/AUTORES | ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES">
     <dc:creator>
       <rdf:Description rdf:nodeID="{generate-id()}">
 	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
@@ -146,7 +135,7 @@
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /> </rdfs:label>
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /> </dc:title>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO" /> </dcterms:issued>
-       <dc:language> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@IDIOMA"/> </dc:language>
+      <dc:language> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@IDIOMA"/> </dc:language>
        <dcterms:isPartOf> 
          <rdf:Description>
             <dc:title> <xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS" /> </dc:title>
