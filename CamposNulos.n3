@@ -14,9 +14,6 @@
 @prefix    log: <http://www.w3.org/2000/10/swap/log#> .
 
 
-{ ?x foaf:name ?n ;
-     foaf:citation-name ?cn .
-  ?y foaf:name ?n ;
-     foaf:citation-name ?cn . } => { ?x owl:sameAs ?y } .
-
+{ ?x ?y "" }   => { ?x ?y "NotInformed"}.
+                          
 
