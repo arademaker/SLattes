@@ -17,6 +17,28 @@
     </rdf:RDF>
   </xsl:template>
   
+  <!-- FDN=FINDOUTNULL fields /> --> 
+  
+  <xsl:template match="CURRICULO-VITAE">       
+     <xsl:apply-templates>
+        <xsl:with-param name="data" select="DADOS-GERAIS/@NOME-COMPLETO"></xsl:with-param>
+     </xsl:apply-templates> 
+  </xsl:template>
+  
+  <xsl:template name="FDN">
+  <xsl:param name="field"></xsl:param>
+  <xsl:choose>
+    <xsl:when test="$field=''">
+      NotInformed
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$field"/>
+    </xsl:otherwise>
+ </xsl:choose>
+ </xsl:template>
+
+
+  
   <xsl:template name="LINGUA">
   <xsl:param name="Idioma"></xsl:param>
   <dc:language> <xsl:choose>
@@ -42,7 +64,11 @@
 
 
   <xsl:template match="DADOS-BASICOS-DO-ARTIGO">
-    <dc:title> <xsl:value-of select="@TITULO-DO-ARTIGO" /> </dc:title>
+    <dc:title>
+     <xsl:call-template name="FDN">
+      <xsl:with-param name="field" select="@TITULO-DO-ARTIGO"></xsl:with-param>
+     </xsl:call-template>
+    </dc:title>
     <dcterms:issued>  <xsl:value-of select="@ANO-DO-ARTIGO" /> </dcterms:issued>
     <xsl:call-template name="LINGUA">
       <xsl:with-param name="Idioma" select="@IDIOMA"></xsl:with-param>
@@ -80,7 +106,7 @@
   
   <xsl:template match="ARTIGO-PUBLICADO/AUTORES">
     <dc:creator>
-      <rdf:Description rdf:nodeID="{generate-id()}">
+    <rdf:Description rdf:nodeID="{generate-id()}">
 	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
 	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
 	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
@@ -113,22 +139,26 @@
 
 
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
+    <xsl:param name="data">NoValue</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
       <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Article" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /> </rdfs:label>
+      <dc:source><xsl:value-of select="$data"/></dc:source> 
       <xsl:apply-templates />
     </rdf:Description>
   </xsl:template>
       
   <xsl:template match="LIVRO-PUBLICADO-OU-ORGANIZADO">
+    <xsl:param name="data">NoValue</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
       <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Book" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </rdfs:label>
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </dc:title>
+      <dc:source><xsl:value-of select="$data"/></dc:source> 
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@ANO" /> </dcterms:issued>
     <xsl:call-template name="LINGUA">
       <xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"></xsl:with-param>
@@ -139,12 +169,14 @@
   </xsl:template>
   
    <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO">
+    <xsl:param name="data">NoValue</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
       <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#InBook" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </rdfs:label>
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </dc:title>
+      <dc:source><xsl:value-of select="$data"/></dc:source>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
     <xsl:call-template name="LINGUA">
       <xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"></xsl:with-param>
