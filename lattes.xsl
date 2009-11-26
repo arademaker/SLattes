@@ -59,14 +59,9 @@
   <xsl:template match="DETALHAMENTO-DO-ARTIGO">
     <dcterms:isPartOf>
       <rdf:Description>
-	<xsl:choose>
-	<xsl:when test="string-length(@ISSN)>0">
+	<xsl:if test="string-length(@ISSN)>0">
 	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',@ISSN)"/> </xsl:attribute>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:attribute name="rdf:nodeID"> <xsl:value-of select="generate-id()"/> </xsl:attribute>
-	</xsl:otherwise>
-	</xsl:choose>
+	</xsl:if>
 	<rdf:type rdf:resource="http://purl.org/ontology/bibo/Journal" />
 	<dc:title> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </dc:title>
 	<rdfs:label> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </rdfs:label>
@@ -150,8 +145,22 @@
       <xsl:apply-templates />
     </rdf:Description>
   </xsl:template>
+
+  <xsl:template match="DETALHAMENTO-DO-CAPITULO">
+    <rdf:Description>
+      <xsl:if test="string-length(@ISBN)>0">
+	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',@ISBN)"/> </xsl:attribute>
+      </xsl:if>
+      
+      <rdfs:label> <xsl:value-of select="@TITULO-DO-LIVRO" /> </rdfs:label>
+      <dc:title> <xsl:value-of select="@TITULO-DO-LIVRO" /> </dc:title>
+      <dc:type rdf:resource="http://purl.org/ontology/bibo/Book" />
+      <bibo:isbn> <xsl:value-of select="@ISBN"/> </bibo:isbn>
+      <dcterms:publisher> <xsl:value-of select="@NOME-DA-EDITORA"/> </dcterms:publisher>
+    </rdf:Description>
+  </xsl:template>
   
-   <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO">
+  <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO">
     <xsl:param name="data">NoValue</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
@@ -161,15 +170,13 @@
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </dc:title>
       <dc:source><xsl:value-of select="$data"/></dc:source>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
-    <xsl:call-template name="LINGUA">
-      <xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"></xsl:with-param>
-    </xsl:call-template>
-       <dcterms:isPartOf> 
-         <rdf:Description>
-            <dc:title> <xsl:value-of select="DETALHAMENTO-DO-CAPITULO/@TITULO-DO-LIVRO" /> </dc:title>
-         </rdf:Description>
-       </dcterms:isPartOf>
-      <xsl:apply-templates />
+      <xsl:call-template name="LINGUA">
+	<xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"></xsl:with-param>
+      </xsl:call-template>
+      <dcterms:isPartOf> 
+	<xsl:apply-templates select="DETALHAMENTO-DO-CAPITULO" />
+      </dcterms:isPartOf>
+      <xsl:apply-templates select="AUTORES" />
     </rdf:Description>
   </xsl:template>
 
