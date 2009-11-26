@@ -132,7 +132,8 @@
     <xsl:param name="data">NoValue</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
-      <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Book" />
+      <!-- <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Book" /> -->
+      <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </rdfs:label>
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </dc:title>
@@ -141,7 +142,7 @@
     <xsl:call-template name="LINGUA">
       <xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"></xsl:with-param>
     </xsl:call-template>
-       <dc:publisher> <xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /> </dc:publisher>
+       <dcterms:publisher> <xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /> </dcterms:publisher>
       <xsl:apply-templates />
     </rdf:Description>
   </xsl:template>
@@ -149,12 +150,13 @@
   <xsl:template match="DETALHAMENTO-DO-CAPITULO">
     <rdf:Description>
       <xsl:if test="string-length(@ISBN)>0">
-	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',@ISBN)"/> </xsl:attribute>
+	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISBN:',@ISBN)"/> </xsl:attribute>
       </xsl:if>
       
       <rdfs:label> <xsl:value-of select="@TITULO-DO-LIVRO" /> </rdfs:label>
       <dc:title> <xsl:value-of select="@TITULO-DO-LIVRO" /> </dc:title>
-      <dc:type rdf:resource="http://purl.org/ontology/bibo/Book" />
+      <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book" />
+      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <bibo:isbn> <xsl:value-of select="@ISBN"/> </bibo:isbn>
       <dcterms:publisher> <xsl:value-of select="@NOME-DA-EDITORA"/> </dcterms:publisher>
     </rdf:Description>
