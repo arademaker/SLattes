@@ -8,7 +8,8 @@
 		xmlns:foaf="http://xmlns.com/foaf/0.1/" 
 		xmlns:dc="http://purl.org/dc/elements/1.1/"
 		xmlns:dcterms="http://purl.org/dc/terms/"
-		xmlns:swrc="http://swrc.ontoware.org/ontology" 
+		xmlns:swrc="http://swrc.ontoware.org/ontology#" 
+		xmlns:bibo="http://purl.org/ontology/bibo/" 
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
   <xsl:template match="/">
@@ -17,46 +18,30 @@
     </rdf:RDF>
   </xsl:template>
   
-  <!-- FDN=FINDOUTNULL fields /> --> 
-  
   <xsl:template match="CURRICULO-VITAE">       
      <xsl:apply-templates>
         <xsl:with-param name="data" select="DADOS-GERAIS/@NOME-COMPLETO"></xsl:with-param>
      </xsl:apply-templates> 
   </xsl:template>
   
-  <xsl:template name="FDN">
-  <xsl:param name="field"></xsl:param>
-  <xsl:choose>
-    <xsl:when test="$field=''">
-      NotInformed
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$field"/>
-    </xsl:otherwise>
- </xsl:choose>
- </xsl:template>
-
-
-  
   <xsl:template name="LINGUA">
   <xsl:param name="Idioma"></xsl:param>
   <dc:language> <xsl:choose>
     <xsl:when test="$Idioma='Português'">
-      PT
+      <xsl:text>PT</xsl:text>
     </xsl:when>
     <xsl:when test="$Idioma='Inglês'">
-      EN
+      <xsl:text>EN</xsl:text>
     </xsl:when>
     <xsl:when test="$Idioma='Espanhol'">
-      ES
+      <xsl:text>ES</xsl:text>
     </xsl:when>
     <xsl:when test="$Idioma='Francês'">
-      FR
+      <xsl:text>FR</xsl:text>
     </xsl:when>
- <!-- Outros idiomas podem ser contemplados segundo ISO 639/> -->
+    <!-- Outros idiomas podem ser contemplados segundo ISO 639/> -->
     <xsl:otherwise>
-      Outros
+      <xsl:text>Other</xsl:text>
     </xsl:otherwise>
     </xsl:choose>
     </dc:language>
@@ -64,11 +49,7 @@
 
 
   <xsl:template match="DADOS-BASICOS-DO-ARTIGO">
-    <dc:title>
-     <xsl:call-template name="FDN">
-      <xsl:with-param name="field" select="@TITULO-DO-ARTIGO"></xsl:with-param>
-     </xsl:call-template>
-    </dc:title>
+    <dc:title> <xsl:value-of select="@TITULO-DO-ARTIGO" /> </dc:title>
     <dcterms:issued>  <xsl:value-of select="@ANO-DO-ARTIGO" /> </dcterms:issued>
     <xsl:call-template name="LINGUA">
       <xsl:with-param name="Idioma" select="@IDIOMA"></xsl:with-param>
@@ -86,7 +67,9 @@
 	  <xsl:attribute name="rdf:nodeID"> <xsl:value-of select="generate-id()"/> </xsl:attribute>
 	</xsl:otherwise>
 	</xsl:choose>
+	<rdf:type rdf:resource="http://purl.org/ontology/bibo/Journal" />
 	<dc:title> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </dc:title>
+	<rdfs:label> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </rdfs:label>
       </rdf:Description>
     </dcterms:isPartOf>
     <swrc:pages> <xsl:value-of select="concat(@PAGINA-INICIAL,'-',@PAGINA-FINAL)"/> </swrc:pages>
@@ -189,7 +172,6 @@
       <xsl:apply-templates />
     </rdf:Description>
   </xsl:template>
-
 
   <xsl:template match="text()|@*">
   </xsl:template>
