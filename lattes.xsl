@@ -19,143 +19,124 @@
   </xsl:template>
   
   <xsl:template match="CURRICULO-VITAE">       
-     <xsl:apply-templates>
-        <xsl:with-param name="data" select="DADOS-GERAIS/@NOME-COMPLETO"></xsl:with-param>
-     </xsl:apply-templates> 
+    <xsl:apply-templates>
+      <xsl:with-param name="provenance" select="DADOS-GERAIS/ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"></xsl:with-param>
+    </xsl:apply-templates> 
+  </xsl:template>
+
+  <xsl:template match="DADOS-GERAIS">
+    <rdf:Description>
+      <xsl:if test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
+	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('mailto:',ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)"/> </xsl:attribute>
+      </xsl:if>
+      
+      <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
+      <rdfs:label> <xsl:value-of select="@NOME-COMPLETO" /> </rdfs:label>
+
+      <foaf:name> <xsl:value-of select="@NOME-COMPLETO"/> </foaf:name>
+      <foaf:citation-name> <xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/> </foaf:citation-name>
+      <foaf:homepage> <xsl:value-of select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> </foaf:homepage>
+      <foaf:mbox> <xsl:value-of select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/> </foaf:mbox>
+    </rdf:Description>
   </xsl:template>
   
   <xsl:template name="LINGUA">
-  <xsl:param name="Idioma"></xsl:param>
-  <dc:language> <xsl:choose>
-    <xsl:when test="$Idioma='Português'">
-      <xsl:text>PT</xsl:text>
-    </xsl:when>
-    <xsl:when test="$Idioma='Inglês'">
-      <xsl:text>EN</xsl:text>
-    </xsl:when>
-    <xsl:when test="$Idioma='Espanhol'">
-      <xsl:text>ES</xsl:text>
-    </xsl:when>
-    <xsl:when test="$Idioma='Francês'">
-      <xsl:text>FR</xsl:text>
-    </xsl:when>
-    <!-- Outros idiomas podem ser contemplados segundo ISO 639/> -->
-    <xsl:otherwise>
-      <xsl:text>Other</xsl:text>
-    </xsl:otherwise>
-    </xsl:choose>
+    <xsl:param name="Idioma"></xsl:param>
+    <dc:language> 
+      <xsl:choose>
+	<xsl:when test="$Idioma='Português'">
+	  <xsl:text>PT</xsl:text>
+	</xsl:when>
+	<xsl:when test="$Idioma='Inglês'">
+	  <xsl:text>EN</xsl:text>
+	</xsl:when>
+	<xsl:when test="$Idioma='Espanhol'">
+	  <xsl:text>ES</xsl:text>
+	</xsl:when>
+	<xsl:when test="$Idioma='Francês'">
+	<xsl:text>FR</xsl:text>
+	</xsl:when>
+      <!-- Outros idiomas podem ser contemplados segundo ISO 639/> -->
+      <xsl:otherwise>
+	<xsl:text>Other</xsl:text>
+      </xsl:otherwise>
+      </xsl:choose>
     </dc:language>
-</xsl:template>
+  </xsl:template>
 
-
-  <xsl:template match="DADOS-BASICOS-DO-ARTIGO">
-    <dc:title> <xsl:value-of select="@TITULO-DO-ARTIGO" /> </dc:title>
-    <dcterms:issued>  <xsl:value-of select="@ANO-DO-ARTIGO" /> </dcterms:issued>
-    <xsl:call-template name="LINGUA">
-      <xsl:with-param name="Idioma" select="@IDIOMA"></xsl:with-param>
-    </xsl:call-template>
+  <xsl:template 
+      match="ARTIGO-PUBLICADO/AUTORES|ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES|LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES|CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
+    <dc:creator>
+      <rdf:Description rdf:nodeID="{generate-id()}">
+	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
+	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
+	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
+      </rdf:Description>
+    </dc:creator>
   </xsl:template>
 
   <xsl:template match="DETALHAMENTO-DO-ARTIGO">
     <dcterms:isPartOf>
       <rdf:Description>
 	<xsl:if test="string-length(@ISSN)>0">
-	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',@ISSN)"/> </xsl:attribute>
+	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> </xsl:attribute>
 	</xsl:if>
 	<rdf:type rdf:resource="http://purl.org/ontology/bibo/Journal" />
-	<dc:title> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </dc:title>
 	<rdfs:label> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </rdfs:label>
+
+	<dc:title> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </dc:title>
+	<bibo:issn> <xsl:value-of select="@ISSN"/> </bibo:issn>
       </rdf:Description>
     </dcterms:isPartOf>
     <swrc:pages> <xsl:value-of select="concat(@PAGINA-INICIAL,'-',@PAGINA-FINAL)"/> </swrc:pages>
     <swrc:volume> <xsl:value-of select="@VOLUME"/> </swrc:volume>
   </xsl:template>
 
-  <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
-    <dc:creator>
-      <rdf:Description rdf:nodeID="{generate-id()}">
-	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
-	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
-	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
-	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
-      </rdf:Description>
-    </dc:creator>
-  </xsl:template>
-  
-  <xsl:template match="ARTIGO-PUBLICADO/AUTORES">
-    <dc:creator>
-    <rdf:Description rdf:nodeID="{generate-id()}">
-	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
-	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
-	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
-	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
-      </rdf:Description>
-    </dc:creator>
-  </xsl:template>
-  
-  <xsl:template match="ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES">
-    <dc:creator>
-      <rdf:Description rdf:nodeID="{generate-id()}">
-	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
-	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
-	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
-	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
-      </rdf:Description>
-    </dc:creator>
-  </xsl:template>
-  
-  <xsl:template match="LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES">
-    <dc:creator>
-      <rdf:Description rdf:nodeID="{generate-id()}">
-	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
-	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
-	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
-	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
-      </rdf:Description>
-    </dc:creator>
-  </xsl:template>
-
-
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
-    <xsl:param name="data">NoValue</xsl:param>
+    <xsl:param name="provenance">NA</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
-      <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
-      <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Article" />
-      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+      <rdf:type rdf:resource="http://purl.org/ontology/bibo/Article" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /> </rdfs:label>
-      <dc:source><xsl:value-of select="$data"/></dc:source> 
-      <xsl:apply-templates />
+
+      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+      <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /> </dc:title>
+      <dcterms:issued> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO" /> </dcterms:issued>
+      <dc:provenance> <xsl:value-of select="$provenance"/> </dc:provenance>
+      <xsl:call-template name="LINGUA">
+	<xsl:with-param name="Idioma" select="@IDIOMA"></xsl:with-param>
+      </xsl:call-template>
+      <xsl:apply-templates select="AUTORES|DETALHAMENTO-DO-ARTIGO" />
     </rdf:Description>
   </xsl:template>
-      
+
   <xsl:template match="LIVRO-PUBLICADO-OU-ORGANIZADO">
-    <xsl:param name="data">NoValue</xsl:param>
+    <xsl:param name="provenance">NA</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
-      <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
-      <!-- <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#Book" /> -->
       <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book" />
-      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </rdfs:label>
+
+      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </dc:title>
-      <dc:source><xsl:value-of select="$data"/></dc:source> 
+      <dc:provenance><xsl:value-of select="$provenance"/> </dc:provenance>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@ANO" /> </dcterms:issued>
-    <xsl:call-template name="LINGUA">
-      <xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"></xsl:with-param>
-    </xsl:call-template>
-       <dcterms:publisher> <xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /> </dcterms:publisher>
-      <xsl:apply-templates />
+      <xsl:call-template name="LINGUA">
+	<xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"></xsl:with-param>
+      </xsl:call-template>
+      <dcterms:publisher> <xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /> </dcterms:publisher>
+      <xsl:apply-templates select="AUTORES" />
     </rdf:Description>
   </xsl:template>
 
   <xsl:template match="DETALHAMENTO-DO-CAPITULO">
     <rdf:Description>
       <xsl:if test="string-length(@ISBN)>0">
-	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISBN:',@ISBN)"/> </xsl:attribute>
+	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISBN:',translate(@ISBN,' ','-'))"/> </xsl:attribute>
       </xsl:if>
-      
-      <rdfs:label> <xsl:value-of select="@TITULO-DO-LIVRO" /> </rdfs:label>
-      <dc:title> <xsl:value-of select="@TITULO-DO-LIVRO" /> </dc:title>
       <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book" />
+      <rdfs:label> <xsl:value-of select="@TITULO-DO-LIVRO" /> </rdfs:label>
+
+      <dc:title> <xsl:value-of select="@TITULO-DO-LIVRO" /> </dc:title>
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <bibo:isbn> <xsl:value-of select="@ISBN"/> </bibo:isbn>
       <dcterms:publisher> <xsl:value-of select="@NOME-DA-EDITORA"/> </dcterms:publisher>
@@ -163,14 +144,14 @@
   </xsl:template>
   
   <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO">
-    <xsl:param name="data">NoValue</xsl:param>
+    <xsl:param name="provenance">NA</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
-      <!-- <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" /> -->
-      <rdf:type rdf:resource="http://swrc.ontoware.org/ontology#InBook" />
-      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+      <rdf:type rdf:resource="http://purl.org/ontology/bibo/Chapter" />
       <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </rdfs:label>
+
+      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </dc:title>
-      <dc:source><xsl:value-of select="$data"/></dc:source>
+      <dc:provenance> <xsl:value-of select="$provenance"/> </dc:provenance>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
       <xsl:call-template name="LINGUA">
 	<xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"></xsl:with-param>

@@ -13,10 +13,16 @@
 @prefix   list: <http://www.w3.org/2000/10/swap/list#>   .
 @prefix    log: <http://www.w3.org/2000/10/swap/log#> .
 
-
+{ ?x foaf:name ?n1 .
+  ?y foaf:name ?n2 .
+  ?x log:notEqualTo ?y .
+  ?n1 log:notEqualTo ?n2 .
+  ?n1 string:similarnames ?n2 . } => { ?x owl:seeAlso ?y } .
+ 
 { ?x foaf:name ?n ;
      foaf:citation-name ?cn .
   ?y foaf:name ?n ;
-     foaf:citation-name ?cn . } => { ?x owl:sameAs ?y } .
+     foaf:citation-name ?cn .
+  ?x log:notEqualTo ?y . } => { ?x owl:sameAs ?y } .
 
-
+ 
