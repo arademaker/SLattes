@@ -16,7 +16,8 @@ academic activites and personal information.
 Usage:
 ======
 
-$ xsltproc lattes.xsl CURRICULUM.xml > CURRICULUM.rdf 
+$ xsltproc --stringparam ID LATTESID lattes.xsl CURRICULIUM.xml > CURRICULIUM.rdf
+
 
 Reasoning:
 ==========

@@ -12,18 +12,29 @@
 		xmlns:bibo="http://purl.org/ontology/bibo/" 
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
+<xsl:param name="ID">unknown</xsl:param>
+
   <xsl:template match="/">
     <rdf:RDF>
+      <xsl:attribute name="xml:base"> <xsl:value-of select="concat('http://www.fgv.br/lattes/',$ID)"/> </xsl:attribute>
       <xsl:apply-templates />
     </rdf:RDF>
   </xsl:template>
-  
-  <xsl:template match="CURRICULO-VITAE">       
-    <xsl:apply-templates>
-      <xsl:with-param name="provenance" select="DADOS-GERAIS/ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"></xsl:with-param>
-    </xsl:apply-templates> 
-  </xsl:template>
 
+  <xsl:template match="CURRICULO-VITAE">
+    <rdf:Description rdf:about="">
+      <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" />
+      <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+      <rdfs:label> CV Lattes de <xsl:value-of select="DADOS-GERAIS/@NOME-COMPLETO"/> </rdfs:label>
+      <dc:title> CV Lattes de <xsl:value-of select="DADOS-GERAIS/@NOME-COMPLETO"/> </dc:title>
+      <dcterms:issued> <xsl:value-of select="@DATA-ATUALIZACAO" /> </dcterms:issued>
+      <dc:creator> 
+	<xsl:apply-templates select="DADOS-GERAIS"/> 
+      </dc:creator>
+    </rdf:Description>
+    <xsl:apply-templates />
+  </xsl:template>
+  
   <xsl:template match="DADOS-GERAIS">
     <rdf:Description>
       <xsl:if test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
@@ -102,11 +113,12 @@
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /> </dc:title>
       <dcterms:issued> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO" /> </dcterms:issued>
-      <dc:provenance> <xsl:value-of select="$provenance"/> </dc:provenance>
       <xsl:call-template name="LINGUA">
 	<xsl:with-param name="Idioma" select="@IDIOMA"></xsl:with-param>
       </xsl:call-template>
       <xsl:apply-templates select="AUTORES|DETALHAMENTO-DO-ARTIGO" />
+
+      <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
 
@@ -118,13 +130,14 @@
 
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </dc:title>
-      <dc:provenance><xsl:value-of select="$provenance"/> </dc:provenance>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@ANO" /> </dcterms:issued>
       <xsl:call-template name="LINGUA">
 	<xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"></xsl:with-param>
       </xsl:call-template>
       <dcterms:publisher> <xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /> </dcterms:publisher>
       <xsl:apply-templates select="AUTORES" />
+
+      <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
 
@@ -151,7 +164,6 @@
 
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </dc:title>
-      <dc:provenance> <xsl:value-of select="$provenance"/> </dc:provenance>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
       <xsl:call-template name="LINGUA">
 	<xsl:with-param name="Idioma" select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"></xsl:with-param>
@@ -160,6 +172,8 @@
 	<xsl:apply-templates select="DETALHAMENTO-DO-CAPITULO" />
       </dcterms:isPartOf>
       <xsl:apply-templates select="AUTORES" />
+
+      <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
 
