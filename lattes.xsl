@@ -25,14 +25,14 @@
     <rdf:Description rdf:about="">
       <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
-      <rdfs:label> CV Lattes de <xsl:value-of select="DADOS-GERAIS/@NOME-COMPLETO"/> </rdfs:label>
-      <dc:title> CV Lattes de <xsl:value-of select="DADOS-GERAIS/@NOME-COMPLETO"/> </dc:title>
+      <dc:title>CV Lattes de <xsl:value-of select="DADOS-GERAIS/@NOME-COMPLETO"/></dc:title>
+      <bibo:identifier> <xsl:value-of select="@NUMERO-IDENTIFICADOR"/> </bibo:identifier>
       <dcterms:issued> <xsl:value-of select="@DATA-ATUALIZACAO" /> </dcterms:issued>
       <dc:creator> 
 	<xsl:apply-templates select="DADOS-GERAIS"/> 
       </dc:creator>
     </rdf:Description>
-    <xsl:apply-templates />
+    <xsl:apply-templates select="PRODUCAO-BIBLIOGRAFICA" />
   </xsl:template>
   
   <xsl:template match="DADOS-GERAIS">
@@ -40,10 +40,7 @@
       <xsl:if test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
 	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('mailto:',ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)"/> </xsl:attribute>
       </xsl:if>
-      
       <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
-      <rdfs:label> <xsl:value-of select="@NOME-COMPLETO" /> </rdfs:label>
-
       <foaf:name> <xsl:value-of select="@NOME-COMPLETO"/> </foaf:name>
       <foaf:citation-name> <xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/> </foaf:citation-name>
       <foaf:homepage> <xsl:value-of select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> </foaf:homepage>
@@ -81,7 +78,6 @@
       <rdf:Description rdf:nodeID="{generate-id()}">
 	<foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/> </foaf:name>
 	<foaf:citation-name> <xsl:value-of select="@NOME-PARA-CITACAO"/> </foaf:citation-name>
-	<rdfs:label> <xsl:value-of select="@NOME-COMPLETO-DO-AUTOR" /> </rdfs:label>
 	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent" />
       </rdf:Description>
     </dc:creator>
@@ -94,8 +90,6 @@
 	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> </xsl:attribute>
 	</xsl:if>
 	<rdf:type rdf:resource="http://purl.org/ontology/bibo/Journal" />
-	<rdfs:label> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </rdfs:label>
-
 	<dc:title> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </dc:title>
 	<bibo:issn> <xsl:value-of select="@ISSN"/> </bibo:issn>
       </rdf:Description>
@@ -105,11 +99,8 @@
   </xsl:template>
 
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
-    <xsl:param name="provenance">NA</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="http://purl.org/ontology/bibo/Article" />
-      <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /> </rdfs:label>
-
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /> </dc:title>
       <dcterms:issued> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO" /> </dcterms:issued>
@@ -123,11 +114,8 @@
   </xsl:template>
 
   <xsl:template match="LIVRO-PUBLICADO-OU-ORGANIZADO">
-    <xsl:param name="provenance">NA</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book" />
-      <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </rdfs:label>
-
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </dc:title>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@ANO" /> </dcterms:issued>
@@ -147,8 +135,6 @@
 	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISBN:',translate(@ISBN,' ','-'))"/> </xsl:attribute>
       </xsl:if>
       <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book" />
-      <rdfs:label> <xsl:value-of select="@TITULO-DO-LIVRO" /> </rdfs:label>
-
       <dc:title> <xsl:value-of select="@TITULO-DO-LIVRO" /> </dc:title>
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <bibo:isbn> <xsl:value-of select="@ISBN"/> </bibo:isbn>
@@ -157,11 +143,8 @@
   </xsl:template>
   
   <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO">
-    <xsl:param name="provenance">NA</xsl:param>
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="http://purl.org/ontology/bibo/Chapter" />
-      <rdfs:label> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </rdfs:label>
-
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </dc:title>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
