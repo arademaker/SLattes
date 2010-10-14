@@ -3,6 +3,15 @@ This is an updated version of the Lattes DTD. This DTD specification
 is not uptated by CNPq since 2003/2004.
 
 More info:
+==========
+
  * http://lattes.cnpq.br/
  * http://lmpl.cnpq.br/lmpl/ (precisely at http://lmpl.cnpq.br/lmpl/index.jsp?go=cv.jsp)
+
+Instructions:
+=============
+
+We supply a simple python script. Moreover, in *Nix systems you can run:
+
+$ xmllint --dtdvalid LMPLCurriculo.DTD --noout <LATTES-XML> 
 
