@@ -7,7 +7,7 @@ try:
     dtd = etree.DTD(sys.argv[1])
     root = etree.parse(sys.argv[2])
     if dtd.validate(root) == False:
-        print dtd.error_log.filter_from_errors()[0]
+        print dtd.error_log.filter_from_errors()
 except:
     print 'USE:\n\t validate.py <arquivo> \n'
     sys.exit(1)
