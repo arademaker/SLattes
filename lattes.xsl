@@ -101,26 +101,36 @@
   </xsl:template>
 
   <xsl:template match="AREA-DE-ATUACAO">
-    <xsl:apply-templates select="attribute::*" />
-  </xsl:template>
-
-  <xsl:template match="AREA-DE-ATUACAO/@NOME-GRANDE-AREA-DO-CONHECIMENTO">
-    <skos:Concept rdf:nodeID="{generate-id(.)}">
-      <skos:label><xsl:value-of select="."/></skos:label>
+    <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+      <skos:label><xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/></skos:label>
       <skos:narrower>
-	<xsl:apply-templates select="following-sibling::*" />
+	<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+	  <skos:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:label>
+	  <skos:narrower>
+	    <xsl:apply-templates select="following-sibling::*" />
+	  </skos:narrower>	
+	</skos:Concept>
       </skos:narrower>	
     </skos:Concept>
   </xsl:template>
 
-  <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-AREA-DO-CONHECIMENTO">
-    <skos:Concept rdf:nodeID="{generate-id(.)}">
-      <skos:label><xsl:value-of select="."/></skos:label>
-      <skos:narrower>
-	<xsl:apply-templates select="following-sibling::*" />
-      </skos:narrower>	
-    </skos:Concept>
-  </xsl:template>
+  <!-- <xsl:template match="AREA-DE-ATUACAO/@NOME-GRANDE-AREA-DO-CONHECIMENTO"> -->
+  <!--   <skos:Concept rdf:nodeID="{generate-id(.)}"> -->
+  <!--     <skos:label><xsl:value-of select="."/></skos:label> -->
+  <!--     <skos:narrower> -->
+  <!-- 	<xsl:apply-templates select="following-sibling::*" /> -->
+  <!--     </skos:narrower>	 -->
+  <!--   </skos:Concept> -->
+  <!-- </xsl:template> -->
+
+  <!-- <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-AREA-DO-CONHECIMENTO"> -->
+  <!--   <skos:Concept rdf:nodeID="{generate-id(.)}"> -->
+  <!--     <skos:label><xsl:value-of select="."/></skos:label> -->
+  <!--     <skos:narrower> -->
+  <!-- 	<xsl:apply-templates select="following-sibling::*" /> -->
+  <!--     </skos:narrower>	 -->
+  <!--   </skos:Concept> -->
+  <!-- </xsl:template> -->
 
   <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-SUB-AREA-DO-CONHECIMENTO">
     <skos:Concept rdf:nodeID="{generate-id(.)}">
