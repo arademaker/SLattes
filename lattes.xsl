@@ -102,52 +102,26 @@
 
   <xsl:template match="AREA-DE-ATUACAO">
     <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
-      <skos:label><xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/></skos:label>
+      <skos:prefLabel><xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
       <skos:narrower>
 	<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
-	  <skos:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:label>
+	  <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 	  <skos:narrower>
-	    <xsl:apply-templates select="following-sibling::*" />
+	    <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+	      <skos:related>
+		<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+		  <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
+		</skos:Concept>
+	      </skos:related>	
+	    </skos:Concept>
 	  </skos:narrower>	
 	</skos:Concept>
       </skos:narrower>	
     </skos:Concept>
   </xsl:template>
 
-  <!-- <xsl:template match="AREA-DE-ATUACAO/@NOME-GRANDE-AREA-DO-CONHECIMENTO"> -->
-  <!--   <skos:Concept rdf:nodeID="{generate-id(.)}"> -->
-  <!--     <skos:label><xsl:value-of select="."/></skos:label> -->
-  <!--     <skos:narrower> -->
-  <!-- 	<xsl:apply-templates select="following-sibling::*" /> -->
-  <!--     </skos:narrower>	 -->
-  <!--   </skos:Concept> -->
-  <!-- </xsl:template> -->
-
-  <!-- <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-AREA-DO-CONHECIMENTO"> -->
-  <!--   <skos:Concept rdf:nodeID="{generate-id(.)}"> -->
-  <!--     <skos:label><xsl:value-of select="."/></skos:label> -->
-  <!--     <skos:narrower> -->
-  <!-- 	<xsl:apply-templates select="following-sibling::*" /> -->
-  <!--     </skos:narrower>	 -->
-  <!--   </skos:Concept> -->
-  <!-- </xsl:template> -->
-
-  <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-SUB-AREA-DO-CONHECIMENTO">
-    <skos:Concept rdf:nodeID="{generate-id(.)}">
-      <skos:label><xsl:value-of select="."/></skos:label>
-      <skos:narrower>
-	<xsl:apply-templates select="following-sibling::*" />
-      </skos:narrower>	
-    </skos:Concept>
-  </xsl:template>
-
-  <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-ESPECIALIDADE">
-    <skos:Concept rdf:nodeID="{generate-id(.)}">
-      <skos:label><xsl:value-of select="."/></skos:label>
-    </skos:Concept>
-  </xsl:template>
-  
-  
+   
   <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES|ARTIGO-PUBLICADO/AUTORES|ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES|
                        LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES|CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
     <dc:creator>
