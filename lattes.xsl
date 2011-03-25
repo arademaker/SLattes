@@ -101,26 +101,25 @@
   </xsl:template>
 
   <xsl:template match="AREA-DE-ATUACAO">
-    <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
-      <skos:prefLabel><xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-      <skos:narrower>
-	<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
-	  <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+    <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+      <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
+      <skos:related>
+	<skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+	  <skos:prefLabel><xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 	  <skos:narrower>
-	    <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
-	      <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-	      <skos:related>
-		<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
-		  <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
+	    <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+	      <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+	      <skos:narrower>
+		<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		  <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		</skos:Concept>
-	      </skos:related>	
+	      </skos:narrower>	
 	    </skos:Concept>
 	  </skos:narrower>	
 	</skos:Concept>
-      </skos:narrower>	
+      </skos:related>
     </skos:Concept>
   </xsl:template>
-
    
   <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES|ARTIGO-PUBLICADO/AUTORES|ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES|
                        LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES|CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
