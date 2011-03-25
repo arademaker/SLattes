@@ -6,6 +6,7 @@
  <!ENTITY swrc "http://swrc.ontoware.org/ontology#">
  <!ENTITY foaf "http://xmlns.com/foaf/0.1/">
  <!ENTITY  geo "http://www.w3.org/2003/01/geo/wgs84_pos#"> 
+ <!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
 ]>
 
 <xsl:stylesheet version="1.0" 
@@ -16,6 +17,7 @@
 		xmlns:foaf="http://xmlns.com/foaf/0.1/" 
 		xmlns:dc="http://purl.org/dc/elements/1.1/"
 		xmlns:dcterms="http://purl.org/dc/terms/"
+		xmlns:skos="http://www.w3.org/2004/02/skos/core#" 
 		xmlns:swrc="http://swrc.ontoware.org/ontology#" 
 		xmlns:event="http://purl.org/NET/c4dm/event.owl#" 
 		xmlns:gn="http://www.geonames.org/ontology#" 
@@ -79,7 +81,7 @@
     </rdf:Description>
     <xsl:apply-templates select="PRODUCAO-BIBLIOGRAFICA|OUTRA-PRODUCAO" />
   </xsl:template>
-  
+
   <xsl:template match="DADOS-GERAIS">
     <rdf:Description rdf:about="{$authorCV}">
       <foaf:identifier><xsl:value-of select="$authorCV"/></foaf:identifier>
@@ -88,8 +90,53 @@
       <foaf:citationName><xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/></foaf:citationName>
       <foaf:mbox><xsl:value-of select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/></foaf:mbox>
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
+      <foaf:topic_interest>
+	<xsl:apply-templates select="AREAS-DE-ATUACAO" />
+      </foaf:topic_interest>
     </rdf:Description>
   </xsl:template>
+
+  <xsl:template match="AREAS-DE-ATUACAO">
+    <xsl:apply-templates />
+  </xsl:template>
+
+  <xsl:template match="AREA-DE-ATUACAO">
+    <xsl:apply-templates select="attribute::*" />
+  </xsl:template>
+
+  <xsl:template match="AREA-DE-ATUACAO/@NOME-GRANDE-AREA-DO-CONHECIMENTO">
+    <skos:Concept rdf:nodeID="{generate-id(.)}">
+      <skos:label><xsl:value-of select="."/></skos:label>
+      <skos:narrower>
+	<xsl:apply-templates select="following-sibling::*" />
+      </skos:narrower>	
+    </skos:Concept>
+  </xsl:template>
+
+  <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-AREA-DO-CONHECIMENTO">
+    <skos:Concept rdf:nodeID="{generate-id(.)}">
+      <skos:label><xsl:value-of select="."/></skos:label>
+      <skos:narrower>
+	<xsl:apply-templates select="following-sibling::*" />
+      </skos:narrower>	
+    </skos:Concept>
+  </xsl:template>
+
+  <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-SUB-AREA-DO-CONHECIMENTO">
+    <skos:Concept rdf:nodeID="{generate-id(.)}">
+      <skos:label><xsl:value-of select="."/></skos:label>
+      <skos:narrower>
+	<xsl:apply-templates select="following-sibling::*" />
+      </skos:narrower>	
+    </skos:Concept>
+  </xsl:template>
+
+  <xsl:template match="AREA-DE-ATUACAO/@NOME-DA-ESPECIALIDADE">
+    <skos:Concept rdf:nodeID="{generate-id(.)}">
+      <skos:label><xsl:value-of select="."/></skos:label>
+    </skos:Concept>
+  </xsl:template>
+  
   
   <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES|ARTIGO-PUBLICADO/AUTORES|ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES|
                        LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES|CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
@@ -369,7 +416,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="text()|@*">
+  <xsl:template match="text()|@*" priority="-1">
   </xsl:template>
 
 </xsl:stylesheet>
