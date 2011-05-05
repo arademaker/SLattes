@@ -138,6 +138,7 @@
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO" /></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@HOME-PAGE-DO-TRABALHO"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@DOI"/>
 
       <bibo:presentedAt>
 	<rdf:Description dc:title="{DETALHAMENTO-DO-TRABALHO/@NOME-DO-EVENTO}">
@@ -215,6 +216,7 @@
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO" /></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@HOME-PAGE-DO-TRABALHO"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@DOI"/>
 
       <xsl:apply-templates select="AUTORES|DETALHAMENTO-DO-ARTIGO" />
       <bibo:authorList rdf:parseType="Collection">
@@ -256,6 +258,7 @@
       </bibo:authorList>
 
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@DOI"/>
       <xsl:apply-templates select="DETALHAMENTO-DO-LIVRO/@ISBN"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@HOME-PAGE-DO-TRABALHO"/>
       <dcterms:isReferencedBy rdf:resource="" />
@@ -301,6 +304,7 @@
       </bibo:authorList>
 
       <xsl:apply-templates select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-CAPITULO/@DOI"/>
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
@@ -384,6 +388,12 @@
   <xsl:template match="@HOME-PAGE|@HOME-PAGE-DO-TRABALHO">
     <xsl:if test="normalize-space(.) != ''">
       <foaf:homepage><xsl:value-of select="."/></foaf:homepage>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="@DOI">
+    <xsl:if test="normalize-space(.) != ''">
+      <bibo:doi><xsl:value-of select="."/></bibo:doi>
     </xsl:if>
   </xsl:template>
 
