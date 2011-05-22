@@ -1,9 +1,8 @@
 
-This project is about the construction of tools to process and
-transform XML Brazilian Curriculum Lattes files [1] to RDF data
-[2]. So that, the purpose of this project is to bridging the gap
-between the Brazilian Curriculum Lattes plataform and semantic web
-technologies.
+The purpose of this project is to bridging the gap between the
+Brazilian Curriculum Lattes plataform and semantic web
+technologies. We present a XSLT stylesheet that process XML Brazilian
+Curriculum Lattes files [1] generating RDF data [2].
 
 Status:
 =======

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE rdf:RDF [
  <!ENTITY  xsd "http://www.w3.org/2001/XMLSchema#"> 
@@ -7,6 +7,7 @@
  <!ENTITY foaf "http://xmlns.com/foaf/0.1/">
  <!ENTITY  geo "http://www.w3.org/2003/01/geo/wgs84_pos#"> 
  <!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
+ <!ENTITY doac "http://ramonantonio.net/doac/0.1/">
 ]>
 
 <xsl:stylesheet version="1.0" 
@@ -16,6 +17,7 @@
 		xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
 		xmlns:foaf="http://xmlns.com/foaf/0.1/" 
 		xmlns:dc="http://purl.org/dc/elements/1.1/"
+		xmlns:doac="http://ramonantonio.net/doac/0.1/" 
 		xmlns:dcterms="http://purl.org/dc/terms/"
 		xmlns:skos="http://www.w3.org/2004/02/skos/core#" 
 		xmlns:swrc="http://swrc.ontoware.org/ontology#" 
@@ -24,6 +26,8 @@
 		xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
 		xmlns:bibo="http://purl.org/ontology/bibo/" 
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
+
+  <xsl:output method="xml" encoding="UTF-8" indent="yes"/> 
 
   <xsl:param name="ID">unknown</xsl:param>
 
@@ -87,38 +91,77 @@
       <foaf:identifier><xsl:value-of select="$authorCV"/></foaf:identifier>
       <rdf:type rdf:resource="&foaf;Agent" />
       <foaf:name><xsl:value-of select="@NOME-COMPLETO"/></foaf:name>
+      <!-- DOES NOT REALLY EXISTS IN FOAF-->
       <foaf:citationName><xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/></foaf:citationName>
       <foaf:mbox><xsl:value-of select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/></foaf:mbox>
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
-      <foaf:topic_interest>
-	<xsl:apply-templates select="AREAS-DE-ATUACAO" />
-      </foaf:topic_interest>
+      <xsl:apply-templates select="AREAS-DE-ATUACAO" />
+      <xsl:apply-templates select="IDIOMAS" />
     </rdf:Description>
   </xsl:template>
 
-  <xsl:template match="AREAS-DE-ATUACAO">
+  <xsl:template match="AREAS-DE-ATUACAO|IDIOMAS">
     <xsl:apply-templates />
   </xsl:template>
 
+  <xsl:template match="IDIOMA">
+    <doac:skill>
+      <doac:LanguageSkill>
+	<doac:language><xsl:value-of select="@IDIOMA"/></doac:language>
+	<doac:language><xsl:value-of select="@DESCRICAO-DO-IDIOMA"/></doac:language>
+	<doac:reads><xsl:value-of select="@PROFICIENCIA-DE-LEITURA"/></doac:reads>
+	<doac:speaks><xsl:value-of select="@PROFICIENCIA-DE-FALA"/></doac:speaks>
+	<doac:writes><xsl:value-of select="@PROFICIENCIA-DE-ESCRITA"/></doac:writes>
+	<!-- DOES NOT REALLY EXISTS IN DOAC -->
+	<doac:comprehension><xsl:value-of select="@PROFICIENCIA-DE-COMPREENSAO"/></doac:comprehension>
+      </doac:LanguageSkill>
+    </doac:skill>
+  </xsl:template>
+
   <xsl:template match="AREA-DE-ATUACAO">
-    <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
-      <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
-      <skos:related>
-	<skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
-	  <skos:prefLabel><xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-	  <skos:narrower>
-	    <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
-	      <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-	      <skos:narrower>
-		<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
-		  <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		</skos:Concept>
-	      </skos:narrower>	
-	    </skos:Concept>
-	  </skos:narrower>	
-	</skos:Concept>
-      </skos:related>
-    </skos:Concept>
+    <foaf:topic_interest>
+      <xsl:choose>
+	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
+	  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
+	    <skos:related>
+	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<skos:broader>
+		  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		    <skos:broader>
+		      <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+			<skos:prefLabel>
+			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
+			</skos:prefLabel>
+		      </skos:Concept>
+		    </skos:broader>
+		  </skos:Concept>
+		</skos:broader>
+	      </skos:Concept>
+	    </skos:related>
+	  </skos:Concept>
+	</xsl:when>
+	<xsl:otherwise>
+	  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	    <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+	    <skos:broader>
+	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<skos:broader>
+		  <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		    <skos:prefLabel>
+		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
+		    </skos:prefLabel>
+		  </skos:Concept>
+		</skos:broader>
+	      </skos:Concept>
+	    </skos:broader>
+	  </skos:Concept>
+	</xsl:otherwise>
+      </xsl:choose>
+    </foaf:topic_interest>
   </xsl:template>
    
   <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES|ARTIGO-PUBLICADO/AUTORES|ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES|
