@@ -127,18 +127,18 @@
 	    <skos:related>
 	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		<skos:broader>
+		<skos:narrower>
 		  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		    <skos:broader>
+		    <skos:narrower>
 		      <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
 		      </skos:Concept>
-		    </skos:broader>
+		    </skos:narrower>
 		  </skos:Concept>
-		</skos:broader>
+		</skos:narrower>
 	      </skos:Concept>
 	    </skos:related>
 	  </skos:Concept>
@@ -146,18 +146,18 @@
 	<xsl:otherwise>
 	  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 	    <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-	    <skos:broader>
+	    <skos:narrower>
 	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		<skos:broader>
+		<skos:narrower>
 		  <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </skos:prefLabel>
 		  </skos:Concept>
-		</skos:broader>
+		</skos:narrower>
 	      </skos:Concept>
-	    </skos:broader>
+	    </skos:narrower>
 	  </skos:Concept>
 	</xsl:otherwise>
       </xsl:choose>
