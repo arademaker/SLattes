@@ -8,10 +8,12 @@
  <!ENTITY  geo "http://www.w3.org/2003/01/geo/wgs84_pos#"> 
  <!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
  <!ENTITY doac "http://ramonantonio.net/doac/0.1/">
+ <!ENTITY bio  "http://purl.org/vocab/bio/0.1/">
 ]>
 
 <xsl:stylesheet version="1.0" 
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+		xmlns:bio="http://purl.org/vocab/bio/0.1/" 
 		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 		xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 		xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
@@ -90,6 +92,14 @@
     <rdf:Description rdf:about="{$authorCV}">
       <foaf:identifier><xsl:value-of select="$authorCV"/></foaf:identifier>
       <rdf:type rdf:resource="&foaf;Agent" />
+      <foaf:gender><xsl:value-of select="@SEXO"/></foaf:gender>
+      <bio:event>
+	<bio:Birth>
+	  <bio:date><xsl:value-of select="@DATA-NASCIMENTO"/></bio:date>
+	  <bio:place><xsl:value-of select="@CIDADE-NASCIMENTO"/></bio:place>
+	  <bio:place><xsl:value-of select="@PAIS-DE-NASCIMENTO"/></bio:place>
+	</bio:Birth>
+      </bio:event>
       <foaf:name><xsl:value-of select="@NOME-COMPLETO"/></foaf:name>
       <!-- DOES NOT REALLY EXISTS IN FOAF-->
       <foaf:citationName><xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/></foaf:citationName>
