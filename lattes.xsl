@@ -29,34 +29,23 @@
 		xmlns:bibo="http://purl.org/ontology/bibo/" 
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
-  <xsl:output method="xml" encoding="UTF-8" indent="yes"/> 
+  <xsl:output method="xml" encoding="UTF-8"/>   <!-- indent="yes"  -->
 
   <xsl:param name="ID">unknown</xsl:param>
-
-  <xsl:variable name="authorCV">
-    <xsl:choose>
-      <xsl:when test="string-length(CURRICULO-VITAE/DADOS-GERAIS/ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
-	<xsl:value-of select="concat('mailto:',CURRICULO-VITAE/DADOS-GERAIS/ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of select="generate-id()"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
 
   <xsl:template match="/">
     <rdf:RDF>
       <xsl:attribute name="xml:base"><xsl:value-of select="concat('http://www.fgv.br/lattes/',$ID)"/></xsl:attribute>
       <xsl:apply-templates />
 
-      <xsl:apply-templates select="//AUTORES" mode="autores"/>
+      <xsl:apply-templates select="//AUTORES" mode="full"/>
     </rdf:RDF>
   </xsl:template>
 
-  <xsl:template match="AUTORES" mode="autores">
+  <xsl:template match="AUTORES" mode="full">
     <rdf:Description>
       <xsl:attribute name="rdf:about">
-	<xsl:value-of select="concat('#author/',generate-id(.))"/>
+	<xsl:value-of select="concat('#author-',generate-id(.))"/>
       </xsl:attribute>
       <xsl:if test="normalize-space(@NRO-ID-CNPQ) != ''">
 	<foaf:identifier><xsl:value-of select="@NRO-ID-CNPQ"/></foaf:identifier>
@@ -65,6 +54,17 @@
       <foaf:citationName><xsl:value-of select="@NOME-PARA-CITACAO"/></foaf:citationName>
       <rdf:type rdf:resource="&foaf;Agent" />
     </rdf:Description>
+  </xsl:template>
+
+  <xsl:template match="DADOS-GERAIS" mode="ref">
+    <xsl:choose>
+      <xsl:when test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
+	<xsl:value-of select="concat('mailto:',ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat('#author-', generate-id(.))"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="CURRICULO-VITAE">
@@ -80,18 +80,23 @@
 	  <bibo:identifier> <xsl:value-of select="$ID"/> </bibo:identifier>
 	</xsl:otherwise>
       </xsl:choose>
-      <dcterms:issued> <xsl:value-of select="@DATA-ATUALIZACAO" /> </dcterms:issued>
-      <dc:creator> 
-	<xsl:apply-templates select="DADOS-GERAIS"/> 
-      </dc:creator>
+      <dcterms:issued><xsl:value-of select="@DATA-ATUALIZACAO" /></dcterms:issued>
+      <dc:creator><xsl:apply-templates select="DADOS-GERAIS"/></dc:creator>
     </rdf:Description>
     <xsl:apply-templates select="PRODUCAO-BIBLIOGRAFICA|OUTRA-PRODUCAO" />
   </xsl:template>
 
   <xsl:template match="DADOS-GERAIS">
-    <rdf:Description rdf:about="{$authorCV}">
-      <foaf:identifier><xsl:value-of select="$authorCV"/></foaf:identifier>
+    <rdf:Description>
+      <xsl:attribute name="rdf:about">
+	<xsl:apply-templates select="." mode="ref"/>
+      </xsl:attribute>
       <rdf:type rdf:resource="&foaf;Agent" />
+      <xsl:if test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
+	<foaf:identifier>
+	  <xsl:apply-templates select="." mode="ref"/>
+	</foaf:identifier>
+      </xsl:if>
       <foaf:gender><xsl:value-of select="@SEXO"/></foaf:gender>
       <bio:event>
 	<bio:Birth>
@@ -103,7 +108,7 @@
       <foaf:name><xsl:value-of select="@NOME-COMPLETO"/></foaf:name>
       <!-- DOES NOT REALLY EXISTS IN FOAF-->
       <foaf:citationName><xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/></foaf:citationName>
-      <foaf:mbox><xsl:value-of select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/></foaf:mbox>
+      <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/> 
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
       <xsl:apply-templates select="AREAS-DE-ATUACAO" />
       <xsl:apply-templates select="IDIOMAS" />
@@ -154,9 +159,25 @@
 	  </skos:Concept>
 	</xsl:when>
 	<xsl:otherwise>
-	  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
-	    <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-	    <skos:narrower>
+	  <xsl:choose>
+	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
+	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<skos:narrower>
+		  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		    <skos:narrower>
+		      <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+			<skos:prefLabel>
+			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
+			</skos:prefLabel>
+		      </skos:Concept>
+		    </skos:narrower>
+		  </skos:Concept>
+		</skos:narrower>
+	      </skos:Concept>
+	    </xsl:when>
+	    <xsl:otherwise>
 	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:narrower>
@@ -167,8 +188,8 @@
 		  </skos:Concept>
 		</skos:narrower>
 	      </skos:Concept>
-	    </skos:narrower>
-	  </skos:Concept>
+	    </xsl:otherwise>
+	  </xsl:choose>
 	</xsl:otherwise>
       </xsl:choose>
     </foaf:topic_interest>
@@ -178,7 +199,7 @@
                        LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES|CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
     <dc:creator>
       <xsl:attribute name="rdf:resource">
-	<xsl:value-of select="concat('#author/',generate-id(.))"/>
+	<xsl:value-of select="concat('#author-',generate-id(.))"/>
       </xsl:attribute>
     </dc:creator>
   </xsl:template>
@@ -230,7 +251,7 @@
 	  <xsl:sort data-type="number" select="@ORDEM-DE-AUTORIA"/>
 	  <rdf:Description>
 	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#author/',generate-id(.))"/>
+	      <xsl:value-of select="concat('#author-',generate-id(.))"/>
 	    </xsl:attribute>
 	  </rdf:Description>
 	</xsl:for-each>
@@ -277,7 +298,7 @@
 	  <xsl:sort data-type="number" select="@ORDEM-DE-AUTORIA"/>
 	  <rdf:Description>
 	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#author/',generate-id(.))"/>
+	      <xsl:value-of select="concat('#author-',generate-id(.))"/>
 	    </xsl:attribute>
 	  </rdf:Description>
 	</xsl:for-each>
@@ -304,7 +325,7 @@
 	  <xsl:sort data-type="number" select="@ORDEM-DE-AUTORIA"/>
 	  <rdf:Description>
 	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#author/',generate-id(.))"/>
+	      <xsl:value-of select="concat('#author-',generate-id(.))"/>
 	    </xsl:attribute>
 	  </rdf:Description>
 	</xsl:for-each>
@@ -340,7 +361,7 @@
       <rdf:type rdf:resource="&bibo;Chapter" />
       <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </dc:title>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
-      <dcterms:isPartOf> 
+      <dcterms:isPartOf>
 	<xsl:apply-templates select="DETALHAMENTO-DO-CAPITULO" />
       </dcterms:isPartOf>
 
@@ -350,7 +371,7 @@
 	  <xsl:sort data-type="number" select="@ORDEM-DE-AUTORIA"/>
 	  <rdf:Description>
 	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#author/',generate-id(.))"/>
+	      <xsl:value-of select="concat('#author-',generate-id(.))"/>
 	    </xsl:attribute>
 	  </rdf:Description>
 	</xsl:for-each>
@@ -399,7 +420,11 @@
 	  <rdf:type rdf:resource="&foaf;Agent" />
 	</rdf:Description>
       </dc:creator>
-      <dc:contributor rdf:resource="{$authorCV}"/>
+      <dc:contributor>
+	<xsl:attribute name="rdf:resource">
+	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	</xsl:attribute>
+      </dc:contributor>
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
@@ -433,7 +458,11 @@
 	  <rdf:type rdf:resource="&foaf;Agent" />
 	</rdf:Description>
       </dc:creator>
-      <dc:contributor rdf:resource="{$authorCV}"/>
+      <dc:contributor>
+	<xsl:attribute name="rdf:resource">
+	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	</xsl:attribute>
+      </dc:contributor>
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
@@ -441,6 +470,12 @@
   <xsl:template match="@HOME-PAGE|@HOME-PAGE-DO-TRABALHO">
     <xsl:if test="normalize-space(.) != ''">
       <foaf:homepage><xsl:value-of select="."/></foaf:homepage>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="@E-MAIL">
+    <xsl:if test="normalize-space(.) != ''">
+      <foaf:mbox><xsl:value-of select="."/></foaf:mbox>
     </xsl:if>
   </xsl:template>
 
