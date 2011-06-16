@@ -110,8 +110,9 @@
       <foaf:citationName><xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/></foaf:citationName>
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/> 
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
-      <xsl:apply-templates select="AREAS-DE-ATUACAO" />
+
       <xsl:apply-templates select="IDIOMAS" />
+      <xsl:apply-templates select="AREAS-DE-ATUACAO" />
     </rdf:Description>
   </xsl:template>
 
@@ -149,7 +150,7 @@
 		      <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-			</skos:prefLabel>
+		      </skos:prefLabel>
 		      </skos:Concept>
 		    </skos:narrower>
 		  </skos:Concept>
@@ -194,6 +195,68 @@
       </xsl:choose>
     </foaf:topic_interest>
   </xsl:template>
+
+  <xsl:template match="AREA-DO-CONHECIMENTO-1|AREA-DO-CONHECIMENTO-2|AREA-DO-CONHECIMENTO-3">
+    <dcterms:subject>
+      <xsl:choose>
+	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
+	  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
+	    <skos:related>
+	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+	      <skos:narrower>
+		<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		  <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		  <skos:narrower>
+		    <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <skos:prefLabel>
+			<xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
+		      </skos:prefLabel>
+		    </skos:Concept>
+		  </skos:narrower>
+		</skos:Concept>
+	      </skos:narrower>
+	      </skos:Concept>
+	    </skos:related>
+	  </skos:Concept>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:choose>
+	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
+	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<skos:narrower>
+		  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		    <skos:narrower>
+		      <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+			<skos:prefLabel>
+			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
+			</skos:prefLabel>
+		      </skos:Concept>
+		    </skos:narrower>
+		  </skos:Concept>
+		</skos:narrower>
+	      </skos:Concept>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<skos:narrower>
+		  <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		    <skos:prefLabel>
+		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
+		    </skos:prefLabel>
+		  </skos:Concept>
+		</skos:narrower>
+	      </skos:Concept>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:otherwise>
+      </xsl:choose>
+    </dcterms:subject>
+  </xsl:template>
    
   <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES|ARTIGO-PUBLICADO/AUTORES|ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES|
                        LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES|CAPITULO-DE-LIVRO-PUBLICADO/AUTORES">
@@ -202,6 +265,10 @@
 	<xsl:value-of select="concat('#author-',generate-id(.))"/>
       </xsl:attribute>
     </dc:creator>
+  </xsl:template>
+
+  <xsl:template match="AREAS-DO-CONHECIMENTO">
+    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="TRABALHO-EM-EVENTOS">
@@ -213,6 +280,7 @@
       <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@HOME-PAGE-DO-TRABALHO"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@DOI"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
 
       <bibo:presentedAt>
 	<rdf:Description dc:title="{DETALHAMENTO-DO-TRABALHO/@NOME-DO-EVENTO}">
@@ -291,6 +359,7 @@
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@HOME-PAGE-DO-TRABALHO"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@DOI"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
 
       <xsl:apply-templates select="AUTORES|DETALHAMENTO-DO-ARTIGO" />
       <bibo:authorList rdf:parseType="Collection">
@@ -333,6 +402,7 @@
 
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@DOI"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
       <xsl:apply-templates select="DETALHAMENTO-DO-LIVRO/@ISBN"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@HOME-PAGE-DO-TRABALHO"/>
       <dcterms:isReferencedBy rdf:resource="" />
@@ -377,6 +447,7 @@
 	</xsl:for-each>
       </bibo:authorList>
 
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-CAPITULO/@DOI"/>
       <dcterms:isReferencedBy rdf:resource="" />
@@ -399,6 +470,8 @@
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@ANO"/></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@HOME-PAGE"/>
       <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@IDIOMA"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
+
       <bibo:issuer> 
 	<rdf:Description rdf:about="#I{DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@CODIGO-INSTITUICAO}">
 	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
@@ -437,6 +510,8 @@
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@ANO" /></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@HOME-PAGE"/>
       <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@IDIOMA"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
+
       <bibo:issuer> 
 	<rdf:Description rdf:about="#I{DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@CODIGO-INSTITUICAO}">
 	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
