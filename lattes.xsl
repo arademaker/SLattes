@@ -29,7 +29,7 @@
 		xmlns:bibo="http://purl.org/ontology/bibo/" 
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
-  <xsl:output method="xml" encoding="UTF-8"/>   <!-- indent="yes"  -->
+  <xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
   <xsl:param name="ID">unknown</xsl:param>
 
@@ -56,17 +56,6 @@
     </rdf:Description>
   </xsl:template>
 
-  <xsl:template match="DADOS-GERAIS" mode="ref">
-    <xsl:choose>
-      <xsl:when test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
-	<xsl:value-of select="concat('mailto:',ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of select="concat('#author-', generate-id(.))"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <xsl:template match="CURRICULO-VITAE">
     <rdf:Description rdf:about="">
       <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" />
@@ -84,6 +73,26 @@
       <dc:creator><xsl:apply-templates select="DADOS-GERAIS"/></dc:creator>
     </rdf:Description>
     <xsl:apply-templates select="PRODUCAO-BIBLIOGRAFICA|OUTRA-PRODUCAO" />
+  </xsl:template>
+
+  <xsl:template match="DADOS-GERAIS" mode="ref">
+    <xsl:choose>
+      <xsl:when test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
+	<xsl:value-of select="concat('mailto:',ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat('#author-', generate-id(.))"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="OUTRA-PRODUCAO|PRODUCAO-BIBLIOGRAFICA|TRABALHOS-EM-EVENTOS|ARTIGOS-PUBLICADOS|LIVROS-E-CAPITULOS|
+		       LIVROS-PUBLICADOS-OU-ORGANIZADOS|CAPITULOS-DE-LIVROS-PUBLICADOS">
+    <xsl:apply-templates />
+  </xsl:template>
+
+  <xsl:template match="ORIENTACOES-CONCLUIDAS">
+    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="DADOS-GERAIS">
@@ -116,7 +125,7 @@
     </rdf:Description>
   </xsl:template>
 
-  <xsl:template match="AREAS-DE-ATUACAO|IDIOMAS">
+  <xsl:template match="AREAS-DE-ATUACAO|IDIOMAS|AREAS-DO-CONHECIMENTO">
     <xsl:apply-templates />
   </xsl:template>
 
@@ -267,10 +276,6 @@
     </dc:creator>
   </xsl:template>
 
-  <xsl:template match="AREAS-DO-CONHECIMENTO">
-    <xsl:apply-templates />
-  </xsl:template>
-
   <xsl:template match="TRABALHO-EM-EVENTOS">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&swrc;InProceedings" />
@@ -402,9 +407,9 @@
 
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@DOI"/>
-      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
       <xsl:apply-templates select="DETALHAMENTO-DO-LIVRO/@ISBN"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@HOME-PAGE-DO-TRABALHO"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
@@ -447,19 +452,11 @@
 	</xsl:for-each>
       </bibo:authorList>
 
-      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-CAPITULO/@DOI"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
-  </xsl:template>
-
-  <xsl:template match="OUTRA-PRODUCAO">
-    <xsl:apply-templates />
-  </xsl:template>
-
-  <xsl:template match="ORIENTACOES-CONCLUIDAS">
-    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="ORIENTACOES-CONCLUIDAS-PARA-MESTRADO">
@@ -572,7 +569,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="text()|@*" priority="-1">
+  <xsl:template match="text()|@*|node()" priority="-1">
   </xsl:template>
 
 </xsl:stylesheet>
