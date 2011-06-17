@@ -1,33 +1,36 @@
 
 The purpose of this project is to bridging the gap between the
 Brazilian Curriculum Lattes plataform and semantic web
-technologies. We present a XSLT stylesheet that process XML Brazilian
-Curriculum Lattes files [1] generating RDF data [2].
+technologies. We developed a XSLT stylesheet that process XML
+Brazilian Curriculum Lattes files [1] generating RDF data [2]. We have
+also developed a updated DTD specification for the Lattes XML. The
+CNPq DTD specification is not uptated since 2003/2004.
 
-Status:
-=======
+
+Status
+======
 
 We have just started the project and we hope to have
 contributions. Our first priority will be publications followed by
 academic activites and personal information.
 
 
-Usage:
-======
+XSLT's usage
+============
 
 $ xsltproc --stringparam ID LATTESID lattes.xsl CURRICULIUM.xml > CURRICULIUM.rdf
 
+DTD usage
+=========
 
-Reasoning:
-==========
+We supply a simple python script. Moreover, in *Nix systems you can run:
 
-We can use the CWM [3] tool to reasoning over the RDF produced. For
-example, to identify duplicated authors.
+$ xmllint --dtdvalid LMPLCurriculo.DTD --noout <LATTES-XML> 
 
-cwm --rdf LATTES.rdf --n3 duplicated-authors.n3 --think --data --rdf > LATTES.rdf
 
-Authors:
-========
+
+Authors
+=======
 
  * Alexandre Rademaekr (EPGE/FGV, PUC-Rio)
    http://web.me.com/arademaker
@@ -35,12 +38,13 @@ Authors:
  * Edward Hermann Haeusler (PUC-Rio)
    http://www.inf.puc-rio.br/~hermann
 
-More information:
-=================
+
+More information
+================
 
  [1] http://lattes.cnpq.br/
  [2] http://www.w3.org/RDF/
- [3] http://www.w3.org/2000/10/swap/doc/cwm.html
+ [3] http://lmpl.cnpq.br/lmpl/ (precisely at http://lmpl.cnpq.br/lmpl/index.jsp?go=cv.jsp)
 
 
 Related projects
