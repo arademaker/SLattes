@@ -34,11 +34,8 @@ systems you can also run:
 ## Authors
 
 
- * Alexandre Rademaekr (EPGE/FGV, PUC-Rio)
-   http://web.me.com/arademaker
-
- * Edward Hermann Haeusler (PUC-Rio)
-   http://www.inf.puc-rio.br/~hermann
+ * Alexandre Rademaekr (EPGE/FGV, PUC-Rio), http://web.me.com/arademaker
+ * Edward Hermann Haeusler (PUC-Rio), http://www.inf.puc-rio.br/~hermann
 
 
 ## More information
