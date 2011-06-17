@@ -19,7 +19,7 @@ academic activites and personal information.
 ## XSLT's usage
 
 
-   xsltproc --stringparam ID LATTESID lattes.xsl CURRICULIUM.xml > CURRICULIUM.rdf
+    xsltproc --stringparam ID LATTESID lattes.xsl CURRICULIUM.xml > CURRICULIUM.rdf
 
 
 ## DTD usage
@@ -28,7 +28,7 @@ academic activites and personal information.
 You can use the "validate.py" python script. However, in Unix/MacOS
 systems you can also run:
 
-   xmllint --dtdvalid LMPLCurriculo.DTD --noout <LATTES-XML> 
+    xmllint --dtdvalid LMPLCurriculo.DTD --noout <LATTES-XML> 
 
 
 ## Authors
