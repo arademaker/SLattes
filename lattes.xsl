@@ -87,7 +87,7 @@
   </xsl:template>
 
   <xsl:template match="OUTRA-PRODUCAO|PRODUCAO-BIBLIOGRAFICA|TRABALHOS-EM-EVENTOS|ARTIGOS-PUBLICADOS|LIVROS-E-CAPITULOS|
-		       LIVROS-PUBLICADOS-OU-ORGANIZADOS|CAPITULOS-DE-LIVROS-PUBLICADOS">
+		       LIVROS-PUBLICADOS-OU-ORGANIZADOS|CAPITULOS-DE-LIVROS-PUBLICADOS|TEXTOS-EM-JORNAIS-OU-REVISTAS">
     <xsl:apply-templates />
   </xsl:template>
 
@@ -354,6 +354,60 @@
     <xsl:if test="string-length(@VOLUME)>0">
       <bibo:volume> <xsl:value-of select="@VOLUME"/> </bibo:volume>
     </xsl:if>
+  </xsl:template>
+
+
+  <xsl:template match="DETALHAMENTO-DO-TEXTO">
+    <dcterms:isPartOf>
+      <rdf:Description>
+	<xsl:if test="string-length(@ISSN)>0">
+	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> </xsl:attribute>
+	  <bibo:issn> <xsl:value-of select="@ISSN"/> </bibo:issn>
+	</xsl:if>
+	<rdf:type rdf:resource="&bibo;Periodical" />
+	<dc:title> <xsl:value-of select="@TITULO-DO-JORNAL-OU-REVISTA"/> </dc:title>
+      </rdf:Description>
+    </dcterms:isPartOf>
+    <xsl:if test="normalize-space(@PAGINA-INICIAL) != ''">
+      <bibo:pageStart><xsl:value-of select="@PAGINA-INICIAL"/></bibo:pageStart> 
+    </xsl:if>
+    <xsl:if test="normalize-space(@PAGINA-FINAL) != ''">
+      <bibo:pageStart><xsl:value-of select="@PAGINA-FINAL"/></bibo:pageStart> 
+    </xsl:if>
+    <xsl:if test="string-length(@VOLUME)>0">
+      <bibo:volume> <xsl:value-of select="@VOLUME"/> </bibo:volume>
+    </xsl:if>
+  </xsl:template>
+
+
+  <xsl:template match="TEXTO-EM-JORNAL-OU-REVISTA">
+    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
+      <rdf:type rdf:resource="&bibo;Article" />
+      <dc:title xml:lang="pt"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></dc:title>
+      <xsl:if test="normalize-space(@TITULO-DO-TEXTO-INGLES) != ''">
+	<dc:title xml:lang="en"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO-INGLES" /></dc:title>
+      </xsl:if>
+      <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@ANO-DO-TEXTO" /></dcterms:issued>
+      <dcterms:issued><xsl:value-of select="DETALHAMENTO-DO-TEXTO/@DATA-DE-PUBLICACAO"/></dcterms:issued>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@IDIOMA"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@HOME-PAGE-DO-TRABALHO"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@DOI"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
+      <xsl:apply-templates select="AUTORES|DETALHAMENTO-DO-TEXTO" />
+
+      <bibo:authorList rdf:parseType="Collection">
+	<xsl:for-each select="AUTORES">
+	  <xsl:sort data-type="number" select="@ORDEM-DE-AUTORIA"/>
+	  <rdf:Description>
+	    <xsl:attribute name="rdf:about">
+	      <xsl:value-of select="concat('#author-',generate-id(.))"/>
+	    </xsl:attribute>
+	  </rdf:Description>
+	</xsl:for-each>
+      </bibo:authorList>
+
+      <dcterms:isReferencedBy rdf:resource="" />
+    </rdf:Description>
   </xsl:template>
 
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
