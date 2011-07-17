@@ -209,16 +209,16 @@
     <dcterms:subject>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
-	  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	  <skos:Concept>
 	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
 	    <skos:related>
-	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <skos:Concept>
 	      <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 	      <skos:narrower>
-		<skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		<skos:Concept>
 		  <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		  <skos:narrower>
-		    <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		    <skos:Concept>
 		      <skos:prefLabel>
 			<xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		      </skos:prefLabel>
@@ -233,13 +233,13 @@
 	<xsl:otherwise>
 	  <xsl:choose>
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
-	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <skos:Concept>
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:narrower>
-		  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		  <skos:Concept>
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:narrower>
-		      <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <skos:Concept>
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
@@ -250,10 +250,10 @@
 	      </skos:Concept>
 	    </xsl:when>
 	    <xsl:otherwise>
-	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+	      <skos:Concept>
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:narrower>
-		  <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		  <skos:Concept>
 		    <skos:prefLabel>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </skos:prefLabel>
