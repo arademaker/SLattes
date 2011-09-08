@@ -301,11 +301,12 @@
 
       <dcterms:isPartOf>
 	<rdf:Description>
-	  <xsl:if test="string-length(DETALHAMENTO-DO-TRABALHO/@ISBN)>0">
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('urn:ISBN:',translate(DETALHAMENTO-DO-TRABALHO/@ISBN,' ','-'))"/>
-	    </xsl:attribute>
-	  </xsl:if>
+	  <!-- To prevent wrong ISBN to collapse different books all books are now blank nodes -->
+	  <!-- <xsl:if test="string-length(DETALHAMENTO-DO-TRABALHO/@ISBN)>0"> -->
+	  <!--   <xsl:attribute name="rdf:about"> -->
+	  <!--     <xsl:value-of select="concat('urn:ISBN:',translate(DETALHAMENTO-DO-TRABALHO/@ISBN,' ','-'))"/> -->
+	  <!--   </xsl:attribute> -->
+	  <!-- </xsl:if> -->
 	  <rdf:type rdf:resource="&bibo;Proceedings"/>
 	  <xsl:apply-templates select="DETALHAMENTO-DO-TRABALHO/@ISBN"/>
 	  <dc:title><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS"/></dc:title>
@@ -337,11 +338,12 @@
   <xsl:template match="DETALHAMENTO-DO-ARTIGO">
     <dcterms:isPartOf>
       <rdf:Description>
-	<xsl:if test="string-length(@ISSN)>0">
-	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> </xsl:attribute>
-	  <bibo:issn> <xsl:value-of select="@ISSN"/> </bibo:issn>
-	</xsl:if>
+	<!-- to prevent wrong ISSN to collapse different journals, all journals are now blank nodes -->
+	<!-- <xsl:if test="string-length(@ISSN)>0"> -->
+	<!--   <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> </xsl:attribute> -->
+	<!-- </xsl:if> -->
 	<rdf:type rdf:resource="&bibo;Journal" />
+	<xsl:apply-templates select="@ISSN"/> 
 	<dc:title> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </dc:title>
       </rdf:Description>
     </dcterms:isPartOf>
@@ -360,10 +362,10 @@
   <xsl:template match="DETALHAMENTO-DO-TEXTO">
     <dcterms:isPartOf>
       <rdf:Description>
-	<xsl:if test="string-length(@ISSN)>0">
-	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> </xsl:attribute>
-	  <bibo:issn> <xsl:value-of select="@ISSN"/> </bibo:issn>
-	</xsl:if>
+	<!-- <xsl:if test="string-length(@ISSN)>0"> -->
+	<!--   <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> </xsl:attribute> -->
+	<!-- </xsl:if> -->
+	<xsl:apply-templates select="@ISSN"/>
 	<rdf:type rdf:resource="&bibo;Periodical" />
 	<dc:title> <xsl:value-of select="@TITULO-DO-JORNAL-OU-REVISTA"/> </dc:title>
       </rdf:Description>
@@ -470,9 +472,10 @@
 
   <xsl:template match="DETALHAMENTO-DO-CAPITULO">
     <rdf:Description>
-      <xsl:if test="string-length(@ISBN)>0">
-	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISBN:',translate(@ISBN,' ','-'))"/> </xsl:attribute>
-      </xsl:if>
+      <!-- To prevent wrong ISBN to collapse different books all books are now blank nodes -->
+      <!-- <xsl:if test="string-length(@ISBN)>0"> -->
+      <!-- 	<xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISBN:',translate(@ISBN,' ','-'))"/> </xsl:attribute> -->
+      <!-- </xsl:if>  -->
       <rdf:type rdf:resource="&bibo;Book" />
       <dc:title> <xsl:value-of select="@TITULO-DO-LIVRO" /> </dc:title>
       <xsl:apply-templates select="@ISBN"/>
@@ -614,6 +617,12 @@
   <xsl:template match="@ISBN">
     <xsl:if test="normalize-space(.) != ''">
       <bibo:isbn><xsl:value-of select="."/></bibo:isbn>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="@ISSN">
+    <xsl:if test="normalize-space(.) != ''">
+      <bibo:issn><xsl:value-of select="."/></bibo:issn>
     </xsl:if>
   </xsl:template>
 
