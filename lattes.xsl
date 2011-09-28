@@ -3,7 +3,6 @@
 <!DOCTYPE rdf:RDF [
  <!ENTITY  xsd "http://www.w3.org/2001/XMLSchema#"> 
  <!ENTITY bibo "http://purl.org/ontology/bibo/">
- <!ENTITY swrc "http://swrc.ontoware.org/ontology#">
  <!ENTITY foaf "http://xmlns.com/foaf/0.1/">
  <!ENTITY  geo "http://www.w3.org/2003/01/geo/wgs84_pos#"> 
  <!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
@@ -22,7 +21,6 @@
 		xmlns:doac="http://ramonantonio.net/doac/0.1/" 
 		xmlns:dcterms="http://purl.org/dc/terms/"
 		xmlns:skos="http://www.w3.org/2004/02/skos/core#" 
-		xmlns:swrc="http://swrc.ontoware.org/ontology#" 
 		xmlns:event="http://purl.org/NET/c4dm/event.owl#" 
 		xmlns:gn="http://www.geonames.org/ontology#" 
 		xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
@@ -278,7 +276,6 @@
 
   <xsl:template match="TRABALHO-EM-EVENTOS">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
-      <rdf:type rdf:resource="&swrc;InProceedings" />
       <rdf:type rdf:resource="&bibo;Article" />
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /></dc:title>
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO" /></dcterms:issued>
