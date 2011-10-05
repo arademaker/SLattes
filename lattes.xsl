@@ -348,7 +348,7 @@
       <bibo:pageStart><xsl:value-of select="@PAGINA-INICIAL"/></bibo:pageStart> 
     </xsl:if>
     <xsl:if test="normalize-space(@PAGINA-FINAL) != ''">
-      <bibo:pageStart><xsl:value-of select="@PAGINA-FINAL"/></bibo:pageStart> 
+      <bibo:pageEnd><xsl:value-of select="@PAGINA-FINAL"/></bibo:pageEnd>
     </xsl:if>
     <xsl:if test="string-length(@VOLUME)>0">
       <bibo:volume> <xsl:value-of select="@VOLUME"/> </bibo:volume>
@@ -371,7 +371,7 @@
       <bibo:pageStart><xsl:value-of select="@PAGINA-INICIAL"/></bibo:pageStart> 
     </xsl:if>
     <xsl:if test="normalize-space(@PAGINA-FINAL) != ''">
-      <bibo:pageStart><xsl:value-of select="@PAGINA-FINAL"/></bibo:pageStart> 
+      <bibo:pageEnd><xsl:value-of select="@PAGINA-FINAL"/></bibo:pageEnd>
     </xsl:if>
     <xsl:if test="string-length(@VOLUME)>0">
       <bibo:volume> <xsl:value-of select="@VOLUME"/> </bibo:volume>
@@ -387,7 +387,9 @@
 	<dc:title xml:lang="en"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO-INGLES" /></dc:title>
       </xsl:if>
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@ANO-DO-TEXTO" /></dcterms:issued>
-      <dcterms:issued><xsl:value-of select="DETALHAMENTO-DO-TEXTO/@DATA-DE-PUBLICACAO"/></dcterms:issued>
+      <xsl:if test="normalize-space(DETALHAMENTO-DO-TEXTO/@DATA-DE-PUBLICACAO) != ''">
+	<dcterms:issued><xsl:value-of select="DETALHAMENTO-DO-TEXTO/@DATA-DE-PUBLICACAO"/></dcterms:issued>
+      </xsl:if>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@HOME-PAGE-DO-TRABALHO"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@DOI"/>
