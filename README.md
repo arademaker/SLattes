@@ -8,8 +8,8 @@ technologies. We developed:
 1. A XSLT stylesheet that process XML Brazilian Curriculum Lattes
    files [1] generating RDF data [2]. 
 
-2. An updated DTD specification for the Lattes XML. The CNPq DTD
-   specification is not uptated since 2003/2004.
+2. An updated version of the DTD specification for the Lattes XML. The
+   original DTD provided by CNPq was last updated in 2004.
 
 3. A XSLT stylesheet that process XML Latttes and generate an MODS XML
    file.
@@ -58,6 +58,11 @@ To transform Lattes to BibTeX:
     xsltproc lattes2mods.xsl LATTES.xml > LATTES.mods
     xmllint --schema mods.xsd LATTTES.mods
     xml2bib -b -w LATTES.mods > LATTES.bib
+    
+The second command above is not necessary. It is how one can validate
+the MODS XML produced by the transformation. To run this command, you
+will need to download the
+[mods.xsd](http://www.loc.gov/standards/mods/mods-schemas.html) first.
 
 Using bibtool command, you can also fix the citekeys and sort the
 entries. In the command below, the output in the STDOUT will be
@@ -69,19 +74,19 @@ be sorted in the inverse order by these keys.
 
 ## Authors
 
- * Alexandre Rademaker (EMAp/FGV), http://web.me.com/arademaker
- * Edward Hermann Haeusler (PUC-Rio), http://www.inf.puc-rio.br/~hermann
+* Alexandre Rademaker (EMAp/FGV), http://web.me.com/arademaker
+* Edward Hermann Haeusler (PUC-Rio), http://www.inf.puc-rio.br/~hermann
 
 
 ## More information
 
- * http://lattes.cnpq.br/
- * http://www.w3.org/RDF/
- * http://lmpl.cnpq.br/lmpl/ (precisely at http://lmpl.cnpq.br/lmpl/index.jsp?go=cv.jsp)
+* http://lattes.cnpq.br/
+* http://www.w3.org/RDF/
+* http://lmpl.cnpq.br/lmpl/ (precisely at http://lmpl.cnpq.br/lmpl/index.jsp?go=cv.jsp)
 
 
 ## Related projects
 
- * http://www.semanticlattes.com.br/
- * http://scriptlattes.sourceforge.net/
+* http://www.semanticlattes.com.br/
+* http://scriptlattes.sourceforge.net/
 
