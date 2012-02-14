@@ -78,6 +78,28 @@ be sorted in the inverse order by these keys.
 * Edward Hermann Haeusler (PUC-Rio), http://www.inf.puc-rio.br/~hermann
 
 
+## License
+
+<p></p>
+<a rel="license"
+href="http://creativecommons.org/licenses/by-sa/3.0/br/"><img
+alt="Creative Commons License" style="border-width:0"
+src="http://i.creativecommons.org/l/by-sa/3.0/br/88x31.png" /></a><br
+/><span xmlns:dct="http://purl.org/dc/terms/"
+href="http://purl.org/dc/dcmitype/Dataset" property="dct:title"
+rel="dct:type">OpenWN-PT</span> by <a
+xmlns:cc="http://creativecommons.org/ns#" href="http://emap.fgv.br"
+property="cc:attributionName" rel="cc:attributionURL">EMAp, Getulio
+Vargas Foundation</a> is licensed under a <a rel="license"
+href="http://creativecommons.org/licenses/by-sa/3.0/br/">Creative
+Commons Attribution-ShareAlike 3.0 Brazil License</a>.<br />Based on a
+work at <a xmlns:dct="http://purl.org/dc/terms/"
+href="https://github.com/arademaker/wordnet-br"
+rel="dct:source">github.com</a>.
+
+Take a look in the file LICENSE. 
+
+
 ## More information
 
 * http://lattes.cnpq.br/
