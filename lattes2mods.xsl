@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- 
+LICENSE INFO
+
+This work is licensed under the Creative Commons
+Attribution-ShareAlike 3.0 Brazil License. To view a copy of this
+license, visit http://creativecommons.org/licenses/by-sa/3.0/br/ or
+send a letter to Creative Commons, 444 Castro Street, Suite 900,
+Mountain View, California, 94041, USA.
+-->
+
+
 <!DOCTYPE rdf:RDF [
  <!ENTITY mods "http://www.loc.gov/mods/v3">
 ]>
