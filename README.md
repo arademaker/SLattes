@@ -74,7 +74,7 @@ be sorted in the inverse order by these keys.
 
 ## Authors
 
-* Alexandre Rademaker (EMAp/FGV), http://web.me.com/arademaker
+* Alexandre Rademaker (EMAp/FGV), http://arademaker.github.com
 * Edward Hermann Haeusler (PUC-Rio), http://www.inf.puc-rio.br/~hermann
 
 
