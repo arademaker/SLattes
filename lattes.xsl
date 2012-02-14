@@ -414,7 +414,12 @@
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Article" />
+
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></dc:title>
+      <xsl:if test="normalize-space(DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES) != ''">
+	<dc:title xml:lang="en"><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES" /></dc:title>
+      </xsl:if>
+
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO" /></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@HOME-PAGE-DO-TRABALHO"/>
@@ -526,14 +531,17 @@
       <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
 
       <bibo:issuer> 
-	<rdf:Description rdf:about="#I{DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@CODIGO-INSTITUICAO}">
-	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
-	  <foaf:name><xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@NOME-DA-INSTITUICAO"/></foaf:name>
+	<rdf:Description>
 	  <xsl:if test="string-length(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@CODIGO-INSTITUICAO)>0">
+	    <xsl:attribute name="rdf:about">
+	      <xsl:value-of select="concat('#I',DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@CODIGO-INSTITUICAO)"/>
+	    </xsl:attribute>
 	    <foaf:identifier>
 	      <xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@CODIGO-INSTITUICAO"/>
 	    </foaf:identifier>
 	  </xsl:if>
+	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
+	  <foaf:name><xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@NOME-DA-INSTITUICAO"/></foaf:name>
 	</rdf:Description>
       </bibo:issuer>
       <dc:creator>
@@ -566,14 +574,17 @@
       <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
 
       <bibo:issuer> 
-	<rdf:Description rdf:about="#I{DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@CODIGO-INSTITUICAO}">
-	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
-	  <foaf:name><xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@NOME-DA-INSTITUICAO"/></foaf:name>
+	<rdf:Description>
 	  <xsl:if test="string-length(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@CODIGO-INSTITUICAO)>0">
+	    <xsl:attribute name="rdf:about">
+	      <xsl:value-of select="concat('#I',DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@CODIGO-INSTITUICAO)"/>
+	    </xsl:attribute>
 	    <foaf:identifier>
 	      <xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@CODIGO-INSTITUICAO"/>
 	    </foaf:identifier>
 	  </xsl:if>
+	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
+	  <foaf:name><xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@NOME-DA-INSTITUICAO"/></foaf:name>
 	</rdf:Description>
       </bibo:issuer>
       <dc:creator>
