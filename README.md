@@ -2,23 +2,19 @@
 # Semantic Lattes
 
 The purpose of this project is to bridging the gap between the
-Brazilian Curriculum Lattes plataform and semantic web
-technologies. We developed:
+Brazilian Curriculum Lattes plataform and
+[Semantic Web](http://en.wikipedia.org/wiki/Semantic_Web)
+technologies. As part of the project, we have already developed:
 
-1. A XSLT stylesheet that process XML Brazilian Curriculum Lattes
-   files [1] generating RDF data [2]. 
+1. A XSLT stylesheet that process XML Brazilian
+   [Curriculum Lattes](http://lattes.cnpq.br/) files generating RDF
+   data [RDF](http://en.wikipedia.org/wiki/Resource_Description_Framework).
 
-2. An updated version of the DTD specification for the Lattes XML. The
+2. An updated version of the Lattes XML DTD specification. The
    original DTD provided by CNPq was last updated in 2004.
 
-3. A XSLT stylesheet that process XML Latttes and generate an MODS XML
-   file.
-
-## Status
-
-We started the project in 2009 and we hope to have contributions. Our
-first priority will be publications followed by academic activites and
-personal information.
+3. A XSLT stylesheet that process XML Latttes and generate an
+   [MODS XML](http://www.loc.gov/standards/mods/) file.
 
 
 ## Lattes to RDF
@@ -28,11 +24,14 @@ Usage:
     xsltproc --stringparam ID LATTESID lattes.xsl CURRICULIUM.xml > CURRICULIUM.rdf
 
 
-## Latttes validation agains the DTD 
+## Latttes validation agains the updated Lattes DTD 
 
 In Unix/MacOS systems you can also run:
 
     xmllint --dtdvalid LMPLCurriculo.DTD --noout <LATTES-XML> 
+    
+If one wants to compare what we changed from the original DTD provided
+by CNPQ, just use the github diff of commits.    
 
 
 ## Lattes to BibTeX
@@ -64,12 +63,12 @@ the MODS XML produced by the transformation. To run this command, you
 will need to download the
 [mods.xsd](http://www.loc.gov/standards/mods/mods-schemas.html) first.
 
-Using bibtool command, you can also fix the citekeys and sort the
-entries. In the command below, the output in the STDOUT will be
-generated with keys like "2012:Rademaker.Hermann" and the entries will
-be sorted in the inverse order by these keys.
+Using bibtool command, you can also fix the citekeys, sort the entries
+and merge BiBTeX files. For instance, the command below generate the
+NEW.bib file with keys like "2012:Rademaker.Hermann" and the entries
+will be sorted in the inverse order by these keys.
 
-    bibtool -f "%4d(year):%n(author)" -s LATTES.bib
+    bibtool -f "%4d(year):%n(author)" -s LATTES.bib > NEW.bib
 
 
 ## Authors
@@ -109,6 +108,5 @@ Take a look in the file LICENSE.
 
 ## Related projects
 
-* http://www.semanticlattes.com.br/
 * http://scriptlattes.sourceforge.net/
 

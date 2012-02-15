@@ -78,9 +78,9 @@ Mountain View, California, 94041, USA.
 	</xsl:otherwise>
       </xsl:choose>
       <dcterms:issued><xsl:value-of select="@DATA-ATUALIZACAO" /></dcterms:issued>
-      <dc:creator><xsl:apply-templates select="DADOS-GERAIS"/></dc:creator>
+      <dc:creator><xsl:apply-templates select="DADOS-GERAIS" mode="ref-resource"/></dc:creator>
     </rdf:Description>
-    <xsl:apply-templates select="PRODUCAO-BIBLIOGRAFICA|OUTRA-PRODUCAO" />
+    <xsl:apply-templates select="PRODUCAO-BIBLIOGRAFICA|OUTRA-PRODUCAO|DADOS-GERAIS" />
   </xsl:template>
 
   <xsl:template match="DADOS-GERAIS" mode="ref">
@@ -95,7 +95,7 @@ Mountain View, California, 94041, USA.
   </xsl:template>
 
   <xsl:template match="OUTRA-PRODUCAO|PRODUCAO-BIBLIOGRAFICA|TRABALHOS-EM-EVENTOS|ARTIGOS-PUBLICADOS|LIVROS-E-CAPITULOS|
-		       LIVROS-PUBLICADOS-OU-ORGANIZADOS|CAPITULOS-DE-LIVROS-PUBLICADOS|TEXTOS-EM-JORNAIS-OU-REVISTAS">
+		       LIVROS-PUBLICADOS-OU-ORGANIZADOS|CAPITULOS-DE-LIVROS-PUBLICADOS|TEXTOS-EM-JORNAIS-OU-REVISTAS|DADOS-GERAIS|FORMACAO-ACADEMICA-TITULACAO">
     <xsl:apply-templates />
   </xsl:template>
 
@@ -103,7 +103,7 @@ Mountain View, California, 94041, USA.
     <xsl:apply-templates />
   </xsl:template>
 
-  <xsl:template match="DADOS-GERAIS">
+  <xsl:template match="DADOS-GERAIS" mode="ref-resource">
     <rdf:Description>
       <xsl:attribute name="rdf:about">
 	<xsl:apply-templates select="." mode="ref"/>
@@ -573,6 +573,53 @@ Mountain View, California, 94041, USA.
     </rdf:Description>
   </xsl:template>
 
+  <xsl:template match="MESTRADO">
+    <rdf:Description rdf:about="{concat('#masterthesis',@SEQUENCIA-FORMACAO)}">
+      <rdf:type rdf:resource="&bibo;Thesis" />
+      <dc:title><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></dc:title>
+      <xsl:if test="normalize-space(@TITULO-DA-DISSERTACAO-TESE-INGLES) != ''">
+	<dc:title xml:lang="en"><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE-INGLES" /></dc:title>
+      </xsl:if>
+      <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
+      <dcterms:issued><xsl:value-of select="@ANO-DE-OBTENCAO-DO-TITULO"/></dcterms:issued>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
+
+      <bibo:issuer> 
+	<rdf:Description>
+	  <xsl:if test="string-length(@CODIGO-INSTITUICAO)>0">
+	    <xsl:attribute name="rdf:about">
+	      <xsl:value-of select="concat('#I',@CODIGO-INSTITUICAO)"/>
+	    </xsl:attribute>
+	    <foaf:identifier>
+	      <xsl:value-of select="@CODIGO-INSTITUICAO"/>
+	    </foaf:identifier>
+	  </xsl:if>
+	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
+	  <foaf:name><xsl:value-of select="@NOME-INSTITUICAO"/></foaf:name>
+	</rdf:Description>
+      </bibo:issuer>
+      <dc:creator>
+	<xsl:attribute name="rdf:resource">
+	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	</xsl:attribute>
+      </dc:creator>
+      <dc:contributor>
+	<rdf:Description>
+	  <xsl:if test="normalize-space(@NUMERO-ID-ORIENTADOR) != ''">
+	    <xsl:attribute name="rdf:about">
+	      <xsl:value-of select="concat('#orientador-',normalize-space(@NUMERO-ID-ORIENTADOR))"/>
+	    </xsl:attribute>
+	    <foaf:identifier> <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> </foaf:identifier>
+	  </xsl:if>
+	  <foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/> </foaf:name>
+	  <rdf:type rdf:resource="&foaf;Agent" />
+	</rdf:Description>
+      </dc:contributor>
+      <dcterms:isReferencedBy rdf:resource="" />
+    </rdf:Description>
+  </xsl:template>
+
+
   <xsl:template match="ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Thesis" />
@@ -615,6 +662,53 @@ Mountain View, California, 94041, USA.
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
+
+  <xsl:template match="DOUTORADO">
+    <rdf:Description rdf:about="{concat('#phdthesis',@SEQUENCIA-FORMACAO)}">
+      <rdf:type rdf:resource="&bibo;Thesis" />
+      <dc:title><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></dc:title>
+      <xsl:if test="normalize-space(@TITULO-DA-DISSERTACAO-TESE-INGLES) != ''">
+	<dc:title xml:lang="en"><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE-INGLES" /></dc:title>
+      </xsl:if>
+      <bibo:degree rdf:resource="&bibo;degrees/phd" /> 
+      <dcterms:issued><xsl:value-of select="@ANO-DE-OBTENCAO-DO-TITULO"/></dcterms:issued>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
+
+      <bibo:issuer> 
+	<rdf:Description>
+	  <xsl:if test="string-length(@CODIGO-INSTITUICAO)>0">
+	    <xsl:attribute name="rdf:about">
+	      <xsl:value-of select="concat('#I',@CODIGO-INSTITUICAO)"/>
+	    </xsl:attribute>
+	    <foaf:identifier>
+	      <xsl:value-of select="@CODIGO-INSTITUICAO"/>
+	    </foaf:identifier>
+	  </xsl:if>
+	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
+	  <foaf:name><xsl:value-of select="@NOME-INSTITUICAO"/></foaf:name>
+	</rdf:Description>
+      </bibo:issuer>
+      <dc:creator>
+	<xsl:attribute name="rdf:resource">
+	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	</xsl:attribute>
+      </dc:creator>
+      <dc:contributor>
+	<rdf:Description>
+	  <xsl:if test="normalize-space(@NUMERO-ID-ORIENTADOR) != ''">
+	    <xsl:attribute name="rdf:about">
+	      <xsl:value-of select="concat('#orientador-',normalize-space(@NUMERO-ID-ORIENTADOR))"/>
+	    </xsl:attribute>
+	    <foaf:identifier> <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> </foaf:identifier>
+	  </xsl:if>
+	  <foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/> </foaf:name>
+	  <rdf:type rdf:resource="&foaf;Agent" />
+	</rdf:Description>
+      </dc:contributor>
+      <dcterms:isReferencedBy rdf:resource="" />
+    </rdf:Description>
+  </xsl:template>
+
 
   <xsl:template match="@HOME-PAGE|@HOME-PAGE-DO-TRABALHO">
     <xsl:if test="normalize-space(.) != ''">
