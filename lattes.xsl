@@ -135,15 +135,15 @@ Mountain View, California, 94041, USA.
 	<bio:biography xml:lang="en"><xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN" /></bio:biography>
       </xsl:if>
 
-      <xsl:apply-templates select="IDIOMAS" />
+      <xsl:apply-templates select="IDIOMAS" mode="ref-resource" />
       <xsl:apply-templates select="AREAS-DE-ATUACAO" mode="ref-resource" />
     </rdf:Description>
   </xsl:template>
 
-  <xsl:template match="AREAS-DE-ATUACAO" mode="ref-resource">
+  <xsl:template match="AREAS-DE-ATUACAO|IDIOMAS" mode="ref-resource">
     <xsl:apply-templates />
   </xsl:template>
-  <xsl:template match="AREAS-DE-ATUACAO" />
+  <xsl:template match="AREAS-DE-ATUACAO|IDIOMAS" />
 
   <xsl:template match="IDIOMAS|AREAS-DO-CONHECIMENTO">
     <xsl:apply-templates />
