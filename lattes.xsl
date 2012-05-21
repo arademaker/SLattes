@@ -31,6 +31,7 @@ Mountain View, California, 94041, USA.
 		xmlns:doac="http://ramonantonio.net/doac/0.1/" 
 		xmlns:dcterms="http://purl.org/dc/terms/"
 		xmlns:skos="http://www.w3.org/2004/02/skos/core#" 
+		xmlns:fgvterms="http://www.fgv.br/terms/"
 		xmlns:event="http://purl.org/NET/c4dm/event.owl#" 
 		xmlns:gn="http://www.geonames.org/ontology#" 
 		xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
@@ -70,7 +71,7 @@ Mountain View, California, 94041, USA.
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
       <dc:title>CV Lattes de <xsl:value-of select="DADOS-GERAIS/@NOME-COMPLETO"/></dc:title>
       <xsl:choose>
-	<xsl:when test="@NUMERO-IDENTIFICADOR">
+	<xsl:when test="normalize-space(@NUMERO-IDENTIFICADOR) != ''">
 	  <bibo:identifier> <xsl:value-of select="@NUMERO-IDENTIFICADOR"/> </bibo:identifier>
 	</xsl:when>
 	<xsl:otherwise>
@@ -160,57 +161,57 @@ Mountain View, California, 94041, USA.
     <foaf:topic_interest>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
-	  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	  <fgvterms:Specialty rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
 	    <skos:related>
-	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:subArea rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		<skos:narrower>
-		  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		<skos:broader>		    
+		  <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		    <skos:narrower>
-		      <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		    <skos:broader>
+		      <skos:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-		      </skos:prefLabel>
-		      </skos:Concept>
-		    </skos:narrower>
-		  </skos:Concept>
-		</skos:narrower>
-	      </skos:Concept>
+			</skos:prefLabel>
+		      </skos:broaderArea>
+		    </skos:broader>
+		  </fgvterms:Area>
+		</skos:broader>
+	      </fgvterms:subArea>
 	    </skos:related>
-	  </skos:Concept>
+	  </fgvterms:Specialty>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:choose>
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
-	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:subArea rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		<skos:narrower>
-		  <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		<skos:broader>		    
+		  <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		    <skos:narrower>
-		      <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		    <skos:broader>
+		      <skos:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
-		      </skos:Concept>
-		    </skos:narrower>
-		  </skos:Concept>
-		</skos:narrower>
-	      </skos:Concept>
+		      </skos:broaderArea>
+		    </skos:broader>
+		  </fgvterms:Area>
+		</skos:broader>
+	      </fgvterms:subArea>
 	    </xsl:when>
 	    <xsl:otherwise>
-	      <skos:Concept rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		<skos:narrower>
-		  <skos:Concept rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		<skos:broader>
+		  <skos:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </skos:prefLabel>
-		  </skos:Concept>
-		</skos:narrower>
-	      </skos:Concept>
+		  </skos:broaderArea>
+		</skos:broader>
+	      </fgvterms:Area>
 	    </xsl:otherwise>
 	  </xsl:choose>
 	</xsl:otherwise>
@@ -222,57 +223,57 @@ Mountain View, California, 94041, USA.
     <dcterms:subject>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
-	  <skos:Concept>
+	  <fgvterms:Specialty rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
 	    <skos:related>
-	      <skos:Concept>
-	      <skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-	      <skos:narrower>
-		<skos:Concept>
-		  <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		  <skos:narrower>
-		    <skos:Concept>
-		      <skos:prefLabel>
-			<xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-		      </skos:prefLabel>
-		    </skos:Concept>
-		  </skos:narrower>
-		</skos:Concept>
-	      </skos:narrower>
-	      </skos:Concept>
+	      <fgvterms:subArea rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<skos:broader>		    
+		  <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		    <skos:broader>
+		      <skos:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+			<skos:prefLabel>
+			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
+			</skos:prefLabel>
+		      </skos:broaderArea>
+		    </skos:broader>
+		  </fgvterms:Area>
+		</skos:broader>
+	      </fgvterms:subArea>
 	    </skos:related>
-	  </skos:Concept>
+	  </fgvterms:Specialty>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:choose>
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
-	      <skos:Concept>
+	      <fgvterms:subArea rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		<skos:narrower>
-		  <skos:Concept>
+		<skos:broader>		    
+		  <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		    <skos:narrower>
-		      <skos:Concept>
+		    <skos:broader>
+		      <skos:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
-		      </skos:Concept>
-		    </skos:narrower>
-		  </skos:Concept>
-		</skos:narrower>
-	      </skos:Concept>
+		      </skos:broaderArea>
+		    </skos:broader>
+		  </fgvterms:Area>
+		</skos:broader>
+	      </fgvterms:subArea>
 	    </xsl:when>
 	    <xsl:otherwise>
-	      <skos:Concept>
+	      <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
-		<skos:narrower>
-		  <skos:Concept>
+		<skos:broader>
+		  <skos:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </skos:prefLabel>
-		  </skos:Concept>
-		</skos:narrower>
-	      </skos:Concept>
+		  </skos:broaderArea>
+		</skos:broader>
+	      </fgvterms:Area>
 	    </xsl:otherwise>
 	  </xsl:choose>
 	</xsl:otherwise>
