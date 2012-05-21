@@ -168,7 +168,7 @@ Mountain View, California, 94041, USA.
     <foaf:topic_interest>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
-	  <fgvterms:Specialty rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	  <fgvterms:Especialidade rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
 	    <skos:related>
 	      <fgvterms:subArea rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
@@ -177,17 +177,17 @@ Mountain View, California, 94041, USA.
 		  <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:broader>
-		      <fgvterms:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <fgvterms:grandeArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
-		      </fgvterms:broaderArea>
+		      </fgvterms:grandeArea>
 		    </skos:broader>
 		  </fgvterms:Area>
 		</skos:broader>
 	      </fgvterms:subArea>
 	    </skos:related>
-	  </fgvterms:Specialty>
+	  </fgvterms:Especialidade>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:choose>
@@ -198,11 +198,11 @@ Mountain View, California, 94041, USA.
 		  <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:broader>
-		      <fgvterms:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <fgvterms:grandeArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
-		      </fgvterms:broaderArea>
+		      </fgvterms:grandeArea>
 		    </skos:broader>
 		  </fgvterms:Area>
 		</skos:broader>
@@ -212,11 +212,11 @@ Mountain View, California, 94041, USA.
 	      <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:broader>
-		  <fgvterms:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		  <fgvterms:grandeArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </skos:prefLabel>
-		  </fgvterms:broaderArea>
+		  </fgvterms:grandeArea>
 		</skos:broader>
 	      </fgvterms:Area>
 	    </xsl:otherwise>
@@ -230,7 +230,7 @@ Mountain View, California, 94041, USA.
     <dcterms:subject>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
-	  <fgvterms:Specialty rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	  <fgvterms:Especialidade rdf:nodeID="{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
 	    <skos:related>
 	      <fgvterms:subArea rdf:nodeID="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
@@ -239,17 +239,17 @@ Mountain View, California, 94041, USA.
 		  <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:broader>
-		      <fgvterms:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <fgvterms:grandeArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
-		      </fgvterms:broaderArea>
+		      </fgvterms:grandeArea>
 		    </skos:broader>
 		  </fgvterms:Area>
 		</skos:broader>
 	      </fgvterms:subArea>
 	    </skos:related>
-	  </fgvterms:Specialty>
+	  </fgvterms:Especialidade>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:choose>
@@ -260,11 +260,11 @@ Mountain View, California, 94041, USA.
 		  <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:broader>
-		      <fgvterms:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <fgvterms:grandeArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
-		      </fgvterms:broaderArea>
+		      </fgvterms:grandeArea>
 		    </skos:broader>
 		  </fgvterms:Area>
 		</skos:broader>
@@ -274,11 +274,11 @@ Mountain View, California, 94041, USA.
 	      <fgvterms:Area rdf:nodeID="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:broader>
-		  <fgvterms:broaderArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		  <fgvterms:grandeArea rdf:nodeID="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <skos:prefLabel>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </skos:prefLabel>
-		  </fgvterms:broaderArea>
+		  </fgvterms:grandeArea>
 		</skos:broader>
 	      </fgvterms:Area>
 	    </xsl:otherwise>
