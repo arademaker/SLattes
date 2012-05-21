@@ -145,7 +145,7 @@ Mountain View, California, 94041, USA.
   </xsl:template>
   <xsl:template match="AREAS-DE-ATUACAO|IDIOMAS" />
 
-  <xsl:template match="IDIOMAS|AREAS-DO-CONHECIMENTO">
+  <xsl:template match="AREAS-DO-CONHECIMENTO">
     <xsl:apply-templates />
   </xsl:template>
 
