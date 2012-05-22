@@ -141,7 +141,7 @@ Mountain View, California, 94041, USA.
   </xsl:template>
 
   <xsl:template match="AREAS-DE-ATUACAO|IDIOMAS" mode="ref-resource">
-    <xsl:apply-templates />
+    <xsl:apply-templates  mode="ref-resource"/>
   </xsl:template>
   <xsl:template match="AREAS-DE-ATUACAO|IDIOMAS" />
 
@@ -150,7 +150,7 @@ Mountain View, California, 94041, USA.
   </xsl:template>
 
 
-  <xsl:template match="IDIOMA">
+  <xsl:template match="IDIOMA" mode="ref-resource">
     <doac:skill>
       <doac:LanguageSkill>
 	<doac:language><xsl:value-of select="@IDIOMA"/></doac:language>
@@ -164,7 +164,7 @@ Mountain View, California, 94041, USA.
     </doac:skill>
   </xsl:template>
 
-  <xsl:template match="AREA-DE-ATUACAO">
+  <xsl:template match="AREA-DE-ATUACAO" mode="ref-resource">
     <foaf:topic_interest>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
