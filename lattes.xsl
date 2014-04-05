@@ -61,7 +61,7 @@ Mountain View, California, 94041, USA.
       </xsl:if>
       <foaf:name><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></foaf:name>
       <foaf:citationName><xsl:value-of select="@NOME-PARA-CITACAO"/></foaf:citationName>
-      <rdf:type rdf:resource="&foaf;Agent" />
+      <rdf:type rdf:resource="&foaf;Person" />
     </rdf:Description>
   </xsl:template>
 
@@ -110,7 +110,7 @@ Mountain View, California, 94041, USA.
       <xsl:attribute name="rdf:about">
 	<xsl:apply-templates select="." mode="ref"/>
       </xsl:attribute>
-      <rdf:type rdf:resource="&foaf;Agent" />
+      <rdf:type rdf:resource="&foaf;Person" />
       <xsl:if test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
 	<foaf:identifier>
 	  <xsl:apply-templates select="." mode="ref"/>
@@ -574,7 +574,7 @@ Mountain View, California, 94041, USA.
 	      <xsl:value-of select="normalize-space(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@NUMERO-ID-ORIENTADO)"/>
 	    </foaf:identifier>
 	  </xsl:if>
-	  <rdf:type rdf:resource="&foaf;Agent" />
+	  <rdf:type rdf:resource="&foaf;Person" />
 	</rdf:Description>
       </dc:creator>
       <dc:contributor>
@@ -625,7 +625,7 @@ Mountain View, California, 94041, USA.
 	    <foaf:identifier> <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> </foaf:identifier>
 	  </xsl:if>
 	  <foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/> </foaf:name>
-	  <rdf:type rdf:resource="&foaf;Agent" />
+	  <rdf:type rdf:resource="&foaf;Person" />
 	</rdf:Description>
       </dc:contributor>
       <dcterms:isReferencedBy rdf:resource="" />
@@ -664,7 +664,7 @@ Mountain View, California, 94041, USA.
 	      <xsl:value-of select="normalize-space(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@NUMERO-ID-ORIENTADO)"/>
 	    </foaf:identifier>
 	  </xsl:if>
-	  <rdf:type rdf:resource="&foaf;Agent" />
+	  <rdf:type rdf:resource="&foaf;Person" />
 	</rdf:Description>
       </dc:creator>
       <dc:contributor>
@@ -715,7 +715,7 @@ Mountain View, California, 94041, USA.
 	    <foaf:identifier> <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> </foaf:identifier>
 	  </xsl:if>
 	  <foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/> </foaf:name>
-	  <rdf:type rdf:resource="&foaf;Agent" />
+	  <rdf:type rdf:resource="&foaf;Person" />
 	</rdf:Description>
       </dc:contributor>
       <dcterms:isReferencedBy rdf:resource="" />
