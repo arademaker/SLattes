@@ -130,9 +130,13 @@ Mountain View, California, 94041, USA.
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/> 
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
 
-      <bio:biography><xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH" /></bio:biography>
+      <bio:biography xml:lang="pt">
+	<xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH" />
+      </bio:biography>
       <xsl:if test="string-length(RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN) > 0">
-	<bio:biography xml:lang="en"><xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN" /></bio:biography>
+	<bio:biography xml:lang="en">
+	  <xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN" />
+	</bio:biography>
       </xsl:if>
 
       <xsl:apply-templates select="IDIOMAS" mode="ref-resource" />
