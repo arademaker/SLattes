@@ -17,6 +17,7 @@ Mountain View, California, 94041, USA.
  <!ENTITY  geo "http://www.w3.org/2003/01/geo/wgs84_pos#"> 
  <!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
  <!ENTITY doac "http://ramonantonio.net/doac/0.1/">
+ <!ENTITY vivo "http://vivoweb.org/ontology/core#">
  <!ENTITY bio  "http://purl.org/vocab/bio/0.1/">
 ]>
 
@@ -36,6 +37,7 @@ Mountain View, California, 94041, USA.
 		xmlns:gn="http://www.geonames.org/ontology#" 
 		xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
 		xmlns:bibo="http://purl.org/ontology/bibo/" 
+		xmlns:vivo="http://vivoweb.org/ontology/core#" 
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
@@ -94,9 +96,9 @@ Mountain View, California, 94041, USA.
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="OUTRA-PRODUCAO|PRODUCAO-BIBLIOGRAFICA|TRABALHOS-EM-EVENTOS|ARTIGOS-PUBLICADOS|LIVROS-E-CAPITULOS|
-		       LIVROS-PUBLICADOS-OU-ORGANIZADOS|CAPITULOS-DE-LIVROS-PUBLICADOS|TEXTOS-EM-JORNAIS-OU-REVISTAS|DADOS-GERAIS|
-                       FORMACAO-ACADEMICA-TITULACAO">
+  <xsl:template match="OUTRA-PRODUCAO|PRODUCAO-BIBLIOGRAFICA|TRABALHOS-EM-EVENTOS|ARTIGOS-PUBLICADOS|
+		       LIVROS-E-CAPITULOS|LIVROS-PUBLICADOS-OU-ORGANIZADOS|CAPITULOS-DE-LIVROS-PUBLICADOS|
+		       TEXTOS-EM-JORNAIS-OU-REVISTAS|DADOS-GERAIS|FORMACAO-ACADEMICA-TITULACAO">
     <xsl:apply-templates />
   </xsl:template>
 
@@ -129,13 +131,13 @@ Mountain View, California, 94041, USA.
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/> 
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
 
-      <bio:biography xml:lang="pt">
+      <vivo:overview xml:lang="pt">
 	<xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH" />
-      </bio:biography>
+      </vivo:overview>
       <xsl:if test="string-length(RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN) > 0">
-	<bio:biography xml:lang="en">
+	<vivo:overview xml:lang="en">
 	  <xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN" />
-	</bio:biography>
+	</vivo:overview>
       </xsl:if>
 
       <xsl:apply-templates select="IDIOMAS" mode="ref-resource" />
