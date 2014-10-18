@@ -11,14 +11,16 @@ Mountain View, California, 94041, USA.
 -->
 
 <!DOCTYPE rdf:RDF [
- <!ENTITY  xsd "http://www.w3.org/2001/XMLSchema#"> 
- <!ENTITY bibo "http://purl.org/ontology/bibo/">
- <!ENTITY foaf "http://xmlns.com/foaf/0.1/">
- <!ENTITY  geo "http://www.w3.org/2003/01/geo/wgs84_pos#"> 
- <!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
- <!ENTITY doac "http://ramonantonio.net/doac/0.1/">
- <!ENTITY vivo "http://vivoweb.org/ontology/core#">
- <!ENTITY bio  "http://purl.org/vocab/bio/0.1/">
+ <!ENTITY  xsd  "http://www.w3.org/2001/XMLSchema#"> 
+ <!ENTITY bibo  "http://purl.org/ontology/bibo/">
+ <!ENTITY foaf  "http://xmlns.com/foaf/0.1/">
+ <!ENTITY  geo  "http://www.w3.org/2003/01/geo/wgs84_pos#"> 
+ <!ENTITY skos  "http://www.w3.org/2004/02/skos/core#">
+ <!ENTITY doac  "http://ramonantonio.net/doac/0.1/">
+ <!ENTITY vivo  "http://vivoweb.org/ontology/core#">
+ <!ENTITY vcard "http://www.w3.org/2006/vcard/ns#"> 
+ <!ENTITY obo   "http://purl.obolibrary.org/obo/">
+ <!ENTITY bio   "http://purl.org/vocab/bio/0.1/">
 ]>
 
 <xsl:stylesheet version="1.0" 
@@ -37,6 +39,8 @@ Mountain View, California, 94041, USA.
 		xmlns:gn="http://www.geonames.org/ontology#" 
 		xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
 		xmlns:bibo="http://purl.org/ontology/bibo/" 
+		xmlns:vcard="http://www.w3.org/2006/vcard/ns#" 
+		xmlns:obo="http://purl.obolibrary.org/obo/" 
 		xmlns:vivo="http://vivoweb.org/ontology/core#" 
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
@@ -45,7 +49,9 @@ Mountain View, California, 94041, USA.
 
   <xsl:template match="/">
     <rdf:RDF>
-      <xsl:attribute name="xml:base"><xsl:value-of select="concat('http://www.fgv.br/lattes/',$ID)"/></xsl:attribute>
+      <xsl:attribute name="xml:base">
+	<xsl:value-of select="concat('http://www.fgv.br/lattes/',$ID)"/>
+      </xsl:attribute>
       <xsl:apply-templates />
 
       <xsl:apply-templates select="//AUTORES" mode="full"/>
@@ -60,8 +66,24 @@ Mountain View, California, 94041, USA.
       <xsl:if test="normalize-space(@NRO-ID-CNPQ) != ''">
 	<foaf:identifier><xsl:value-of select="@NRO-ID-CNPQ"/></foaf:identifier>
       </xsl:if>
-      <foaf:name><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></foaf:name>
-      <foaf:citationName><xsl:value-of select="@NOME-PARA-CITACAO"/></foaf:citationName>
+      <obo:ARG_2000028>
+	<rdf:Description>  
+	  <rdf:type rdf:resource="&vcard;Individual"/>
+	  <vcard:hasName>
+	    <rdf:Description>
+	      <rdf:type rdf:resource="&vcard;Name"/>
+	      <vcard:fn><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></vcard:fn>
+	    </rdf:Description>
+	  </vcard:hasName>
+	  <vcard:hasName>
+	    <rdf:Description>
+	      <rdf:type rdf:resource="&vcard;Name"/>
+	      <vcard:fn><xsl:value-of select="@NOME-PARA-CITACAO"/></vcard:fn>
+	    </rdf:Description>
+	  </vcard:hasName>
+	</rdf:Description>
+      </obo:ARG_2000028>
+      <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></rdfs:label>
       <rdf:type rdf:resource="&foaf;Person" />
     </rdf:Description>
   </xsl:template>
@@ -365,7 +387,8 @@ Mountain View, California, 94041, USA.
       <rdf:Description>
 	<!-- to prevent wrong ISSN to collapse different journals, all journals are now blank nodes -->
 	<!-- <xsl:if test="string-length(@ISSN)>0"> -->
-	<!--   <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> </xsl:attribute> -->
+	<!-- <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> 
+	     </xsl:attribute> -->
 	<!-- </xsl:if> -->
 	<rdf:type rdf:resource="&bibo;Journal" />
 	<xsl:apply-templates select="@ISSN"/> 
@@ -382,7 +405,6 @@ Mountain View, California, 94041, USA.
       <bibo:volume> <xsl:value-of select="@VOLUME"/> </bibo:volume>
     </xsl:if>
   </xsl:template>
-
 
   <xsl:template match="DETALHAMENTO-DO-TEXTO">
     <dcterms:isPartOf>
