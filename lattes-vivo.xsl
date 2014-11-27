@@ -56,10 +56,19 @@ Mountain View, California, 94041, USA.
   </xsl:template>
 
   <xsl:template match="AUTORES" mode="full">
-    <rdf:Description rdf:about="#author-{generate-id(.)}">
-      <xsl:if test="normalize-space(@NRO-ID-CNPQ) != ''">
-	<foaf:identifier><xsl:value-of select="@NRO-ID-CNPQ"/></foaf:identifier>
-      </xsl:if>
+    <rdf:Description>
+      <xsl:choose>
+	<xsl:when test="normalize-space(@NRO-ID-CNPQ) != ''">
+	  <xsl:attribute name="rdf:about">
+	    <xsl:value-of select="concat('#author-',@NRO-ID-CNPQ)"/>
+	  </xsl:attribute>
+	</xsl:when>
+	  <xsl:otherwise>
+	    <xsl:attribute name="rdf:about">
+	      <xsl:value-of select="concat('#author-',generate-id(.))"/>
+	    </xsl:attribute>
+	  </xsl:otherwise>
+      </xsl:choose>
       <obo:ARG_2000028>
 	<rdf:Description rdf:about="#individual-{generate-id(.)}">  
 	  <rdf:type rdf:resource="&vcard;Individual"/>
@@ -69,12 +78,10 @@ Mountain View, California, 94041, USA.
 	      <vcard:fn><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></vcard:fn>
 	    </rdf:Description>
 	  </vcard:hasName>
-	  <vcard:hasName>
-	    <rdf:Description rdf:about="#name-citation-{generate-id(.)}">
-	      <rdf:type rdf:resource="&vcard;Name"/>
-	      <vcard:fn><xsl:value-of select="@NOME-PARA-CITACAO"/></vcard:fn>
-	    </rdf:Description>
-	  </vcard:hasName>
+	  <xsl:call-template name="split">
+	    <xsl:with-param name="pText"><xsl:value-of select="@NOME-PARA-CITACAO"/></xsl:with-param>
+	    <xsl:with-param name="id">#name-<xsl:value-of select="generate-id(.)"/></xsl:with-param>
+	  </xsl:call-template>
 	</rdf:Description>
       </obo:ARG_2000028>
       <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></rdfs:label>
@@ -86,8 +93,7 @@ Mountain View, California, 94041, USA.
     <rdf:Description rdf:about="">
       <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
-      <dc:title>CV Lattes de <xsl:value-of
-      select="DADOS-GERAIS/@NOME-COMPLETO"/></dc:title>
+      <dc:title>CV Lattes de <xsl:value-of select="DADOS-GERAIS/@NOME-COMPLETO"/></dc:title>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NUMERO-IDENTIFICADOR) != ''">
 	  <bibo:identifier> <xsl:value-of select="@NUMERO-IDENTIFICADOR"/> </bibo:identifier>
@@ -142,9 +148,7 @@ Mountain View, California, 94041, USA.
 	  <bio:place><xsl:value-of select="@PAIS-DE-NASCIMENTO"/></bio:place>
 	</bio:Birth>
       </bio:event>
-      <foaf:name><xsl:value-of select="@NOME-COMPLETO"/></foaf:name>
-      <!-- DOES NOT REALLY EXISTS IN FOAF-->
-      <foaf:citationName><xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/></foaf:citationName>
+      <rdfs:label><xsl:value-of select="@NOME-COMPLETO"/></rdfs:label>
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/> 
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
 
@@ -156,6 +160,24 @@ Mountain View, California, 94041, USA.
 	  <xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN" />
 	</vivo:overview>
       </xsl:if>
+
+      <obo:ARG_2000028>
+	<rdf:Description rdf:about="#individual-{generate-id(.)}">  
+	  <rdf:type rdf:resource="&vcard;Individual"/>
+	  <vcard:hasName>
+	    <rdf:Description rdf:about="#name-{generate-id(.)}">
+	      <rdf:type rdf:resource="&vcard;Name"/>
+	      <vcard:fn> <xsl:value-of select="@NOME-COMPLETO"/> </vcard:fn>
+	    </rdf:Description>
+	  </vcard:hasName>
+	  <xsl:call-template name="split">
+	    <xsl:with-param name="pText">
+	      <xsl:value-of select="@NOME-EM-CITACOES-BIBLIOGRAFICAS"/>
+	    </xsl:with-param>
+	    <xsl:with-param name="id">#name-<xsl:value-of select="generate-id(.)"/></xsl:with-param>
+	  </xsl:call-template>
+	</rdf:Description>
+      </obo:ARG_2000028>
 
       <xsl:apply-templates select="IDIOMAS" mode="ref-resource" />
       <xsl:apply-templates select="AREAS-DE-ATUACAO" mode="ref-resource" />
@@ -189,20 +211,24 @@ Mountain View, California, 94041, USA.
     <vivo:hasResearchArea>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
-	  <fgvterms:Especialidade rdf:about="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	  <fgvterms:Especialidade rdf:about="#concept-{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <rdf:type rdf:resource="&skos;Concept" />
+	    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 	    <rdfs:label><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></rdfs:label>
 	    <skos:related>
-	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:subArea rdf:about="#concept-{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
+		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
-		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		  <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
+		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
-		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
+			<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</rdfs:label>
@@ -217,16 +243,19 @@ Mountain View, California, 94041, USA.
 	<xsl:otherwise>
 	  <xsl:choose>
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
-	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:subArea rdf:about="#concept-{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
+		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
-		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		  <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
+		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
-		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
+			<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</rdfs:label>
@@ -237,12 +266,14 @@ Mountain View, California, 94041, USA.
 	      </fgvterms:subArea>
 	    </xsl:when>
 	    <xsl:otherwise>
-	      <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
+		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		<rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>
-		  <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		  <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
+		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		    <rdfs:label>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </rdfs:label>
@@ -260,20 +291,24 @@ Mountain View, California, 94041, USA.
     <vivo:hasSubjectArea>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
-	  <fgvterms:Especialidade rdf:about="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	  <fgvterms:Especialidade rdf:about="#concept-{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <rdf:type rdf:resource="&skos;Concept" />
+	    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 	    <rdfs:label><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></rdfs:label>
 	    <skos:related>
-	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:subArea rdf:about="#concept-{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
+		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
-		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		  <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
+		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
-		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
+			<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</rdfs:label>
@@ -288,16 +323,19 @@ Mountain View, California, 94041, USA.
 	<xsl:otherwise>
 	  <xsl:choose>
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
-	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:subArea rdf:about="#concept-{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
+		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
-		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		  <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
+		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
-		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		      <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
+			<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</rdfs:label>
@@ -308,12 +346,14 @@ Mountain View, California, 94041, USA.
 	      </fgvterms:subArea>
 	    </xsl:when>
 	    <xsl:otherwise>
-	      <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+	      <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
+		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		<rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>
-		  <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		  <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
+		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
 		    <rdfs:label>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </rdfs:label>
@@ -337,7 +377,20 @@ Mountain View, California, 94041, USA.
       <rdf:Description rdf:about="#authorship-{generate-id(.)}">
 	<rdf:type rdf:resource="&vivo;Authorship" />
 	<vivo:rank rdf:datatype="&xsd;int"><xsl:value-of select="@ORDEM-DE-AUTORIA"/></vivo:rank>
-	<vivo:relates rdf:resource="#author-{generate-id(.)}" /> 
+	<vivo:relates> 
+	  <xsl:choose>
+	    <xsl:when test="normalize-space(@NRO-ID-CNPQ) != ''">
+	      <xsl:attribute name="rdf:resource">
+		<xsl:value-of select="concat('#author-',@NRO-ID-CNPQ)"/>
+	      </xsl:attribute>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:attribute name="rdf:resource">
+		<xsl:value-of select="concat('#author-',generate-id(.))"/>
+	      </xsl:attribute>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</vivo:relates>
       </rdf:Description>
     </vivo:relatedBy>
   </xsl:template>
@@ -386,6 +439,7 @@ Mountain View, California, 94041, USA.
 	    <dcterms:publisher>
 	      <rdf:Description rdf:about="org-{generate-id(.)}">
 		<rdf:type rdf:resource="&foaf;Organization" />
+		<rdfs:label><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA"/></rdfs:label>
 		<foaf:name><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA"/></foaf:name>
 	      </rdf:Description>
 	    </dcterms:publisher>
@@ -507,6 +561,7 @@ Mountain View, California, 94041, USA.
 	<rdf:Description rdf:about="org-{generate-id(.)}">
 	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
 	  <foaf:name><xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /></foaf:name>
+	  <rdfs:label><xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /></rdfs:label>
 	</rdf:Description>
       </dcterms:publisher>
       </xsl:if>
@@ -550,6 +605,7 @@ Mountain View, California, 94041, USA.
 	  <rdf:Description rdf:about="org-{generate-id(.)}">
 	    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
 	    <foaf:name><xsl:value-of select="@NOME-DA-EDITORA"/></foaf:name>
+	    <rdfs:label><xsl:value-of select="@NOME-DA-EDITORA"/></rdfs:label>
 	  </rdf:Description>
 	</dcterms:publisher>
       </xsl:if>
@@ -818,9 +874,8 @@ Mountain View, California, 94041, USA.
 	  </foaf:identifier>
 	</xsl:if>
 	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
-	<foaf:name>
-	  <xsl:value-of select="$node/@NOME-DA-INSTITUICAO"/>
-	</foaf:name>
+	<foaf:name><xsl:value-of select="$node/@NOME-DA-INSTITUICAO"/></foaf:name>
+	<rdfs:label><xsl:value-of select="$node/@NOME-DA-INSTITUICAO"/></rdfs:label>
       </rdf:Description>
     </bibo:issuer>
   </xsl:template>
@@ -838,6 +893,7 @@ Mountain View, California, 94041, USA.
 	</xsl:if>
 	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
 	<foaf:name><xsl:value-of select="@NOME-INSTITUICAO"/></foaf:name>
+	<rdfs:label><xsl:value-of select="@NOME-INSTITUICAO"/></rdfs:label>
       </rdf:Description>
     </bibo:issuer>
   </xsl:template>
@@ -845,19 +901,40 @@ Mountain View, California, 94041, USA.
   <xsl:template name="thesis-author-ref">
     <xsl:param name="node" />
     <xsl:attribute name="rdf:resource">
+      <xsl:choose>
+	<xsl:when test="normalize-space($node/@NUMERO-ID-ORIENTADO) != ''">
+	  <xsl:value-of select="concat('#author-',$node/@NUMERO-ID-ORIENTADO)"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="concat('#thesis-author-',generate-id($node))"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
+
+    <xsl:attribute name="rdf:resource">
       <xsl:value-of select="concat('#thesis-author-',generate-id($node))"/>
     </xsl:attribute>
   </xsl:template>
 
   <xsl:template name="thesis-author">
     <xsl:param name="node" />
-    <rdf:Description rdf:about="#thesis-author-{generate-id($node)}"> 
+    <rdf:Description> 
+      <xsl:choose>
+	<xsl:when test="normalize-space($node/@NUMERO-ID-ORIENTADO) != ''">
+	  <xsl:attribute name="rdf:about">
+	    <xsl:value-of select="concat('#author-',$node/@NUMERO-ID-ORIENTADO)"/>
+	  </xsl:attribute>
+	  <foaf:identifier>
+	    <xsl:value-of select="normalize-space($node/@NUMERO-ID-ORIENTADO)"/> 
+	  </foaf:identifier>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:attribute name="rdf:about">
+	    <xsl:value-of select="concat('#thesis-author-',generate-id($node))"/>
+	  </xsl:attribute>
+	</xsl:otherwise>
+      </xsl:choose>
       <rdf:type rdf:resource="&foaf;Person"/>
-      <xsl:if test="normalize-space($node/@NUMERO-ID-ORIENTADO) != ''">
-	<foaf:identifier>
-	  <xsl:value-of select="normalize-space($node/@NUMERO-ID-ORIENTADO)"/> 
-	</foaf:identifier>
-      </xsl:if>
       <rdfs:label><xsl:value-of select="$node/@NOME-DO-ORIENTADO"/></rdfs:label>
       <obo:ARG_2000028>
 	<rdf:Description rdf:about="#individual-{generate-id($node)}">  
@@ -875,18 +952,35 @@ Mountain View, California, 94041, USA.
 
   <xsl:template name="orientador-ref">
     <xsl:attribute name="rdf:resource">
-      <xsl:value-of select="concat('#orientador-',generate-id(.))"/>
+      <xsl:choose>
+	<xsl:when test="normalize-space(@NUMERO-ID-ORIENTADOR) != ''">
+	  <xsl:value-of select="concat('#author-',@NUMERO-ID-ORIENTADOR)"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="concat('#orientador-',generate-id(.))"/>
+	</xsl:otherwise>
+      </xsl:choose>
     </xsl:attribute>
   </xsl:template>
 
   <xsl:template name="orientador">
-    <rdf:Description rdf:about="#orientador-{generate-id(.)}"> 
+    <rdf:Description> 
+      <xsl:choose>
+	<xsl:when test="normalize-space(@NUMERO-ID-ORIENTADOR) != ''">
+	  <xsl:attribute name="rdf:about">
+	    <xsl:value-of select="concat('#author-',@NUMERO-ID-ORIENTADOR)"/>
+	  </xsl:attribute>
+	  <foaf:identifier>
+	    <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> 
+	  </foaf:identifier>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:attribute name="rdf:about">
+	    <xsl:value-of select="concat('#orientador-',generate-id(.))"/>
+	  </xsl:attribute>
+	</xsl:otherwise>
+      </xsl:choose>
       <rdf:type rdf:resource="&foaf;Person"/>
-      <xsl:if test="normalize-space(@NUMERO-ID-ORIENTADOR) != ''">
-	<foaf:identifier>
-	  <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> 
-	</foaf:identifier>
-      </xsl:if>
       <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/></rdfs:label>
       <obo:ARG_2000028>
 	<rdf:Description rdf:about="#individual-{generate-id(.)}">  
@@ -905,8 +999,8 @@ Mountain View, California, 94041, USA.
   <xsl:template match="@HOME-PAGE">
     <xsl:if test="normalize-space(.) != ''">
       <obo:ARG_2000028>
-	<rdf:Description rdf:about="#page-{generate-id(.)}">
-	  <rdf:type rdf:resource="&vcard;Kind" />
+	<rdf:Description rdf:about="#individual-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vcard;Individual" />
 	  <vcard:hasURL>
 	    <rdf:Description rdf:about="#url-{generate-id(.)}">
 	      <rdf:type rdf:resource="&vcard;URL" />
@@ -964,6 +1058,32 @@ Mountain View, California, 94041, USA.
   <xsl:template match="@IDIOMA">
     <xsl:if test="normalize-space(.) != ''">
       <dc:language><xsl:value-of select="."/></dc:language>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="split">
+    <xsl:param name="pText"/>
+    <xsl:param name="id"/>
+    <xsl:param name="count">1</xsl:param>
+    <xsl:if test="string-length($pText)">
+      <vcard:hasName>
+	<rdf:Description rdf:about="{$id}-{$count}">
+	  <rdf:type rdf:resource="&vcard;Name"/>
+	  <vcard:familyName>
+	    <xsl:value-of 
+		select="normalize-space(substring-before(substring-before(concat($pText,';'),';'),','))"/>
+	  </vcard:familyName>
+	  <vcard:givenName>
+	    <xsl:value-of 
+		select="normalize-space(substring-after(substring-before(concat($pText,';'),';'),','))"/>
+	  </vcard:givenName>
+	</rdf:Description>
+      </vcard:hasName>
+      <xsl:call-template name="split">
+	<xsl:with-param name="pText" select="substring-after($pText, ';')"/>
+	<xsl:with-param name="id"    select="$id"/>
+	<xsl:with-param name="count" select="$count + 1"/>
+	</xsl:call-template>
     </xsl:if>
   </xsl:template>
 
