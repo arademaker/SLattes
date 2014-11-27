@@ -43,6 +43,7 @@ Mountain View, California, 94041, USA.
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
+  <xsl:param name="LATTES"/>
 
   <xsl:template match="/">
     <rdf:RDF>
@@ -99,7 +100,7 @@ Mountain View, California, 94041, USA.
 	  <bibo:identifier> <xsl:value-of select="@NUMERO-IDENTIFICADOR"/> </bibo:identifier>
 	</xsl:when>
 	<xsl:otherwise>
-	  <bibo:identifier> <xsl:value-of select="$ID"/> </bibo:identifier>
+	  <bibo:identifier><xsl:value-of select="$LATTES"/></bibo:identifier>
 	</xsl:otherwise>
       </xsl:choose>
       <dcterms:issued><xsl:value-of select="@DATA-ATUALIZACAO" /></dcterms:issued>
@@ -213,22 +214,22 @@ Mountain View, California, 94041, USA.
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
 	  <fgvterms:Especialidade rdf:about="#concept-{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <rdf:type rdf:resource="&skos;Concept" />
-	    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+	    <skos:inScheme rdf:resource=""/>
 	    <rdfs:label><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></rdfs:label>
 	    <skos:related>
 	      <fgvterms:subArea rdf:about="#concept-{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		<skos:inScheme rdf:resource=""/>
 		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		    <skos:inScheme rdf:resource=""/>
 		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
-			<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+			<skos:inScheme rdf:resource=""/>
 			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</rdfs:label>
@@ -245,17 +246,17 @@ Mountain View, California, 94041, USA.
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
 	      <fgvterms:subArea rdf:about="#concept-{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		<skos:inScheme rdf:resource=""/>
 		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		    <skos:inScheme rdf:resource=""/>
 		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
-			<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+			<skos:inScheme rdf:resource=""/>
 			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</rdfs:label>
@@ -268,12 +269,12 @@ Mountain View, California, 94041, USA.
 	    <xsl:otherwise>
 	      <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		<skos:inScheme rdf:resource=""/>
 		<rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>
 		  <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		    <skos:inScheme rdf:resource=""/>
 		    <rdfs:label>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </rdfs:label>
@@ -293,22 +294,22 @@ Mountain View, California, 94041, USA.
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
 	  <fgvterms:Especialidade rdf:about="#concept-{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <rdf:type rdf:resource="&skos;Concept" />
-	    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+	    <skos:inScheme rdf:resource=""/>
 	    <rdfs:label><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></rdfs:label>
 	    <skos:related>
 	      <fgvterms:subArea rdf:about="#concept-{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		<skos:inScheme rdf:resource=""/>
 		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		    <skos:inScheme rdf:resource=""/>
 		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
-			<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+			<skos:inScheme rdf:resource=""/>
 			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</rdfs:label>
@@ -325,17 +326,17 @@ Mountain View, California, 94041, USA.
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
 	      <fgvterms:subArea rdf:about="#concept-{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		<skos:inScheme rdf:resource=""/>
 		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		    <skos:inScheme rdf:resource=""/>
 		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
-			<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+			<skos:inScheme rdf:resource=""/>
 			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</rdfs:label>
@@ -348,12 +349,12 @@ Mountain View, California, 94041, USA.
 	    <xsl:otherwise>
 	      <fgvterms:Area rdf:about="#concept-{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		<skos:inScheme rdf:resource=""/>
 		<rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>
 		  <fgvterms:grandeArea rdf:about="#concept-{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:inScheme rdf:resource="http://lattes.cnpq.br" />
+		    <skos:inScheme rdf:resource=""/>
 		    <rdfs:label>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </rdfs:label>
@@ -432,9 +433,15 @@ Mountain View, California, 94041, USA.
 	  -->
 	  <rdf:type rdf:resource="&bibo;Proceedings"/>
 	  <xsl:apply-templates select="DETALHAMENTO-DO-TRABALHO/@ISBN"/>
-	  <dc:title><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS"/></dc:title>
-	  <rdfs:label><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS"/></rdfs:label>
-	  <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO"/></dcterms:issued>
+	  <dc:title>
+	  <xsl:value-of 
+	      select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS"/></dc:title>
+	  <rdfs:label>
+	  <xsl:value-of 
+	      select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS"/></rdfs:label>
+	  <dcterms:issued>
+	  <xsl:value-of 
+	      select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO"/></dcterms:issued>
 	  <xsl:if test="string-length(DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA)>0">
 	    <dcterms:publisher>
 	      <rdf:Description rdf:about="#org-{generate-id(.)}">
@@ -726,10 +733,16 @@ Mountain View, California, 94041, USA.
   <xsl:template match="ORIENTACOES-CONCLUIDAS-PARA-MESTRADO">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Thesis" />
-      <dc:title><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@TITULO" /></dc:title>
-      <rdfs:label><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@TITULO" /></rdfs:label>
+      <dc:title>
+      <xsl:value-of 
+	  select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@TITULO"/></dc:title>
+      <rdfs:label>
+	<xsl:value-of 
+	    select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@TITULO" /></rdfs:label>
       <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
-      <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@ANO"/></dcterms:issued>
+      <dcterms:issued>
+      <xsl:value-of 
+	  select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@ANO"/></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@HOME-PAGE"/>
       <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@IDIOMA"/>
       <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
@@ -789,9 +802,15 @@ Mountain View, California, 94041, USA.
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Thesis" />
       <bibo:degree rdf:resource="&bibo;degrees/phd" /> 
-      <dc:title><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@TITULO" /></dc:title>
-      <rdfs:label><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@TITULO" /></rdfs:label>
-      <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@ANO" /></dcterms:issued>
+      <dc:title>
+      <xsl:value-of 
+	  select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@TITULO"/></dc:title>
+      <rdfs:label>
+      <xsl:value-of 
+	  select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@TITULO"/></rdfs:label>
+      <dcterms:issued>
+	<xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@ANO" />
+      </dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@HOME-PAGE"/>
       <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@IDIOMA"/>
       <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
@@ -821,7 +840,8 @@ Mountain View, California, 94041, USA.
       </vivo:relates>
       <vivo:relates>
 	<xsl:call-template name="thesis-author-ref">
-	  <xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"/>
+	  <xsl:with-param name="node" 
+			  select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"/>
 	</xsl:call-template>
       </vivo:relates>
       <vivo:relates>
@@ -829,7 +849,8 @@ Mountain View, California, 94041, USA.
 	  <rdf:type rdf:resource="&vivo;AdviseeRole"/>
 	  <obo:RO_0000052>
 	    <xsl:call-template name="thesis-author-ref">
-	      <xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"/>
+	      <xsl:with-param name="node" 
+			      select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"/>
 	    </xsl:call-template>
 	  </obo:RO_0000052>
 	</rdf:Description>
