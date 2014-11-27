@@ -437,7 +437,7 @@ Mountain View, California, 94041, USA.
 	  <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO"/></dcterms:issued>
 	  <xsl:if test="string-length(DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA)>0">
 	    <dcterms:publisher>
-	      <rdf:Description rdf:about="org-{generate-id(.)}">
+	      <rdf:Description rdf:about="#org-{generate-id(.)}">
 		<rdf:type rdf:resource="&foaf;Organization" />
 		<rdfs:label><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA"/></rdfs:label>
 		<foaf:name><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA"/></foaf:name>
@@ -558,7 +558,7 @@ Mountain View, California, 94041, USA.
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@ANO" /> </dcterms:issued>
       <xsl:if test="string-length(DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA)>0">
       <dcterms:publisher>
-	<rdf:Description rdf:about="org-{generate-id(.)}">
+	<rdf:Description rdf:about="#org-{generate-id(.)}">
 	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
 	  <foaf:name><xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /></foaf:name>
 	  <rdfs:label><xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /></rdfs:label>
@@ -602,7 +602,7 @@ Mountain View, California, 94041, USA.
       <xsl:apply-templates select="@ISBN"/>
       <xsl:if test="string-length(@NOME-DA-EDITORA)>0">
 	<dcterms:publisher>
-	  <rdf:Description rdf:about="org-{generate-id(.)}">
+	  <rdf:Description rdf:about="#org-{generate-id(.)}">
 	    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
 	    <foaf:name><xsl:value-of select="@NOME-DA-EDITORA"/></foaf:name>
 	    <rdfs:label><xsl:value-of select="@NOME-DA-EDITORA"/></rdfs:label>
@@ -867,7 +867,7 @@ Mountain View, California, 94041, USA.
       <rdf:Description>
 	<xsl:if test="string-length($node/@CODIGO-INSTITUICAO)>0">
 	  <xsl:attribute name="rdf:about">
-	    <xsl:value-of select="concat('#I',$node/@CODIGO-INSTITUICAO)"/>
+	    <xsl:value-of select="concat('#org-',$node/@CODIGO-INSTITUICAO)"/>
 	  </xsl:attribute>
 	  <foaf:identifier>
 	    <xsl:value-of select="$node/@CODIGO-INSTITUICAO"/>
@@ -885,7 +885,7 @@ Mountain View, California, 94041, USA.
       <rdf:Description>
 	<xsl:if test="string-length(@CODIGO-INSTITUICAO)>0">
 	  <xsl:attribute name="rdf:about">
-	    <xsl:value-of select="concat('#I',@CODIGO-INSTITUICAO)"/>
+	    <xsl:value-of select="concat('#org-',@CODIGO-INSTITUICAO)"/>
 	  </xsl:attribute>
 	  <foaf:identifier>
 	    <xsl:value-of select="@CODIGO-INSTITUICAO"/>
