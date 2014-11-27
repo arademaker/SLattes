@@ -186,19 +186,23 @@ Mountain View, California, 94041, USA.
   </xsl:template>
 
   <xsl:template match="AREA-DE-ATUACAO" mode="ref-resource">
-    <foaf:topic_interest>
+    <vivo:hasResearchArea>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
 	  <fgvterms:Especialidade rdf:about="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	    <rdf:type rdf:resource="&skos;Concept" />
 	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
 	    <skos:related>
 	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		<rdf:type rdf:resource="&skos;Concept" />
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		    <rdf:type rdf:resource="&skos;Concept" />
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+			<rdf:type rdf:resource="&skos;Concept" />
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
@@ -214,12 +218,15 @@ Mountain View, California, 94041, USA.
 	  <xsl:choose>
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
 	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		<rdf:type rdf:resource="&skos;Concept" />
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		    <rdf:type rdf:resource="&skos;Concept" />
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+			<rdf:type rdf:resource="&skos;Concept" />
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
@@ -231,9 +238,11 @@ Mountain View, California, 94041, USA.
 	    </xsl:when>
 	    <xsl:otherwise>
 	      <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		<rdf:type rdf:resource="&skos;Concept" />
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:broader>
 		  <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		    <rdf:type rdf:resource="&skos;Concept" />
 		    <skos:prefLabel>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </skos:prefLabel>
@@ -244,23 +253,27 @@ Mountain View, California, 94041, USA.
 	  </xsl:choose>
 	</xsl:otherwise>
       </xsl:choose>
-    </foaf:topic_interest>
+    </vivo:hasResearchArea>
   </xsl:template>
 
   <xsl:template match="AREA-DO-CONHECIMENTO-1|AREA-DO-CONHECIMENTO-2|AREA-DO-CONHECIMENTO-3">
-    <dcterms:subject>
+    <vivo:hasSubjectArea>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
 	  <fgvterms:Especialidade rdf:about="{generate-id(@NOME-DA-ESPECIALIDADE)}">
+	    <rdf:type rdf:resource="&skos;Concept" />
 	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
 	    <skos:related>
 	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		<rdf:type rdf:resource="&skos;Concept" />
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		    <rdf:type rdf:resource="&skos;Concept" />
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+			<rdf:type rdf:resource="&skos;Concept" />
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
@@ -276,12 +289,15 @@ Mountain View, California, 94041, USA.
 	  <xsl:choose>
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
 	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
+		<rdf:type rdf:resource="&skos;Concept" />
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		    <rdf:type rdf:resource="&skos;Concept" />
 		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+			<rdf:type rdf:resource="&skos;Concept" />
 			<skos:prefLabel>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 			</skos:prefLabel>
@@ -293,9 +309,11 @@ Mountain View, California, 94041, USA.
 	    </xsl:when>
 	    <xsl:otherwise>
 	      <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
+		<rdf:type rdf:resource="&skos;Concept" />
 		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
 		<skos:broader>
 		  <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
+		    <rdf:type rdf:resource="&skos;Concept" />
 		    <skos:prefLabel>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
 		    </skos:prefLabel>
@@ -306,7 +324,7 @@ Mountain View, California, 94041, USA.
 	  </xsl:choose>
 	</xsl:otherwise>
       </xsl:choose>
-    </dcterms:subject>
+    </vivo:hasSubjectArea>
   </xsl:template>
    
   <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES
@@ -328,6 +346,7 @@ Mountain View, California, 94041, USA.
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Article" />
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /></dc:title>
+      <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /></rdfs:label>
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO" /></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@HOME-PAGE-DO-TRABALHO"/>
@@ -337,6 +356,7 @@ Mountain View, California, 94041, USA.
       <bibo:presentedAt>
 	<rdf:Description rdf:about="#conference-{generate-id(.)}">
           <dc:title><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DO-EVENTO" /></dc:title>
+          <rdfs:label><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DO-EVENTO" /></rdfs:label>
 	  <rdf:type rdf:resource="&bibo;Conference"/>
 	  <event:place>
 	    <rdf:Description rdf:about="#place-{generate-id(.)}" 
@@ -360,6 +380,7 @@ Mountain View, California, 94041, USA.
 	  <rdf:type rdf:resource="&bibo;Proceedings"/>
 	  <xsl:apply-templates select="DETALHAMENTO-DO-TRABALHO/@ISBN"/>
 	  <dc:title><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS"/></dc:title>
+	  <rdfs:label><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@TITULO-DOS-ANAIS-OU-PROCEEDINGS"/></rdfs:label>
 	  <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO"/></dcterms:issued>
 	  <xsl:if test="string-length(DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA)>0">
 	    <dcterms:publisher>
@@ -385,8 +406,9 @@ Mountain View, California, 94041, USA.
 	  </xsl:attribute>
 	</xsl:if> -->
 	<rdf:type rdf:resource="&bibo;Journal" />
+	<dc:title><xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/></dc:title>
+	<rdfs:label><xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/></rdfs:label>
 	<xsl:apply-templates select="@ISSN"/> 
-	<dc:title> <xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/> </dc:title>
       </rdf:Description>
     </dcterms:isPartOf>
     <xsl:if test="normalize-space(@PAGINA-INICIAL) != ''">
@@ -402,16 +424,17 @@ Mountain View, California, 94041, USA.
 
   <xsl:template match="DETALHAMENTO-DO-TEXTO">
     <dcterms:isPartOf>
-      <rdf:Description>
+      <rdf:Description rdf:about="#periodical-{generate-id(.)}">
 	<!--
 	<xsl:if test="string-length(@ISSN)>0"> 
 	  <xsl:attribute name="rdf:about"> <xsl:value-of select="concat('urn:ISSN:',translate(@ISSN,' ','-'))"/> 
           </xsl:attribute>
 	</xsl:if>
 	-->
-	<xsl:apply-templates select="@ISSN"/>
 	<rdf:type rdf:resource="&bibo;Periodical" />
-	<dc:title> <xsl:value-of select="@TITULO-DO-JORNAL-OU-REVISTA"/> </dc:title>
+	<dc:title><xsl:value-of select="@TITULO-DO-JORNAL-OU-REVISTA"/></dc:title>
+	<rdfs:label><xsl:value-of select="@TITULO-DO-JORNAL-OU-REVISTA"/></rdfs:label>
+	<xsl:apply-templates select="@ISSN"/>
       </rdf:Description>
     </dcterms:isPartOf>
     <xsl:if test="normalize-space(@PAGINA-INICIAL) != ''">
@@ -429,6 +452,7 @@ Mountain View, California, 94041, USA.
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Article" />
       <dc:title xml:lang="pt"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></dc:title>
+      <rdfs:label xml:lang="pt"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></rdfs:label>
       <xsl:if test="normalize-space(@TITULO-DO-TEXTO-INGLES) != ''">
 	<dc:title xml:lang="en">
 	  <xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO-INGLES" />
@@ -457,19 +481,17 @@ Mountain View, California, 94041, USA.
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Article" />
-
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></dc:title>
+      <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></rdfs:label>
       <xsl:if test="normalize-space(DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES) != ''">
 	<dc:title xml:lang="en"><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES" /></dc:title>
       </xsl:if>
-
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO" /></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@HOME-PAGE-DO-TRABALHO"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@DOI"/>
       <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
       <xsl:apply-templates select="AUTORES|DETALHAMENTO-DO-ARTIGO" />
-      
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
   </xsl:template>
@@ -477,7 +499,8 @@ Mountain View, California, 94041, USA.
   <xsl:template match="LIVRO-PUBLICADO-OU-ORGANIZADO">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Book" />
-      <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /> </dc:title>
+      <dc:title><xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /></dc:title>
+      <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@TITULO-DO-LIVRO" /></rdfs:label>
       <dcterms:issued>  <xsl:value-of select="DADOS-BASICOS-DO-LIVRO/@ANO" /> </dcterms:issued>
       <xsl:if test="string-length(DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA)>0">
       <dcterms:publisher>
@@ -519,7 +542,8 @@ Mountain View, California, 94041, USA.
        </xsl:if>  
        -->
       <rdf:type rdf:resource="&bibo;Book" />
-      <dc:title> <xsl:value-of select="@TITULO-DO-LIVRO" /> </dc:title>
+      <dc:title><xsl:value-of select="@TITULO-DO-LIVRO" /></dc:title>
+      <rdfs:label><xsl:value-of select="@TITULO-DO-LIVRO" /></rdfs:label>
       <xsl:apply-templates select="@ISBN"/>
       <xsl:if test="string-length(@NOME-DA-EDITORA)>0">
 	<dcterms:publisher>
@@ -535,7 +559,8 @@ Mountain View, California, 94041, USA.
   <xsl:template match="CAPITULO-DE-LIVRO-PUBLICADO">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Chapter" />
-      <dc:title> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /> </dc:title>
+      <dc:title><xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /></dc:title>
+      <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /></rdfs:label>
       <dcterms:issued> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
       <dcterms:isPartOf>
 	<xsl:apply-templates select="DETALHAMENTO-DO-CAPITULO" />
@@ -549,202 +574,334 @@ Mountain View, California, 94041, USA.
     </rdf:Description>
   </xsl:template>
 
-  <xsl:template match="ORIENTACOES-CONCLUIDAS-PARA-MESTRADO">
-    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
-      <rdf:type rdf:resource="&bibo;Thesis" />
-      <dc:title><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@TITULO" /></dc:title>
-      <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
-      <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@ANO"/></dcterms:issued>
-      <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@HOME-PAGE"/>
-      <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@IDIOMA"/>
-      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
-
-      <bibo:issuer> 
-	<rdf:Description>
-	  <xsl:if test="string-length(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@CODIGO-INSTITUICAO)>0">
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#I',DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@CODIGO-INSTITUICAO)"/>
-	    </xsl:attribute>
-	    <foaf:identifier>
-	      <xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@CODIGO-INSTITUICAO"/>
-	    </foaf:identifier>
-	  </xsl:if>
-	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
-	  <foaf:name><xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@NOME-DA-INSTITUICAO"/></foaf:name>
-	</rdf:Description>
-      </bibo:issuer>
-      <dc:creator>
-	<rdf:Description foaf:name="{DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@NOME-DO-ORIENTADO}">
-	  <xsl:if test="normalize-space(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@NUMERO-ID-ORIENTADO) != ''">
-	    <foaf:identifier>
-	      <xsl:value-of select="normalize-space(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@NUMERO-ID-ORIENTADO)"/>
-	    </foaf:identifier>
-	  </xsl:if>
-	  <rdf:type rdf:resource="&foaf;Person" />
-	</rdf:Description>
-      </dc:creator>
-      <dc:contributor>
-	<xsl:attribute name="rdf:resource">
-	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
-	</xsl:attribute>
-      </dc:contributor>
-      <dcterms:isReferencedBy rdf:resource="" />
-    </rdf:Description>
-  </xsl:template>
-
   <xsl:template match="MESTRADO">
     <rdf:Description rdf:about="{concat('#masterthesis',@SEQUENCIA-FORMACAO)}">
       <rdf:type rdf:resource="&bibo;Thesis" />
       <dc:title><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></dc:title>
+      <rdfs:label><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></rdfs:label>
       <xsl:if test="normalize-space(@TITULO-DA-DISSERTACAO-TESE-INGLES) != ''">
 	<dc:title xml:lang="en"><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE-INGLES" /></dc:title>
       </xsl:if>
       <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
       <dcterms:issued><xsl:value-of select="@ANO-DE-OBTENCAO-DO-TITULO"/></dcterms:issued>
       <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
-
-      <bibo:issuer> 
-	<rdf:Description>
-	  <xsl:if test="string-length(@CODIGO-INSTITUICAO)>0">
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#I',@CODIGO-INSTITUICAO)"/>
-	    </xsl:attribute>
-	    <foaf:identifier>
-	      <xsl:value-of select="@CODIGO-INSTITUICAO"/>
-	    </foaf:identifier>
-	  </xsl:if>
-	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
-	  <foaf:name><xsl:value-of select="@NOME-INSTITUICAO"/></foaf:name>
-	</rdf:Description>
-      </bibo:issuer>
-
-      <vivo:relatedBy>
-	<rdf:Description rdf:about="#authorship-{generate-id(.)}">
-	  <rdf:type rdf:resource="&vivo;Authorship"/>
-	  <vivo:rank rdf:datatype="&xsd;int">1</vivo:rank>
-	  <vivo:relates>
-	    <xsl:attribute name="rdf:resource">
-	      <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
-	    </xsl:attribute>
-	  </vivo:relates>
-	</rdf:Description>
-      </vivo:relatedBy>
-
-      <dc:contributor>
-	<rdf:Description>
-	  <xsl:if test="normalize-space(@NUMERO-ID-ORIENTADOR) != ''">
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#orientador-',normalize-space(@NUMERO-ID-ORIENTADOR))"/>
-	    </xsl:attribute>
-	    <foaf:identifier> <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> </foaf:identifier>
-	  </xsl:if>
-	  <foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/> </foaf:name>
-	  <rdf:type rdf:resource="&foaf;Person" />
-	</rdf:Description>
-      </dc:contributor>
-
+      <xsl:call-template name="issuer-education"/>
+      <xsl:call-template name="authorship-education"/>
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
-  </xsl:template>
 
-
-  <xsl:template match="ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO">
-    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
-      <rdf:type rdf:resource="&bibo;Thesis" />
-      <bibo:degree rdf:resource="&bibo;degrees/phd" /> 
-      <dc:title><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@TITULO" /></dc:title>
-      <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@ANO" /></dcterms:issued>
-      <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@HOME-PAGE"/>
-      <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@IDIOMA"/>
-      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
-
-      <bibo:issuer> 
-	<rdf:Description>
-	  <xsl:if test="string-length(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@CODIGO-INSTITUICAO)>0">
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#I',DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@CODIGO-INSTITUICAO)"/>
-	    </xsl:attribute>
-	    <foaf:identifier>
-	      <xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@CODIGO-INSTITUICAO"/>
-	    </foaf:identifier>
-	  </xsl:if>
-	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
-	  <foaf:name><xsl:value-of select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@NOME-DA-INSTITUICAO"/></foaf:name>
-	</rdf:Description>
-      </bibo:issuer>
-      <dc:creator>
-	<rdf:Description foaf:name="{DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@NOME-DO-ORIENTADO}">
-	  <xsl:if test="normalize-space(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@NUMERO-ID-ORIENTADO) != ''">
-	    <foaf:identifier>
-	      <xsl:value-of select="normalize-space(DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@NUMERO-ID-ORIENTADO)"/>
-	    </foaf:identifier>
-	  </xsl:if>
-	  <rdf:type rdf:resource="&foaf;Person" />
-	</rdf:Description>
-      </dc:creator>
-      <dc:contributor>
+    <rdf:Description rdf:about="#relationship-{generate-id(.)}"> 
+      <rdf:type rdf:resource="&vivo;AdvisingRelationship"/>
+      <vivo:relates>
 	<xsl:attribute name="rdf:resource">
 	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
 	</xsl:attribute>
-      </dc:contributor>
-      <dcterms:isReferencedBy rdf:resource="" />
-    </rdf:Description>
+      </vivo:relates>
+      <vivo:relates>
+	<xsl:call-template name="orientador" />
+      </vivo:relates>
+      <vivo:relates>
+	<rdf:Description rdf:about="#adviseeRole-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;AdviseeRole"/>
+	  <obo:RO_0000052>
+	    <xsl:attribute name="rdf:resource">
+	      <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	    </xsl:attribute>
+	  </obo:RO_0000052>
+	</rdf:Description>
+      </vivo:relates>
+      <vivo:relates>
+	<rdf:Description rdf:about="#advisorRole-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;AdvisorRole"/>
+	  <obo:RO_0000052>
+	    <xsl:call-template name="orientador-ref" />
+	  </obo:RO_0000052>
+	</rdf:Description>
+      </vivo:relates>
+    </rdf:Description>	
   </xsl:template>
 
   <xsl:template match="DOUTORADO">
     <rdf:Description rdf:about="{concat('#phdthesis',@SEQUENCIA-FORMACAO)}">
       <rdf:type rdf:resource="&bibo;Thesis" />
       <dc:title><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></dc:title>
+      <rdfs:label><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></rdfs:label>
       <xsl:if test="normalize-space(@TITULO-DA-DISSERTACAO-TESE-INGLES) != ''">
 	<dc:title xml:lang="en"><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE-INGLES" /></dc:title>
       </xsl:if>
       <bibo:degree rdf:resource="&bibo;degrees/phd" /> 
       <dcterms:issued><xsl:value-of select="@ANO-DE-OBTENCAO-DO-TITULO"/></dcterms:issued>
       <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
-
-      <bibo:issuer> 
-	<rdf:Description>
-	  <xsl:if test="string-length(@CODIGO-INSTITUICAO)>0">
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#I',@CODIGO-INSTITUICAO)"/>
-	    </xsl:attribute>
-	    <foaf:identifier>
-	      <xsl:value-of select="@CODIGO-INSTITUICAO"/>
-	    </foaf:identifier>
-	  </xsl:if>
-	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
-	  <foaf:name><xsl:value-of select="@NOME-INSTITUICAO"/></foaf:name>
-	</rdf:Description>
-      </bibo:issuer>
-
-      <vivo:relatedBy>
-	    <rdf:Description>
-	      <rdf:type rdf:resource="&vivo;Authorship"/>
-	      <vivo:rank rdf:datatype="&xsd;int">1</vivo:rank>
-	      <vivo:relates>
-		<xsl:attribute name="rdf:resource">
-		  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
-		</xsl:attribute>
-	      </vivo:relates>
-	    </rdf:Description>
-      </vivo:relatedBy>
-
-      <dc:contributor>
-	<rdf:Description>
-	  <xsl:if test="normalize-space(@NUMERO-ID-ORIENTADOR) != ''">
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#orientador-',normalize-space(@NUMERO-ID-ORIENTADOR))"/>
-	    </xsl:attribute>
-	    <foaf:identifier> <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> </foaf:identifier>
-	  </xsl:if>
-	  <foaf:name> <xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/> </foaf:name>
-	  <rdf:type rdf:resource="&foaf;Person" />
-	</rdf:Description>
-      </dc:contributor>
+      <xsl:call-template name="issuer-education" />
+      <xsl:call-template name="authorship-education" />
       <dcterms:isReferencedBy rdf:resource="" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#relationship-{generate-id(.)}">
+      <rdf:type rdf:resource="&vivo;AdvisingRelationship"/>
+      <vivo:relates>
+	<xsl:attribute name="rdf:resource">
+	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	</xsl:attribute>
+      </vivo:relates>
+      <vivo:relates>
+	<xsl:call-template name="orientador" />
+      </vivo:relates>
+      <vivo:relates>
+	<rdf:Description rdf:about="#adviseeRole-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;AdviseeRole"/>
+	  <obo:RO_0000052>
+	    <xsl:attribute name="rdf:resource">
+	      <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	    </xsl:attribute>
+	  </obo:RO_0000052>
+	</rdf:Description>
+      </vivo:relates>
+      <vivo:relates>
+	<rdf:Description rdf:about="#advisorRole-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;AdvisorRole"/>
+	  <obo:RO_0000052>
+	    <xsl:call-template name="orientador-ref" />
+	  </obo:RO_0000052>
+	</rdf:Description>
+      </vivo:relates>
+    </rdf:Description>	
+  </xsl:template>
+
+  <xsl:template match="ORIENTACOES-CONCLUIDAS-PARA-MESTRADO">
+    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
+      <rdf:type rdf:resource="&bibo;Thesis" />
+      <dc:title><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@TITULO" /></dc:title>
+      <rdfs:label><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@TITULO" /></rdfs:label>
+      <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
+      <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@ANO"/></dcterms:issued>
+      <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@HOME-PAGE"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO/@IDIOMA"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
+      <xsl:call-template name="advising-issuer">
+	<xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO" />
+      </xsl:call-template>
+      <vivo:relatedBy>
+	<rdf:Description rdf:about="#authorship-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;Authorship"/>
+	  <vivo:rank rdf:datatype="&xsd;int">1</vivo:rank>
+	  <vivo:relates>
+	    <xsl:call-template name="thesis-author">
+	      <xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO" />
+	    </xsl:call-template>
+	  </vivo:relates>
+	</rdf:Description>
+      </vivo:relatedBy>
+      <dcterms:isReferencedBy rdf:resource="" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#relationship-{generate-id(.)}">
+      <rdf:type rdf:resource="&vivo;AdvisingRelationship"/>
+      <vivo:relates>
+	<xsl:attribute name="rdf:resource">
+	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	</xsl:attribute>
+      </vivo:relates>
+      <vivo:relates>
+	<xsl:call-template name="thesis-author-ref">
+	  <xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"/>
+	</xsl:call-template>
+      </vivo:relates>
+      <vivo:relates>
+	<rdf:Description rdf:about="#advisseRole-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;AdviseeRole"/>
+	  <obo:RO_0000052>
+	    <xsl:call-template name="thesis-author-ref">
+	      <xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"/>
+	    </xsl:call-template>
+	  </obo:RO_0000052>
+	</rdf:Description>
+      </vivo:relates>
+      <vivo:relates>
+	<rdf:Description rdf:about="#advisorRole-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;AdvisorRole"/>
+	  <obo:RO_0000052>
+	    <xsl:attribute name="rdf:resource">
+	      <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	    </xsl:attribute>
+	  </obo:RO_0000052>
+	</rdf:Description>
+      </vivo:relates>
+    </rdf:Description>	
+  </xsl:template>
+
+  <xsl:template match="ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO">
+    <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
+      <rdf:type rdf:resource="&bibo;Thesis" />
+      <bibo:degree rdf:resource="&bibo;degrees/phd" /> 
+      <dc:title><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@TITULO" /></dc:title>
+      <rdfs:label><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@TITULO" /></rdfs:label>
+      <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@ANO" /></dcterms:issued>
+      <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@HOME-PAGE"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO/@IDIOMA"/>
+      <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/>
+      <xsl:call-template name="advising-issuer">
+	<xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO" />
+      </xsl:call-template>
+      <vivo:relatedBy>
+	<rdf:Description rdf:about="#authorship-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;Authorship"/>
+	  <vivo:rank rdf:datatype="&xsd;int">1</vivo:rank>
+	  <vivo:relates>
+	    <xsl:call-template name="thesis-author">
+	      <xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO" />
+	    </xsl:call-template>
+	  </vivo:relates>
+	</rdf:Description>
+      </vivo:relatedBy>
+      <dcterms:isReferencedBy rdf:resource="" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#relationship-{generate-id(.)}">
+      <rdf:type rdf:resource="&vivo;AdvisingRelationship"/>
+      <vivo:relates>
+	<xsl:attribute name="rdf:resource">
+	  <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	</xsl:attribute>
+      </vivo:relates>
+      <vivo:relates>
+	<xsl:call-template name="thesis-author-ref">
+	  <xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"/>
+	</xsl:call-template>
+      </vivo:relates>
+      <vivo:relates>
+	<rdf:Description rdf:about="#adviseeRole-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;AdviseeRole"/>
+	  <obo:RO_0000052>
+	    <xsl:call-template name="thesis-author-ref">
+	      <xsl:with-param name="node" select="DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"/>
+	    </xsl:call-template>
+	  </obo:RO_0000052>
+	</rdf:Description>
+      </vivo:relates>
+      <vivo:relates>
+	<rdf:Description rdf:about="#advisorRole-{generate-id(.)}">
+	  <rdf:type rdf:resource="&vivo;AdvisorRole"/>
+	  <obo:RO_0000052>
+	    <xsl:attribute name="rdf:resource">
+	      <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	    </xsl:attribute>
+	  </obo:RO_0000052>
+	</rdf:Description>
+      </vivo:relates>
+    </rdf:Description>	
+  </xsl:template>
+
+  <xsl:template name="authorship-education">
+    <vivo:relatedBy>
+      <rdf:Description rdf:about="#authorship-{generate-id(.)}">
+	<rdf:type rdf:resource="&vivo;Authorship"/>
+	<vivo:rank rdf:datatype="&xsd;int">1</vivo:rank>
+	<vivo:relates>
+	  <xsl:attribute name="rdf:resource">
+	    <xsl:apply-templates select="//DADOS-GERAIS" mode="ref" />
+	  </xsl:attribute>
+	</vivo:relates>
+      </rdf:Description>
+    </vivo:relatedBy>
+  </xsl:template>
+
+  <xsl:template name="advising-issuer">
+    <xsl:param name="node" />
+    <bibo:issuer> 
+      <rdf:Description>
+	<xsl:if test="string-length($node/@CODIGO-INSTITUICAO)>0">
+	  <xsl:attribute name="rdf:about">
+	    <xsl:value-of select="concat('#I',$node/@CODIGO-INSTITUICAO)"/>
+	  </xsl:attribute>
+	  <foaf:identifier>
+	    <xsl:value-of select="$node/@CODIGO-INSTITUICAO"/>
+	  </foaf:identifier>
+	</xsl:if>
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
+	<foaf:name>
+	  <xsl:value-of select="$node/@NOME-DA-INSTITUICAO"/>
+	</foaf:name>
+      </rdf:Description>
+    </bibo:issuer>
+  </xsl:template>
+
+  <xsl:template name="issuer-education">
+    <bibo:issuer> 
+      <rdf:Description>
+	<xsl:if test="string-length(@CODIGO-INSTITUICAO)>0">
+	  <xsl:attribute name="rdf:about">
+	    <xsl:value-of select="concat('#I',@CODIGO-INSTITUICAO)"/>
+	  </xsl:attribute>
+	  <foaf:identifier>
+	    <xsl:value-of select="@CODIGO-INSTITUICAO"/>
+	  </foaf:identifier>
+	</xsl:if>
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
+	<foaf:name><xsl:value-of select="@NOME-INSTITUICAO"/></foaf:name>
+      </rdf:Description>
+    </bibo:issuer>
+  </xsl:template>
+
+  <xsl:template name="thesis-author-ref">
+    <xsl:param name="node" />
+    <xsl:attribute name="rdf:resource">
+      <xsl:value-of select="concat('#thesis-author-',generate-id($node))"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template name="thesis-author">
+    <xsl:param name="node" />
+    <rdf:Description rdf:about="#thesis-author-{generate-id($node)}"> 
+      <rdf:type rdf:resource="&foaf;Person"/>
+      <xsl:if test="normalize-space($node/@NUMERO-ID-ORIENTADO) != ''">
+	<foaf:identifier>
+	  <xsl:value-of select="normalize-space($node/@NUMERO-ID-ORIENTADO)"/> 
+	</foaf:identifier>
+      </xsl:if>
+      <rdfs:label><xsl:value-of select="$node/@NOME-DO-ORIENTADO"/></rdfs:label>
+      <obo:ARG_2000028>
+	<rdf:Description rdf:about="#individual-{generate-id($node)}">  
+	  <rdf:type rdf:resource="&vcard;Individual"/>
+	  <vcard:hasName>
+	    <rdf:Description rdf:about="#name-{generate-id($node)}">
+	      <rdf:type rdf:resource="&vcard;Name"/>
+	      <vcard:fn> <xsl:value-of select="$node/@NOME-DO-ORIENTADO"/> </vcard:fn>
+	    </rdf:Description>
+	  </vcard:hasName>
+	</rdf:Description>
+      </obo:ARG_2000028>
     </rdf:Description>
   </xsl:template>
 
+  <xsl:template name="orientador-ref">
+    <xsl:attribute name="rdf:resource">
+      <xsl:value-of select="concat('#orientador-',generate-id(.))"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template name="orientador">
+    <rdf:Description rdf:about="#orientador-{generate-id(.)}"> 
+      <rdf:type rdf:resource="&foaf;Person"/>
+      <xsl:if test="normalize-space(@NUMERO-ID-ORIENTADOR) != ''">
+	<foaf:identifier>
+	  <xsl:value-of select="normalize-space(@NUMERO-ID-ORIENTADOR)"/> 
+	</foaf:identifier>
+      </xsl:if>
+      <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/></rdfs:label>
+      <obo:ARG_2000028>
+	<rdf:Description rdf:about="#individual-{generate-id(.)}">  
+	  <rdf:type rdf:resource="&vcard;Individual"/>
+	  <vcard:hasName>
+	    <rdf:Description rdf:about="#name-{generate-id(.)}">
+	      <rdf:type rdf:resource="&vcard;Name"/>
+	      <vcard:fn> <xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/> </vcard:fn>
+	    </rdf:Description>
+	  </vcard:hasName>
+	</rdf:Description>
+      </obo:ARG_2000028>
+    </rdf:Description>
+  </xsl:template>
 
   <xsl:template match="@HOME-PAGE">
     <xsl:if test="normalize-space(.) != ''">
