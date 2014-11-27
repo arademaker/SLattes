@@ -191,21 +191,21 @@ Mountain View, California, 94041, USA.
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
 	  <fgvterms:Especialidade rdf:about="{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <rdf:type rdf:resource="&skos;Concept" />
-	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
+	    <rdfs:label><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></rdfs:label>
 	    <skos:related>
 	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
-			<skos:prefLabel>
+			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-			</skos:prefLabel>
+			</rdfs:label>
 		      </fgvterms:grandeArea>
 		    </skos:broader>
 		  </fgvterms:Area>
@@ -219,17 +219,17 @@ Mountain View, California, 94041, USA.
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
 	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
-			<skos:prefLabel>
+			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-			</skos:prefLabel>
+			</rdfs:label>
 		      </fgvterms:grandeArea>
 		    </skos:broader>
 		  </fgvterms:Area>
@@ -239,13 +239,13 @@ Mountain View, California, 94041, USA.
 	    <xsl:otherwise>
 	      <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>
 		  <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:prefLabel>
+		    <rdfs:label>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-		    </skos:prefLabel>
+		    </rdfs:label>
 		  </fgvterms:grandeArea>
 		</skos:broader>
 	      </fgvterms:Area>
@@ -262,21 +262,21 @@ Mountain View, California, 94041, USA.
 	<xsl:when test="normalize-space(@NOME-DA-ESPECIALIDADE) != ''">
 	  <fgvterms:Especialidade rdf:about="{generate-id(@NOME-DA-ESPECIALIDADE)}">
 	    <rdf:type rdf:resource="&skos;Concept" />
-	    <skos:prefLabel><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></skos:prefLabel>
+	    <rdfs:label><xsl:value-of select="@NOME-DA-ESPECIALIDADE"/></rdfs:label>
 	    <skos:related>
 	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
-			<skos:prefLabel>
+			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-			</skos:prefLabel>
+			</rdfs:label>
 		      </fgvterms:grandeArea>
 		    </skos:broader>
 		  </fgvterms:Area>
@@ -290,17 +290,17 @@ Mountain View, California, 94041, USA.
 	    <xsl:when test="normalize-space(@NOME-DA-SUB-AREA-DO-CONHECIMENTO) != ''">
 	      <fgvterms:subArea rdf:about="{generate-id(@NOME-DA-SUB-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:prefLabel><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<rdfs:label><xsl:value-of select="@NOME-DA-SUB-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>		    
 		  <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		    <rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		    <skos:broader>
 		      <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 			<rdf:type rdf:resource="&skos;Concept" />
-			<skos:prefLabel>
+			<rdfs:label>
 			  <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-			</skos:prefLabel>
+			</rdfs:label>
 		      </fgvterms:grandeArea>
 		    </skos:broader>
 		  </fgvterms:Area>
@@ -310,13 +310,13 @@ Mountain View, California, 94041, USA.
 	    <xsl:otherwise>
 	      <fgvterms:Area rdf:about="{generate-id(@NOME-DA-AREA-DO-CONHECIMENTO)}">
 		<rdf:type rdf:resource="&skos;Concept" />
-		<skos:prefLabel><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></skos:prefLabel>
+		<rdfs:label><xsl:value-of select="@NOME-DA-AREA-DO-CONHECIMENTO"/></rdfs:label>
 		<skos:broader>
 		  <fgvterms:grandeArea rdf:about="{generate-id(@NOME-GRANDE-AREA-DO-CONHECIMENTO)}">
 		    <rdf:type rdf:resource="&skos;Concept" />
-		    <skos:prefLabel>
+		    <rdfs:label>
 		      <xsl:value-of select="@NOME-GRANDE-AREA-DO-CONHECIMENTO"/>
-		    </skos:prefLabel>
+		    </rdfs:label>
 		  </fgvterms:grandeArea>
 		</skos:broader>
 	      </fgvterms:Area>
@@ -398,7 +398,7 @@ Mountain View, California, 94041, USA.
   </xsl:template>
 
   <xsl:template match="DETALHAMENTO-DO-ARTIGO">
-    <dcterms:isPartOf>
+    <vivo:hasPublicationVenue>
       <rdf:Description rdf:about="journal-{generate-id(.)}">
 	<!-- to prevent wrong ISSN to collapse different journals
 	<xsl:if test="string-length(@ISSN)>0"> 
@@ -410,7 +410,7 @@ Mountain View, California, 94041, USA.
 	<rdfs:label><xsl:value-of select="@TITULO-DO-PERIODICO-OU-REVISTA"/></rdfs:label>
 	<xsl:apply-templates select="@ISSN"/> 
       </rdf:Description>
-    </dcterms:isPartOf>
+    </vivo:hasPublicationVenue>
     <xsl:if test="normalize-space(@PAGINA-INICIAL) != ''">
       <bibo:pageStart><xsl:value-of select="@PAGINA-INICIAL"/></bibo:pageStart> 
     </xsl:if>
@@ -480,7 +480,7 @@ Mountain View, California, 94041, USA.
 
   <xsl:template match="ARTIGO-PUBLICADO|ARTIGO-ACEITO-PARA-PUBLICACAO">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
-      <rdf:type rdf:resource="&bibo;Article" />
+      <rdf:type rdf:resource="&bibo;AcademicArticle" />
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></dc:title>
       <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></rdfs:label>
       <xsl:if test="normalize-space(DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES) != ''">
@@ -562,10 +562,9 @@ Mountain View, California, 94041, USA.
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /></dc:title>
       <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@TITULO-DO-CAPITULO-DO-LIVRO" /></rdfs:label>
       <dcterms:issued> <xsl:value-of select="DADOS-BASICOS-DO-CAPITULO/@ANO" /> </dcterms:issued>
-      <dcterms:isPartOf>
+      <obo:BFO_0000050>
 	<xsl:apply-templates select="DETALHAMENTO-DO-CAPITULO" />
-      </dcterms:isPartOf>
-
+      </obo:BFO_0000050>
       <xsl:apply-templates select="AUTORES" />
       <xsl:apply-templates select="DADOS-BASICOS-DO-CAPITULO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-CAPITULO/@DOI"/>
