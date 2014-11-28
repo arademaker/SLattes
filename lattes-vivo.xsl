@@ -6,6 +6,15 @@ Attribution-ShareAlike 3.0 Brazil License. To view a copy of this
 license, visit http://creativecommons.org/licenses/by-sa/3.0/br/ or
 send a letter to Creative Commons, 444 Castro Street, Suite 900,
 Mountain View, California, 94041, USA.
+
+Issues:
+
+- melhorar gerador via named template do identificador do lattes e do autor 
+  do lattes
+
+- avaliar como melhorar performance. profiling?
+
+- fazer Makefile para melhor desempenho das transformacoes.
 -->
 
 <!DOCTYPE rdf:RDF [
@@ -43,61 +52,36 @@ Mountain View, California, 94041, USA.
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
-  <xsl:param name="LATTES"/>
+  <xsl:param name="LATTES"/> 
 
   <xsl:template match="/">
     <rdf:RDF>
       <xsl:attribute name="xml:base">
-	<xsl:value-of select="concat('http://www.fgv.br/lattes/',CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)"/>
+	<xsl:choose>
+	  <xsl:when test="string-length(/CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)>0">
+	    <xsl:value-of select="concat('http://www.fgv.br/lattes/',
+				  /CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="concat('http://www.fgv.br/lattes/',$LATTES)"/>
+	  </xsl:otherwise>
+	</xsl:choose>
       </xsl:attribute>
-      <xsl:apply-templates />
 
+      <xsl:apply-templates />      
       <xsl:apply-templates select="//AUTORES" mode="full"/>
     </rdf:RDF>
-  </xsl:template>
-
-  <xsl:template match="AUTORES" mode="full">
-    <rdf:Description>
-      <xsl:choose>
-	<xsl:when test="normalize-space(@NRO-ID-CNPQ) != ''">
-	  <xsl:attribute name="rdf:about">
-	    <xsl:value-of select="concat('#author-',@NRO-ID-CNPQ)"/>
-	  </xsl:attribute>
-	</xsl:when>
-	  <xsl:otherwise>
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#author-',generate-id(.))"/>
-	    </xsl:attribute>
-	  </xsl:otherwise>
-      </xsl:choose>
-      <obo:ARG_2000028>
-	<rdf:Description rdf:about="#individual-{generate-id(.)}">  
-	  <rdf:type rdf:resource="&vcard;Individual"/>
-	  <vcard:hasName>
-	    <rdf:Description rdf:about="#name-full-{generate-id(.)}">
-	      <rdf:type rdf:resource="&vcard;Name"/>
-	      <vcard:fn><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></vcard:fn>
-	    </rdf:Description>
-	  </vcard:hasName>
-	  <xsl:call-template name="split">
-	    <xsl:with-param name="pText"><xsl:value-of select="@NOME-PARA-CITACAO"/></xsl:with-param>
-	    <xsl:with-param name="id">#name-<xsl:value-of select="generate-id(.)"/></xsl:with-param>
-	  </xsl:call-template>
-	</rdf:Description>
-      </obo:ARG_2000028>
-      <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></rdfs:label>
-      <rdf:type rdf:resource="&foaf;Person" />
-    </rdf:Description>
   </xsl:template>
 
   <xsl:template match="CURRICULO-VITAE">
     <rdf:Description rdf:about="">
       <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document" />
       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
-      <dc:title>CV Lattes de <xsl:value-of select="DADOS-GERAIS/@NOME-COMPLETO"/></dc:title>
+      <dc:title>CV Lattes de <xsl:value-of
+      select="DADOS-GERAIS/@NOME-COMPLETO"/></dc:title>
       <xsl:choose>
 	<xsl:when test="normalize-space(@NUMERO-IDENTIFICADOR) != ''">
-	  <bibo:identifier> <xsl:value-of select="@NUMERO-IDENTIFICADOR"/> </bibo:identifier>
+	  <bibo:identifier><xsl:value-of select="@NUMERO-IDENTIFICADOR"/></bibo:identifier>
 	</xsl:when>
 	<xsl:otherwise>
 	  <bibo:identifier><xsl:value-of select="$LATTES"/></bibo:identifier>
@@ -111,11 +95,11 @@ Mountain View, California, 94041, USA.
 
   <xsl:template match="DADOS-GERAIS" mode="ref">
     <xsl:choose>
-      <xsl:when test="string-length(ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)>0">
-	<xsl:value-of select="concat('mailto:',ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL)"/>
+      <xsl:when test="string-length(/CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)>0">
+	<xsl:value-of select="concat('#author-',/CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="concat('#author-', generate-id(.))"/>
+	<xsl:value-of select="concat('#author-',$LATTES)"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -367,6 +351,53 @@ Mountain View, California, 94041, USA.
       </xsl:choose>
     </vivo:hasSubjectArea>
   </xsl:template>
+
+
+  <xsl:template match="AUTORES" mode="ref">
+    <xsl:choose>
+      <xsl:when test="normalize-space(@NRO-ID-CNPQ) != ''">
+	<xsl:value-of select="concat('#author-',@NRO-ID-CNPQ)"/>
+      </xsl:when>
+      <xsl:when test="normalize-space(@NRO-ID-CNPQ) = '' and
+		      @NOME-COMPLETO-DO-AUTOR = //DADOS-GERAIS/@NOME-COMPLETO">
+	<xsl:apply-templates select="//DADOS-GERAIS" mode="ref"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat('#author-',generate-id(.))"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+
+  <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES
+		       |ARTIGO-PUBLICADO/AUTORES
+		       |ARTIGO-ACEITO-PARA-PUBLICACAO/AUTORES
+                       |LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES
+		       |CAPITULO-DE-LIVRO-PUBLICADO/AUTORES
+		       |TEXTO-EM-JORNAL-OU-REVISTA/AUTORES" mode="full">
+    <rdf:Description>
+      <xsl:attribute name="rdf:about">
+	<xsl:apply-templates select="." mode="ref"/>
+      </xsl:attribute>
+      <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></rdfs:label>
+      <rdf:type rdf:resource="&foaf;Person" />
+      <obo:ARG_2000028>
+	<rdf:Description rdf:about="#individual-{generate-id(.)}">  
+	  <rdf:type rdf:resource="&vcard;Individual"/>
+	  <vcard:hasName>
+	    <rdf:Description rdf:about="#name-full-{generate-id(.)}">
+	      <rdf:type rdf:resource="&vcard;Name"/>
+	      <vcard:givenName><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></vcard:givenName>
+	    </rdf:Description>
+	  </vcard:hasName>
+	  <xsl:call-template name="split">
+	    <xsl:with-param name="pText"><xsl:value-of select="@NOME-PARA-CITACAO"/></xsl:with-param>
+	    <xsl:with-param name="id">#name-<xsl:value-of select="generate-id(.)"/></xsl:with-param>
+	  </xsl:call-template>
+	</rdf:Description>
+      </obo:ARG_2000028>
+    </rdf:Description>
+  </xsl:template>
    
   <xsl:template match="TRABALHO-EM-EVENTOS/AUTORES
 		       |ARTIGO-PUBLICADO/AUTORES
@@ -379,18 +410,9 @@ Mountain View, California, 94041, USA.
 	<rdf:type rdf:resource="&vivo;Authorship" />
 	<vivo:rank rdf:datatype="&xsd;int"><xsl:value-of select="@ORDEM-DE-AUTORIA"/></vivo:rank>
 	<vivo:relates> 
-	  <xsl:choose>
-	    <xsl:when test="normalize-space(@NRO-ID-CNPQ) != ''">
-	      <xsl:attribute name="rdf:resource">
-		<xsl:value-of select="concat('#author-',@NRO-ID-CNPQ)"/>
-	      </xsl:attribute>
-	    </xsl:when>
-	    <xsl:otherwise>
-	      <xsl:attribute name="rdf:resource">
-		<xsl:value-of select="concat('#author-',generate-id(.))"/>
-	      </xsl:attribute>
-	    </xsl:otherwise>
-	  </xsl:choose>
+	  <xsl:attribute name="rdf:resource">
+	    <xsl:apply-templates select="." mode="ref"/>
+	  </xsl:attribute>
 	</vivo:relates>
       </rdf:Description>
     </vivo:relatedBy>
@@ -398,7 +420,7 @@ Mountain View, California, 94041, USA.
 
   <xsl:template match="TRABALHO-EM-EVENTOS">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
-      <rdf:type rdf:resource="&bibo;Article" />
+      <rdf:type rdf:resource="&bibo;AcademicArticle" />
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /></dc:title>
       <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /></rdfs:label>
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO" /></dcterms:issued>
@@ -421,8 +443,7 @@ Mountain View, California, 94041, USA.
 	  </event:place>
 	</rdf:Description>
       </bibo:presentedAt>
-
-      <dcterms:isPartOf>
+      <vivo:hasPublicationVenue>
 	<rdf:Description rdf:about="#proceedings-{generate-id(.)}">
 	  <!-- To prevent wrong ISBN to collapse different books  
 	  <xsl:if test="string-length(DETALHAMENTO-DO-TRABALHO/@ISBN)>0"> 
@@ -452,7 +473,7 @@ Mountain View, California, 94041, USA.
 	    </dcterms:publisher>
 	  </xsl:if>
 	</rdf:Description>
-      </dcterms:isPartOf>
+      </vivo:hasPublicationVenue>
       <xsl:apply-templates select="AUTORES" />
       <dcterms:isReferencedBy rdf:resource="" />
     </rdf:Description>
@@ -484,7 +505,7 @@ Mountain View, California, 94041, USA.
   </xsl:template>
 
   <xsl:template match="DETALHAMENTO-DO-TEXTO">
-    <dcterms:isPartOf>
+    <vivo:hasPublicationVenue>
       <rdf:Description rdf:about="#periodical-{generate-id(.)}">
 	<!--
 	<xsl:if test="string-length(@ISSN)>0"> 
@@ -497,7 +518,7 @@ Mountain View, California, 94041, USA.
 	<rdfs:label><xsl:value-of select="@TITULO-DO-JORNAL-OU-REVISTA"/></rdfs:label>
 	<xsl:apply-templates select="@ISSN"/>
       </rdf:Description>
-    </dcterms:isPartOf>
+    </vivo:hasPublicationVenue>
     <xsl:if test="normalize-space(@PAGINA-INICIAL) != ''">
       <bibo:pageStart><xsl:value-of select="@PAGINA-INICIAL"/></bibo:pageStart> 
     </xsl:if>
@@ -545,7 +566,9 @@ Mountain View, California, 94041, USA.
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></dc:title>
       <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></rdfs:label>
       <xsl:if test="normalize-space(DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES) != ''">
-	<dc:title xml:lang="en"><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES" /></dc:title>
+	<dc:title xml:lang="en">
+	  <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES"/>
+	</dc:title>
       </xsl:if>
       <dcterms:issued><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-ARTIGO" /></dcterms:issued>
       <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@IDIOMA"/>
@@ -573,17 +596,6 @@ Mountain View, California, 94041, USA.
       </dcterms:publisher>
       </xsl:if>
       <xsl:apply-templates select="AUTORES" />
-      <bibo:authorList rdf:parseType="Collection">
-	<xsl:for-each select="AUTORES">
-	  <xsl:sort data-type="number" select="@ORDEM-DE-AUTORIA"/>
-	  <rdf:Description>
-	    <xsl:attribute name="rdf:about">
-	      <xsl:value-of select="concat('#author-',generate-id(.))"/>
-	    </xsl:attribute>
-	  </rdf:Description>
-	</xsl:for-each>
-      </bibo:authorList>
-
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@DOI"/>
       <xsl:apply-templates select="DETALHAMENTO-DO-LIVRO/@ISBN"/>
