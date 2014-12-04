@@ -375,24 +375,27 @@ Issues:
                        |LIVRO-PUBLICADO-OU-ORGANIZADO/AUTORES
 		       |CAPITULO-DE-LIVRO-PUBLICADO/AUTORES
 		       |TEXTO-EM-JORNAL-OU-REVISTA/AUTORES" mode="full">
+    <xsl:variable name="addr">
+      <xsl:apply-templates select="." mode="ref"/>
+    </xsl:variable>
     <rdf:Description>
       <xsl:attribute name="rdf:about">
-	<xsl:apply-templates select="." mode="ref"/>
+	<xsl:value-of select="$addr"/>
       </xsl:attribute>
       <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></rdfs:label>
       <rdf:type rdf:resource="&foaf;Person" />
       <obo:ARG_2000028>
-	<rdf:Description rdf:about="#individual-{generate-id(.)}">  
+	<rdf:Description rdf:about="{$addr}-individual">  
 	  <rdf:type rdf:resource="&vcard;Individual"/>
 	  <vcard:hasName>
-	    <rdf:Description rdf:about="#name-full-{generate-id(.)}">
+	    <rdf:Description rdf:about="{$addr}-fn">
 	      <rdf:type rdf:resource="&vcard;Name"/>
 	      <vcard:givenName><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></vcard:givenName>
 	    </rdf:Description>
 	  </vcard:hasName>
 	  <xsl:call-template name="split">
 	    <xsl:with-param name="pText"><xsl:value-of select="@NOME-PARA-CITACAO"/></xsl:with-param>
-	    <xsl:with-param name="id">#name-<xsl:value-of select="generate-id(.)"/></xsl:with-param>
+	    <xsl:with-param name="id"><xsl:value-of select="concat($addr,'-name')"/></xsl:with-param>
 	  </xsl:call-template>
 	</rdf:Description>
       </obo:ARG_2000028>
