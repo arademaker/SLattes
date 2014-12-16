@@ -137,11 +137,11 @@ Issues:
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/> 
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
 
-      <vivo:overview xml:lang="pt">
+      <vivo:overview xml:lang="pt-BR">
 	<xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH" />
       </vivo:overview>
       <xsl:if test="string-length(RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN) > 0">
-	<vivo:overview xml:lang="en">
+	<vivo:overview xml:lang="en-US">
 	  <xsl:value-of select="RESUMO-CV/@TEXTO-RESUMO-CV-RH-EN" />
 	</vivo:overview>
       </xsl:if>
@@ -536,16 +536,16 @@ Issues:
   <xsl:template match="TEXTO-EM-JORNAL-OU-REVISTA">
     <rdf:Description rdf:about="#P{@SEQUENCIA-PRODUCAO}">
       <rdf:type rdf:resource="&bibo;Article" />
-      <dc:title xml:lang="pt"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></dc:title>
-      <rdfs:label xml:lang="pt"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></rdfs:label>
+      <dc:title xml:lang="pt-BR"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></dc:title>
+      <rdfs:label xml:lang="pt-BR"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></rdfs:label>
       <xsl:if test="normalize-space(@TITULO-DO-TEXTO-INGLES) != ''">
-	<dc:title xml:lang="en">
+	<dc:title xml:lang="en-US">
 	  <xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO-INGLES" />
 	</dc:title>
       </xsl:if>
-      <rdfs:label xml:lang="pt"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></rdfs:label>
+      <rdfs:label xml:lang="pt-BR"><xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO" /></rdfs:label>
       <xsl:if test="normalize-space(@TITULO-DO-TEXTO-INGLES) != ''">
-	<rdfs:label xml:lang="en">
+	<rdfs:label xml:lang="en-US">
 	  <xsl:value-of select="DADOS-BASICOS-DO-TEXTO/@TITULO-DO-TEXTO-INGLES" />
 	</rdfs:label>
       </xsl:if>
@@ -569,7 +569,7 @@ Issues:
       <dc:title><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></dc:title>
       <rdfs:label><xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO" /></rdfs:label>
       <xsl:if test="normalize-space(DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES) != ''">
-	<dc:title xml:lang="en">
+	<dc:title xml:lang="en-US">
 	  <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-ARTIGO-INGLES"/>
 	</dc:title>
       </xsl:if>
@@ -657,7 +657,7 @@ Issues:
       <dc:title><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></dc:title>
       <rdfs:label><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></rdfs:label>
       <xsl:if test="normalize-space(@TITULO-DA-DISSERTACAO-TESE-INGLES) != ''">
-	<dc:title xml:lang="en"><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE-INGLES" /></dc:title>
+	<dc:title xml:lang="en-US"><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE-INGLES" /></dc:title>
       </xsl:if>
       <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
       <dcterms:issued><xsl:value-of select="@ANO-DE-OBTENCAO-DO-TITULO"/></dcterms:issued>
@@ -704,7 +704,7 @@ Issues:
       <dc:title><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></dc:title>
       <rdfs:label><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE" /></rdfs:label>
       <xsl:if test="normalize-space(@TITULO-DA-DISSERTACAO-TESE-INGLES) != ''">
-	<dc:title xml:lang="en"><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE-INGLES" /></dc:title>
+	<dc:title xml:lang="en-US"><xsl:value-of select="@TITULO-DA-DISSERTACAO-TESE-INGLES" /></dc:title>
       </xsl:if>
       <bibo:degree rdf:resource="&bibo;degrees/phd" /> 
       <dcterms:issued><xsl:value-of select="@ANO-DE-OBTENCAO-DO-TITULO"/></dcterms:issued>
