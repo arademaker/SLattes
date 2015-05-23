@@ -52,7 +52,7 @@ Issues:
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
-  <xsl:param name="LATTES"/> 
+  <xsl:param name="ID"/> 
 
   <xsl:template match="/">
     <rdf:RDF>
@@ -63,7 +63,7 @@ Issues:
 				  /CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)"/>
 	  </xsl:when>
 	  <xsl:otherwise>
-	    <xsl:value-of select="concat('http://www.fgv.br/lattes/',$LATTES)"/>
+	    <xsl:value-of select="concat('http://www.fgv.br/lattes/',$ID)"/>
 	  </xsl:otherwise>
 	</xsl:choose>
       </xsl:attribute>
@@ -84,7 +84,7 @@ Issues:
 	  <bibo:identifier><xsl:value-of select="@NUMERO-IDENTIFICADOR"/></bibo:identifier>
 	</xsl:when>
 	<xsl:otherwise>
-	  <bibo:identifier><xsl:value-of select="$LATTES"/></bibo:identifier>
+	  <bibo:identifier><xsl:value-of select="$ID"/></bibo:identifier>
 	</xsl:otherwise>
       </xsl:choose>
       <dcterms:issued><xsl:value-of select="@DATA-ATUALIZACAO" /></dcterms:issued>
@@ -96,10 +96,10 @@ Issues:
   <xsl:template match="DADOS-GERAIS" mode="ref">
     <xsl:choose>
       <xsl:when test="string-length(/CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)>0">
-	<xsl:value-of select="concat('#author-',/CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)"/>
+	<xsl:value-of select="concat('http://www.fgv.br/lattes/person/',/CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="concat('#author-',$LATTES)"/>
+	<xsl:value-of select="concat('http://www.fgv.br/lattes/person/',$ID)"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -356,7 +356,7 @@ Issues:
   <xsl:template match="AUTORES" mode="ref">
     <xsl:choose>
       <xsl:when test="normalize-space(@NRO-ID-CNPQ) != ''">
-	<xsl:value-of select="concat('#author-',@NRO-ID-CNPQ)"/>
+	<xsl:value-of select="concat('http://www.fgv.br/lattes/person/',@NRO-ID-CNPQ)"/>
       </xsl:when>
       <xsl:when test="normalize-space(@NRO-ID-CNPQ) = '' and
 		      @NOME-COMPLETO-DO-AUTOR = //DADOS-GERAIS/@NOME-COMPLETO">
@@ -469,7 +469,7 @@ Issues:
 	  <xsl:if test="string-length(DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA)>0">
 	    <dcterms:publisher>
 	      <rdf:Description rdf:about="#org-{generate-id(.)}">
-		<rdf:type rdf:resource="&foaf;Organization" />
+		<rdf:type rdf:resource="&vivo;Publisher" />
 		<rdfs:label><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA"/></rdfs:label>
 		<foaf:name><xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA"/></foaf:name>
 	      </rdf:Description>
@@ -592,7 +592,7 @@ Issues:
       <xsl:if test="string-length(DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA)>0">
       <dcterms:publisher>
 	<rdf:Description rdf:about="#org-{generate-id(.)}">
-	  <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
+	  <rdf:type rdf:resource="&vivo;Publisher" />
 	  <foaf:name><xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /></foaf:name>
 	  <rdfs:label><xsl:value-of select="DETALHAMENTO-DO-LIVRO/@NOME-DA-EDITORA" /></rdfs:label>
 	</rdf:Description>
@@ -625,7 +625,7 @@ Issues:
       <xsl:if test="string-length(@NOME-DA-EDITORA)>0">
 	<dcterms:publisher>
 	  <rdf:Description rdf:about="#org-{generate-id(.)}">
-	    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization" />
+	    <rdf:type rdf:resource="&vivo;Publisher"/>
 	    <foaf:name><xsl:value-of select="@NOME-DA-EDITORA"/></foaf:name>
 	    <rdfs:label><xsl:value-of select="@NOME-DA-EDITORA"/></rdfs:label>
 	  </rdf:Description>

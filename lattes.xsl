@@ -39,13 +39,23 @@ Mountain View, California, 94041, USA.
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
-  <xsl:param name="ID">unknown</xsl:param>
+  <xsl:param name="ID"/> 
 
   <xsl:template match="/">
     <rdf:RDF>
-      <xsl:attribute name="xml:base"><xsl:value-of select="concat('http://www.fgv.br/lattes/',$ID)"/></xsl:attribute>
-      <xsl:apply-templates />
+      <xsl:attribute name="xml:base">      
+	<xsl:choose>
+	  <xsl:when test="string-length(/CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)>0">
+	    <xsl:value-of select="concat('http://www.fgv.br/lattes/',
+				  /CURRICULO-VITAE/@NUMERO-IDENTIFICADOR)"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="concat('http://www.fgv.br/lattes/',$ID)"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:attribute>
 
+      <xsl:apply-templates />
       <xsl:apply-templates select="//AUTORES" mode="full"/>
     </rdf:RDF>
   </xsl:template>
