@@ -39,7 +39,7 @@ Mountain View, California, 94041, USA.
 		xmlns:lattes="http://www.cnpq.br/2001/XSL/Lattes">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
-  <xsl:param name="ID"/> 
+  <xsl:param name="ID" />
 
   <xsl:template match="/">
     <rdf:RDF>
