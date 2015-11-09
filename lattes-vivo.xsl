@@ -134,6 +134,7 @@ Issues:
 	</bio:Birth>
       </bio:event>
       <rdfs:label><xsl:value-of select="@NOME-COMPLETO"/></rdfs:label>
+      <foaf:name><xsl:value-of select="@NOME-COMPLETO"/></foaf:name>
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@E-MAIL"/> 
       <xsl:apply-templates select="ENDERECO/ENDERECO-PROFISSIONAL/@HOME-PAGE"/> 
 
@@ -383,6 +384,7 @@ Issues:
 	<xsl:value-of select="$addr"/>
       </xsl:attribute>
       <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></rdfs:label>
+      <foaf:name><xsl:value-of select="@NOME-COMPLETO-DO-AUTOR"/></foaf:name>
       <rdf:type rdf:resource="&foaf;Person" />
       <obo:ARG_2000028>
 	<rdf:Description rdf:about="{$addr}-individual">  
@@ -972,6 +974,7 @@ Issues:
       </xsl:choose>
       <rdf:type rdf:resource="&foaf;Person"/>
       <rdfs:label><xsl:value-of select="$node/@NOME-DO-ORIENTADO"/></rdfs:label>
+      <foaf:name><xsl:value-of select="$node/@NOME-DO-ORIENTADO"/></foaf:name>
       <obo:ARG_2000028>
 	<rdf:Description rdf:about="#individual-{generate-id($node)}">  
 	  <rdf:type rdf:resource="&vcard;Individual"/>
@@ -1018,6 +1021,7 @@ Issues:
       </xsl:choose>
       <rdf:type rdf:resource="&foaf;Person"/>
       <rdfs:label><xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/></rdfs:label>
+      <foaf:name><xsl:value-of select="@NOME-COMPLETO-DO-ORIENTADOR"/></foaf:name>
       <obo:ARG_2000028>
 	<rdf:Description rdf:about="#individual-{generate-id(.)}">  
 	  <rdf:type rdf:resource="&vcard;Individual"/>
