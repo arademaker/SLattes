@@ -31,7 +31,7 @@ attribute in the tag =CURRICULO-LATTES=. We also provide another
 stylesheet called =lattes-vivo.xsl= that generates a RDF [[http://vivoweb.org][VIVO]]
 compliance, that is, readdy to be ingest into a VIVO instalation. 
 
-* Latttes validation agains the updated Lattes DTD 
+* Lattes validation agains the updated Lattes DTD 
 
 In Unix/MacOS systems you can also run:
 
