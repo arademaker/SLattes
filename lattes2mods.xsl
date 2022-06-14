@@ -36,6 +36,8 @@ Mountain View, California, 94041, USA.
 		       LIVROS-PUBLICADOS-OU-ORGANIZADOS|CAPITULOS-DE-LIVROS-PUBLICADOS|TEXTOS-EM-JORNAIS-OU-REVISTAS|
 		       DADOS-GERAIS|FORMACAO-ACADEMICA-TITULACAO">
     <xsl:apply-templates />
+	<!-- <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@HOME-PAGE-DO-TRABALHO"/>
+	<xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@DOI"/> -->
   </xsl:template>
 
   <xsl:template match="ORIENTACOES-CONCLUIDAS">
@@ -55,11 +57,11 @@ Mountain View, California, 94041, USA.
   <xsl:template match="TRABALHO-EM-EVENTOS">
     <mods:mods ID="publication-{@SEQUENCIA-PRODUCAO}">
       <mods:titleInfo>
-	<mods:title> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@TITULO-DO-TRABALHO" /> </mods:title>
+	<mods:title> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@TITULO-DO-TRABALHO" /> </mods:title>
       </mods:titleInfo>
 
       <mods:originInfo>
-	<mods:dateIssued> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO" /> </mods:dateIssued>
+	<mods:dateIssued> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-TRABALHO" /> </mods:dateIssued>
       </mods:originInfo>
 
       <xsl:for-each select="AUTORES">
@@ -80,7 +82,7 @@ Mountain View, California, 94041, USA.
 	</mods:titleInfo>
 
 	<mods:originInfo>
-	  <mods:dateIssued> <xsl:value-of select="DADOS-BASICOS-DO-TRABALHO/@ANO-DO-TRABALHO"/> </mods:dateIssued>
+	  <mods:dateIssued> <xsl:value-of select="DADOS-BASICOS-DO-ARTIGO/@ANO-DO-TRABALHO"/> </mods:dateIssued>
 	  <xsl:if test="string-length(DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA)>0">
 	    <mods:publisher> <xsl:value-of select="DETALHAMENTO-DO-TRABALHO/@NOME-DA-EDITORA" /> </mods:publisher>
 	  </xsl:if>
@@ -95,9 +97,9 @@ Mountain View, California, 94041, USA.
 	<xsl:apply-templates select="DETALHAMENTO-DO-TRABALHO/@ISBN"/>
       </mods:relatedItem>
 
-      <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@IDIOMA"/>
-      <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@HOME-PAGE-DO-TRABALHO"/>
-      <xsl:apply-templates select="DADOS-BASICOS-DO-TRABALHO/@DOI"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@IDIOMA"/>
+	  <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@HOME-PAGE-DO-TRABALHO"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@DOI"/>
       <!-- <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/> -->
     </mods:mods>
   </xsl:template>
@@ -160,6 +162,8 @@ Mountain View, California, 94041, USA.
       <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@IDIOMA"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@HOME-PAGE-DO-TRABALHO"/>
       <xsl:apply-templates select="DADOS-BASICOS-DO-TEXTO/@DOI"/>
+	  <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@HOME-PAGE-DO-TRABALHO"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@DOI"/>
       <!-- <xsl:apply-templates select="AREAS-DO-CONHECIMENTO"/> -->
     </mods:mods>
   </xsl:template>
@@ -218,7 +222,10 @@ Mountain View, California, 94041, USA.
       </mods:part>
 
       <mods:identifier type="citekey"> <xsl:text>#P</xsl:text><xsl:value-of select="@SEQUENCIA-PRODUCAO"/> </mods:identifier>
-    </mods:mods>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@HOME-PAGE-DO-TRABALHO"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-ARTIGO/@DOI"/>
+
+	</mods:mods>
   </xsl:template>
 
 
@@ -254,6 +261,8 @@ Mountain View, California, 94041, USA.
       <mods:genre>book</mods:genre>
       <mods:identifier type="citekey"> <xsl:text>#P</xsl:text><xsl:value-of select="@SEQUENCIA-PRODUCAO"/> </mods:identifier>
       <xsl:apply-templates select="DETALHAMENTO-DO-LIVRO/@ISBN"/>
+	  <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@HOME-PAGE-DO-TRABALHO"/>
+      <xsl:apply-templates select="DADOS-BASICOS-DO-LIVRO/@DOI"/>
     </mods:mods>
   </xsl:template>
 
@@ -522,8 +531,6 @@ Mountain View, California, 94041, USA.
     </mods:mods>
   </xsl:template>
 
-
-
   <xsl:template match="@HOME-PAGE|@HOME-PAGE-DO-TRABALHO">
     <xsl:if test="normalize-space(.) != ''">
       <mods:location>
@@ -543,7 +550,9 @@ Mountain View, California, 94041, USA.
 
   <xsl:template match="@DOI">
     <xsl:if test="normalize-space(.) != ''">
-      <mods:identifier type="doi"><xsl:value-of select="."/></mods:identifier>
+      <mods:identifier type="doi">
+		<xsl:value-of select="."/>
+	</mods:identifier>
     </xsl:if>
   </xsl:template>
 
