@@ -36,7 +36,7 @@ compliance, that is, readdy to be ingest into a VIVO instalation.
 In Unix/MacOS systems you can also run:
 
 #+BEGIN_EXAMPLE
-xmllint --dtdvalid LMPLCurriculo.DTD --noout CURRICULIUM.XML
+xmllint --schema CurriculoLattes.xsd --noout CV.xml
 #+END_EXAMPLE
 
 If one wants to compare what we changed from the original DTD provided
